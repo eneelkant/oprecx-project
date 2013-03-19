@@ -1,0 +1,13 @@
+#summary How to configure oprecx for testing
+
+= Yang dibutuhkan =
+  * Apache Web Server, PHP (>5.2), dan Mysql (>5) yang telah dikonfigurasi.
+  * [http://www.yiiframework.com/ Yii Framework]
+  * svn client (tidak wajib)
+
+= langkah =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
