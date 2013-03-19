@@ -31,3 +31,6 @@ Setelah berhasil lanjutkan ke langkah setup framework
   * buka folder app yang ada di dalam folder oprecx
   * jalankan buka file migrate.bat
   * ketik *up* untuk mengupdate database 
+
+== tadaaa ==
+  buka http://localhost/oprecx/ dan semoga berhasil :)
