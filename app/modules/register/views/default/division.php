@@ -21,7 +21,7 @@ if (isset($_REQUEST['division'])) {
             /** @var $division Divisions */
             $divisions = array();
             foreach ($org->divisions as $division){
-                $id = $division->divisions_id;
+                $id = $division->div_id;
                 echo '<input type="checkbox" name="division[choice][]" value="', $id, '" id="division_', $id,
                         '" /><label for="division_', $id, '">', $division->name, '</label>';
                 $divisions[$id] = $division->name;

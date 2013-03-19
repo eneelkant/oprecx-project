@@ -1,29 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "users".
+ * This is the model class for table "forms".
  *
- * The followings are the available columns in table 'users':
- * @property string $id
- * @property string $email
- * @property string $token
- * @property string $full_name
- * @property string $img_id
- * @property string $link
+ * The followings are the available columns in table 'forms':
+ * @property string $form_id
+ * @property string $org_id
+ * @property string $name
+ * @property integer $weight
  * @property string $created
- * @property string $updated
  *
  * The followings are the available model relations:
  * @property Divisions[] $divisions
- * @property UserMetas[] $userMetases
- * @property Images $img
+ * @property Organizations $org
  */
-class Users extends CActiveRecord
+class Forms extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Users the static model class
+	 * @return Forms the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -35,7 +31,7 @@ class Users extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'users';
+		return 'forms';
 	}
 
 	/**
@@ -46,14 +42,13 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('email, token, full_name, created', 'required'),
-			array('email, full_name, link', 'length', 'max'=>256),
-			array('token', 'length', 'max'=>512),
-			array('img_id', 'length', 'max'=>10),
-			array('updated', 'safe'),
+			array('form_id, org_id, name, created', 'required'),
+			array('weight', 'numerical', 'integerOnly'=>true),
+			array('form_id, org_id', 'length', 'max'=>10),
+			array('name', 'length', 'max'=>64),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, email, token, full_name, img_id, link, created, updated', 'safe', 'on'=>'search'),
+			array('form_id, org_id, name, weight, created', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,9 +60,8 @@ class Users extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'divisions' => array(self::MANY_MANY, 'Divisions', 'division_choices(user_id, div_id)'),
-			'userMetases' => array(self::HAS_MANY, 'UserMetas', 'user_id'),
-			'img' => array(self::BELONGS_TO, 'Images', 'img_id'),
+			'divisions' => array(self::MANY_MANY, 'Divisions', 'division_forms(form_id, div_id)'),
+			'org' => array(self::BELONGS_TO, 'Organizations', 'org_id'),
 		);
 	}
 
@@ -77,14 +71,11 @@ class Users extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'email' => 'Email',
-			'token' => 'Token',
-			'full_name' => 'Full Name',
-			'img_id' => 'Img',
-			'link' => 'Link',
+			'form_id' => 'Form',
+			'org_id' => 'Org',
+			'name' => 'Name',
+			'weight' => 'Weight',
 			'created' => 'Created',
-			'updated' => 'Updated',
 		);
 	}
 
@@ -99,14 +90,11 @@ class Users extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
-		$criteria->compare('email',$this->email,true);
-		$criteria->compare('token',$this->token,true);
-		$criteria->compare('full_name',$this->full_name,true);
-		$criteria->compare('img_id',$this->img_id,true);
-		$criteria->compare('link',$this->link,true);
+		$criteria->compare('form_id',$this->form_id,true);
+		$criteria->compare('org_id',$this->org_id,true);
+		$criteria->compare('name',$this->name,true);
+		$criteria->compare('weight',$this->weight);
 		$criteria->compare('created',$this->created,true);
-		$criteria->compare('updated',$this->updated,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

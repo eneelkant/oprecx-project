@@ -1,25 +1,18 @@
 <?php
 
 /**
- * This is the model class for table "user_metas".
+ * This is the model class for table "division_forms".
  *
- * The followings are the available columns in table 'user_metas':
- * @property string $meta_id
- * @property string $user_id
- * @property string $meta_name
- * @property string $meta_value
- * @property string $created
- * @property string $updated
- *
- * The followings are the available model relations:
- * @property Users $user
+ * The followings are the available columns in table 'division_forms':
+ * @property string $div_id
+ * @property string $form_id
  */
-class UserMetas extends CActiveRecord
+class DivisionForms extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return UserMetas the static model class
+	 * @return DivisionForms the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -31,7 +24,7 @@ class UserMetas extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'user_metas';
+		return 'division_forms';
 	}
 
 	/**
@@ -42,13 +35,11 @@ class UserMetas extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, meta_name, meta_value, created', 'required'),
-			array('user_id', 'length', 'max'=>10),
-			array('meta_name', 'length', 'max'=>64),
-			array('updated', 'safe'),
+			array('div_id, form_id', 'required'),
+			array('div_id, form_id', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('meta_id, user_id, meta_name, meta_value, created, updated', 'safe', 'on'=>'search'),
+			array('div_id, form_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -60,7 +51,6 @@ class UserMetas extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
 		);
 	}
 
@@ -70,12 +60,8 @@ class UserMetas extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'meta_id' => 'Meta',
-			'user_id' => 'User',
-			'meta_name' => 'Meta Name',
-			'meta_value' => 'Meta Value',
-			'created' => 'Created',
-			'updated' => 'Updated',
+			'div_id' => 'Div',
+			'form_id' => 'Form',
 		);
 	}
 
@@ -90,12 +76,8 @@ class UserMetas extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('meta_id',$this->meta_id,true);
-		$criteria->compare('user_id',$this->user_id,true);
-		$criteria->compare('meta_name',$this->meta_name,true);
-		$criteria->compare('meta_value',$this->meta_value,true);
-		$criteria->compare('created',$this->created,true);
-		$criteria->compare('updated',$this->updated,true);
+		$criteria->compare('div_id',$this->div_id,true);
+		$criteria->compare('form_id',$this->form_id,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

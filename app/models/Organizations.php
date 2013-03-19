@@ -22,6 +22,7 @@
  *
  * The followings are the available model relations:
  * @property Divisions[] $divisions
+ * @property Forms[] $forms
  * @property OrganizationMetas[] $organizationMetases
  * @property Images $img
  */
@@ -53,12 +54,12 @@ class Organizations extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, full_name, email, password, created, description, type, scope, location, link, img_id, reg_time_begin, reg_time_end', 'required'),
+			array('name, full_name, email, password, created, description, type, scope, location, link, reg_time_begin, reg_time_end', 'required'),
 			array('name', 'length', 'max'=>32),
 			array('full_name, email, location, link', 'length', 'max'=>256),
 			array('password', 'length', 'max'=>512),
 			array('type, scope, visibility', 'length', 'max'=>16),
-			array('img_id', 'length', 'max'=>11),
+			array('img_id', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, full_name, email, password, created, description, type, scope, location, link, img_id, reg_time_begin, reg_time_end, visibility', 'safe', 'on'=>'search'),
@@ -74,6 +75,7 @@ class Organizations extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'divisions' => array(self::HAS_MANY, 'Divisions', 'org_id'),
+			'forms' => array(self::HAS_MANY, 'Forms', 'org_id'),
 			'organizationMetases' => array(self::HAS_MANY, 'OrganizationMetas', 'org_id'),
 			'img' => array(self::BELONGS_TO, 'Images', 'img_id'),
 		);
