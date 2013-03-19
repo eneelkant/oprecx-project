@@ -13,6 +13,7 @@
  *
  * The followings are the available model relations:
  * @property Organizations[] $organizations
+ * @property Users[] $users
  */
 class Images extends CActiveRecord
 {
@@ -60,6 +61,7 @@ class Images extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'organizations' => array(self::HAS_MANY, 'Organizations', 'img_id'),
+			'users' => array(self::HAS_MANY, 'Users', 'img_id'),
 		);
 	}
 

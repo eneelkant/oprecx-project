@@ -4,7 +4,7 @@
  * This is the model class for table "divisions".
  *
  * The followings are the available columns in table 'divisions':
- * @property string $divisions_id
+ * @property string $div_id
  * @property string $org_id
  * @property string $name
  * @property string $description
@@ -16,6 +16,8 @@
  * @property string $created
  *
  * The followings are the available model relations:
+ * @property Users[] $users
+ * @property Forms[] $forms
  * @property Organizations $org
  */
 class Divisions extends CActiveRecord
@@ -54,7 +56,7 @@ class Divisions extends CActiveRecord
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('divisions_id, org_id, name, description, leader, max_applicant, max_staff, min_staff, enabled, created', 'safe', 'on'=>'search'),
+			array('div_id, org_id, name, description, leader, max_applicant, max_staff, min_staff, enabled, created', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -66,6 +68,8 @@ class Divisions extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'users' => array(self::MANY_MANY, 'Users', 'division_choices(div_id, user_id)'),
+			'forms' => array(self::MANY_MANY, 'Forms', 'division_forms(div_id, form_id)'),
 			'org' => array(self::BELONGS_TO, 'Organizations', 'org_id'),
 		);
 	}
@@ -76,7 +80,7 @@ class Divisions extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'divisions_id' => 'Divisions',
+			'div_id' => 'Div',
 			'org_id' => 'Org',
 			'name' => 'Name',
 			'description' => 'Description',
@@ -100,7 +104,7 @@ class Divisions extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('divisions_id',$this->divisions_id,true);
+		$criteria->compare('div_id',$this->div_id,true);
 		$criteria->compare('org_id',$this->org_id,true);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('description',$this->description,true);
