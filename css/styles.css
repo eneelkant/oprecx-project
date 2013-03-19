@@ -1,0 +1,29 @@
+#respondenPic {
+    width: 100%;
+    height: auto;
+}
+
+#food-overly {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    padding: 2%;
+    /*background-color: rgba(0, 0, 0, .7);*/
+    text-align: center;
+}
+
+.foodthumbnail { 
+    position: absolute; 
+    left: 1px; 
+    top: 0; 
+    max-height: 80px; 
+    max-width: 130px; 
+}
+
+.linkthumbnail  { 
+    min-height: 60px; 
+    padding-left: 140px; 
+}
+
+
