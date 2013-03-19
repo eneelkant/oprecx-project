@@ -1,7 +1,10 @@
 <?php
 
+ini_set('display_errors', true);
+error_reporting(E_ALL);
+
 // change the following paths if necessary
-$yii=dirname(__FILE__).'/../yii/framework/yii.php';
+$yii=dirname(__FILE__).'/../framework/yii.php';
 $config=dirname(__FILE__).'/app/config/main.php';
 
 // remove the following lines when in production mode
