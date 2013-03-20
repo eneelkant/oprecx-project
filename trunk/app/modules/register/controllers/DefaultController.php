@@ -11,12 +11,18 @@ class DefaultController extends RegisterController {
     public function actionDivision($org) {
         /** @var Organizations */
         $org = Organizations::model()->with('divisions')->find('t.name=:name', array('name' => $org));
-        if (isset($_POST['division'])){
-            // TODO: cek apakah pilihan divisi ada di organisasi, cek juga jumlah pilihan divisi
-            
-            $this->redirect(array('form', 'org' => $org->name));
+        $model = new DivisionChoiceForm($org, 1);
+        
+        if (isset($_POST['DivisionChoiceForm'])){
+            $model->attributes = $_POST['DivisionChoiceForm'];
+            if ($model->validate()){
+                // TODO: cek apakah pilihan divisi ada di organisasi, cek juga jumlah pilihan divisi
+
+                $this->redirect(array('form', 'org' => $org->name));
+                
+            }
         }
-        $this->render('division', array('org' => $org));
+        $this->render('division', array('model' => $model, 'org' => $org));
         
     }
     
