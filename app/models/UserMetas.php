@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "user_metas".
+ * This is the model class for table "{{user_metas}}".
  *
- * The followings are the available columns in table 'user_metas':
+ * The followings are the available columns in table '{{user_metas}}':
  * @property string $meta_id
  * @property string $user_id
  * @property string $meta_name
@@ -31,7 +31,7 @@ class UserMetas extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'user_metas';
+		return '{{user_metas}}';
 	}
 
 	/**

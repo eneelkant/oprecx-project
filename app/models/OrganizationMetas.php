@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "organization_metas".
+ * This is the model class for table "{{organization_metas}}".
  *
- * The followings are the available columns in table 'organization_metas':
+ * The followings are the available columns in table '{{organization_metas}}':
  * @property string $meta_id
  * @property string $org_id
  * @property string $meta_name
@@ -31,7 +31,7 @@ class OrganizationMetas extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'organization_metas';
+		return '{{organization_metas}}';
 	}
 
 	/**

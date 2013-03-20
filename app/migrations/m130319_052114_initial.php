@@ -13,7 +13,7 @@ class m130319_052114_initial extends CDbMigration {
     // Use safeUp/safeDown to do migration with transaction
     public function safeUp() {
         //*
-        $this->createTable('images', array(
+        $this->createTable('{{images}}', array(
             'img_id' => 'int unsigned NOT NULL AUTO_INCREMENT',
             'file_path' => 'varchar(256) NOT NULL',
             'file_url' => 'varchar(256) NOT NULL',
@@ -23,7 +23,7 @@ class m130319_052114_initial extends CDbMigration {
             'PRIMARY KEY (`img_id`)',
         ));
 
-        $this->createTable('users', array(
+        $this->createTable('{{users}}', array(
             'id' => 'int unsigned NOT NULL AUTO_INCREMENT',
             //'name' => 'varchar(32) NOT NULL',
             'email' => 'varchar(256) NOT NULL',
@@ -35,10 +35,10 @@ class m130319_052114_initial extends CDbMigration {
             'updated' => 'datetime DEFAULT NULL',
             'PRIMARY KEY (`id`)',
             'KEY `img_id` (`img_id`)',
-            'CONSTRAINT `users_ibfk_1` FOREIGN KEY (`img_id`) REFERENCES `images` (`img_id`) ON DELETE SET NULL ON UPDATE SET NULL',
+            'CONSTRAINT `users_ibfk_1` FOREIGN KEY (`img_id`) REFERENCES `{{images}}` (`img_id`) ON DELETE SET NULL ON UPDATE SET NULL',
         ));
 
-        $this->createTable('user_metas', array(
+        $this->createTable('{{user_metas}}', array(
             'meta_id' => 'int unsigned NOT NULL AUTO_INCREMENT',
             'user_id' => 'int unsigned NOT NULL',
             'meta_name' => 'varchar(64) NOT NULL',
@@ -47,10 +47,10 @@ class m130319_052114_initial extends CDbMigration {
             'updated' => 'datetime DEFAULT NULL',
             'PRIMARY KEY (`meta_id`)',
             'KEY `applicant_id` (`user_id`)',
-            'CONSTRAINT `user_metas_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT `user_metas_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `{{users}}` (`id`) ON DELETE CASCADE ON UPDATE CASCADE',
         ));
 
-        $this->createTable('organizations', array(
+        $this->createTable('{{organizations}}', array(
             'id' => 'int unsigned NOT NULL AUTO_INCREMENT',
             'name' => 'varchar(32) NOT NULL',
             'full_name' => 'varchar(256) NOT NULL',
@@ -69,10 +69,10 @@ class m130319_052114_initial extends CDbMigration {
             'PRIMARY KEY (`id`)',
             'UNIQUE KEY `name` (`name`)',
             'KEY `img_id` (`img_id`)',
-            'CONSTRAINT `organizations_ibfk_1` FOREIGN KEY (`img_id`) REFERENCES `images` (`img_id`) ON DELETE SET NULL ON UPDATE SET NULL',
+            'CONSTRAINT `organizations_ibfk_1` FOREIGN KEY (`img_id`) REFERENCES `{{images}}` (`img_id`) ON DELETE SET NULL ON UPDATE SET NULL',
         ));
         
-        $this->insert('organizations', array(
+        $this->insert('{{organizations}}', array(
             'id' => 1,
             'name' => 'pemiraui2013',
             'full_name' => 'Pemira IKM UI 2013',
@@ -87,7 +87,7 @@ class m130319_052114_initial extends CDbMigration {
             'reg_time_end' => '2013-04-19 00:00:00',
         ));
 
-        $this->insert('organizations', array(
+        $this->insert('{{organizations}}', array(
             'id' => 3,
             'name' => 'bemui2013',
             'full_name' => 'BEM UI 2013',
@@ -102,7 +102,7 @@ class m130319_052114_initial extends CDbMigration {
             'reg_time_end' => '2013-04-19 00:00:00',
         ));
 
-        $this->createTable('organization_metas', array(
+        $this->createTable('{{organization_metas}}', array(
             'meta_id' => 'int unsigned NOT NULL AUTO_INCREMENT',
             'org_id' => 'int unsigned NOT NULL',
             'meta_name' => 'varchar(16) NOT NULL',
@@ -111,10 +111,10 @@ class m130319_052114_initial extends CDbMigration {
             'updated' => 'datetime NOT NULL',
             'PRIMARY KEY (`meta_id`)',
             'KEY `org_id` (`org_id`)',
-            'CONSTRAINT `organization_metas_ibfk_1` FOREIGN KEY (`org_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT `organization_metas_ibfk_1` FOREIGN KEY (`org_id`) REFERENCES `{{organizations}}` (`id`) ON DELETE CASCADE ON UPDATE CASCADE',
         ));
 
-        $this->createTable('divisions', array(
+        $this->createTable('{{divisions}}', array(
             'div_id' => 'int unsigned NOT NULL AUTO_INCREMENT',
             'org_id' => 'int unsigned NOT NULL',
             'name' => 'varchar(128) NOT NULL',
@@ -127,40 +127,40 @@ class m130319_052114_initial extends CDbMigration {
             'created' => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
             'PRIMARY KEY (`div_id`)',
             'KEY `org_id` (`org_id`)',
-            'CONSTRAINT `divisions_ibfk_1` FOREIGN KEY (`org_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT `divisions_ibfk_1` FOREIGN KEY (`org_id`) REFERENCES `{{organizations}}` (`id`) ON DELETE CASCADE ON UPDATE CASCADE',
         ));
         
-        $this->insert('divisions', array(
+        $this->insert('{{divisions}}', array(
             'div_id' => 1,
             'org_id' => 1,
             'name' => 'Departemen 1',
             'description' => 'Penjelasan Departemen',
         ));
-        $this->insert('divisions', array(
+        $this->insert('{{divisions}}', array(
             'div_id' => 2,
             'org_id' => 1,
             'name' => 'Biro 1',
             'description' => 'Penjelasan Biro',
         ));
-        $this->insert('divisions', array(
+        $this->insert('{{divisions}}', array(
             'div_id' => 3,
             'org_id' => 3,
             'name' => 'Departemen 1',
             'description' => 'Penjelasan Departemen',
         ));
 
-        $this->createTable('division_choices', array(
+        $this->createTable('{{division_choices}}', array(
             'div_id' => 'int unsigned NOT NULL',
             'user_id' => 'int unsigned NOT NULL',
             'choosed' => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
             
             'PRIMARY KEY (`div_id`,`user_id`)',
             'KEY `division_choice_fk2` (`user_id`)',
-            'CONSTRAINT `division_choice_fk1` FOREIGN KEY (`div_id`) REFERENCES `divisions` (`div_id`)',
-            'CONSTRAINT `division_choice_fk2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)',
+            'CONSTRAINT `division_choice_fk1` FOREIGN KEY (`div_id`) REFERENCES `{{divisions}}` (`div_id`)',
+            'CONSTRAINT `division_choice_fk2` FOREIGN KEY (`user_id`) REFERENCES `{{users}}` (`id`)',
         ));
 
-        $this->createTable('forms', array(
+        $this->createTable('{{forms}}', array(
             'form_id' => 'int unsigned NOT NULL',
             'org_id' => 'int unsigned NOT NULL',
             'name' => 'varchar(64) NOT NULL',
@@ -169,31 +169,31 @@ class m130319_052114_initial extends CDbMigration {
             
             'PRIMARY KEY (`form_id`)',
             'KEY `org_id` (`org_id`)',
-            'CONSTRAINT `forms_ibfk_1` FOREIGN KEY (`org_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT `forms_ibfk_1` FOREIGN KEY (`org_id`) REFERENCES `{{organizations}}` (`id`) ON DELETE CASCADE ON UPDATE CASCADE',
         ));
     //*/
-        $this->createTable('division_forms', array(
+        $this->createTable('{{division_forms}}', array(
             'div_id' => 'int unsigned NOT NULL',
             'form_id' => 'int unsigned NOT NULL',
             
             'PRIMARY KEY (`div_id`,`form_id`)',
             'KEY `division_form_fk2` (`form_id`)',
-            'CONSTRAINT `division_form_fk1` FOREIGN KEY (`div_id`) REFERENCES `divisions` (`div_id`)',
-            'CONSTRAINT `division_form_fk2` FOREIGN KEY (`form_id`) REFERENCES `forms` (`form_id`)',
+            'CONSTRAINT `division_form_fk1` FOREIGN KEY (`div_id`) REFERENCES `{{divisions}}` (`div_id`)',
+            'CONSTRAINT `division_form_fk2` FOREIGN KEY (`form_id`) REFERENCES `{{forms}}` (`form_id`)',
         ));
 
     }
 
     public function safeDown() {
-        $this->dropTable('division_forms');
-        $this->dropTable('forms');
-        $this->dropTable('division_choices');
-        $this->dropTable('divisions');
-        $this->dropTable('organization_metas');
-        $this->dropTable('organizations');
-        $this->dropTable('user_metas');
-        $this->dropTable('users');
-        $this->dropTable('images');
+        $this->dropTable('{{division_forms}}');
+        $this->dropTable('{{forms}}');
+        $this->dropTable('{{division_choices}}');
+        $this->dropTable('{{divisions}}');
+        $this->dropTable('{{organization_metas}}');
+        $this->dropTable('{{organizations}}');
+        $this->dropTable('{{user_metas}}');
+        $this->dropTable('{{users}}');
+        $this->dropTable('{{images}}');
     }
 
     //*/

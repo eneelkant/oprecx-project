@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "forms".
+ * This is the model class for table "{{forms}}".
  *
- * The followings are the available columns in table 'forms':
+ * The followings are the available columns in table '{{forms}}':
  * @property string $form_id
  * @property string $org_id
  * @property string $name
@@ -11,7 +11,7 @@
  * @property string $created
  *
  * The followings are the available model relations:
- * @property Divisions[] $divisions
+ * @property Divisions[] $oprecxDivisions
  * @property Organizations $org
  */
 class Forms extends CActiveRecord
@@ -31,7 +31,7 @@ class Forms extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'forms';
+		return '{{forms}}';
 	}
 
 	/**
@@ -60,7 +60,7 @@ class Forms extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'divisions' => array(self::MANY_MANY, 'Divisions', 'division_forms(form_id, div_id)'),
+			'oprecxDivisions' => array(self::MANY_MANY, 'Divisions', '{{division_forms}}(form_id, div_id)'),
 			'org' => array(self::BELONGS_TO, 'Organizations', 'org_id'),
 		);
 	}
