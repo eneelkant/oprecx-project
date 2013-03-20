@@ -15,5 +15,6 @@ return array(
     'username' => 'oprecx',
     'password' => 'oprecx',
     'charset' => 'utf8',
+    'tablePrefix' => 'oprecx_',
 );
 // */

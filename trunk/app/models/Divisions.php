@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "divisions".
+ * This is the model class for table "{{divisions}}".
  *
- * The followings are the available columns in table 'divisions':
+ * The followings are the available columns in table '{{divisions}}':
  * @property string $div_id
  * @property string $org_id
  * @property string $name
@@ -16,8 +16,8 @@
  * @property string $created
  *
  * The followings are the available model relations:
- * @property Users[] $users
- * @property Forms[] $forms
+ * @property Users[] $oprecxUsers
+ * @property Forms[] $oprecxForms
  * @property Organizations $org
  */
 class Divisions extends CActiveRecord
@@ -37,7 +37,7 @@ class Divisions extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'divisions';
+		return '{{divisions}}';
 	}
 
 	/**
@@ -68,8 +68,8 @@ class Divisions extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'users' => array(self::MANY_MANY, 'Users', 'division_choices(div_id, user_id)'),
-			'forms' => array(self::MANY_MANY, 'Forms', 'division_forms(div_id, form_id)'),
+			'oprecxUsers' => array(self::MANY_MANY, 'Users', '{{division_choices}}(div_id, user_id)'),
+			'oprecxForms' => array(self::MANY_MANY, 'Forms', '{{division_forms}}(div_id, form_id)'),
 			'org' => array(self::BELONGS_TO, 'Organizations', 'org_id'),
 		);
 	}

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "division_choices".
+ * This is the model class for table "{{division_choices}}".
  *
- * The followings are the available columns in table 'division_choices':
+ * The followings are the available columns in table '{{division_choices}}':
  * @property string $div_id
  * @property string $user_id
  * @property string $choosed
@@ -25,7 +25,7 @@ class DivisionChoices extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'division_choices';
+		return '{{division_choices}}';
 	}
 
 	/**

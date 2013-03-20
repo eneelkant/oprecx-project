@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "organizations".
+ * This is the model class for table "{{organizations}}".
  *
- * The followings are the available columns in table 'organizations':
+ * The followings are the available columns in table '{{organizations}}':
  * @property string $id
  * @property string $name
  * @property string $full_name
@@ -43,7 +43,7 @@ class Organizations extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'organizations';
+		return '{{organizations}}';
 	}
 
 	/**

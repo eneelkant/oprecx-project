@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "division_forms".
+ * This is the model class for table "{{division_forms}}".
  *
- * The followings are the available columns in table 'division_forms':
+ * The followings are the available columns in table '{{division_forms}}':
  * @property string $div_id
  * @property string $form_id
  */
@@ -24,7 +24,7 @@ class DivisionForms extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'division_forms';
+		return '{{division_forms}}';
 	}
 
 	/**

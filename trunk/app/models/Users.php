@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "users".
+ * This is the model class for table "{{users}}".
  *
- * The followings are the available columns in table 'users':
+ * The followings are the available columns in table '{{users}}':
  * @property string $id
  * @property string $email
  * @property string $token
@@ -14,7 +14,7 @@
  * @property string $updated
  *
  * The followings are the available model relations:
- * @property Divisions[] $divisions
+ * @property Divisions[] $oprecxDivisions
  * @property UserMetas[] $userMetases
  * @property Images $img
  */
@@ -35,7 +35,7 @@ class Users extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'users';
+		return '{{users}}';
 	}
 
 	/**
@@ -65,7 +65,7 @@ class Users extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'divisions' => array(self::MANY_MANY, 'Divisions', 'division_choices(user_id, div_id)'),
+			'oprecxDivisions' => array(self::MANY_MANY, 'Divisions', '{{division_choices}}(user_id, div_id)'),
 			'userMetases' => array(self::HAS_MANY, 'UserMetas', 'user_id'),
 			'img' => array(self::BELONGS_TO, 'Images', 'img_id'),
 		);
