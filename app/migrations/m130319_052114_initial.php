@@ -156,12 +156,12 @@ class m130319_052114_initial extends CDbMigration {
             
             'PRIMARY KEY (`div_id`,`user_id`)',
             'KEY `division_choice_fk2` (`user_id`)',
-            'CONSTRAINT `division_choice_fk1` FOREIGN KEY (`div_id`) REFERENCES `{{divisions}}` (`div_id`)',
-            'CONSTRAINT `division_choice_fk2` FOREIGN KEY (`user_id`) REFERENCES `{{users}}` (`id`)',
+            'CONSTRAINT `division_choice_fk1` FOREIGN KEY (`div_id`) REFERENCES `{{divisions}}` (`div_id`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT `division_choice_fk2` FOREIGN KEY (`user_id`) REFERENCES `{{users}}` (`id`) ON DELETE CASCADE ON UPDATE CASCADE',
         ));
 
         $this->createTable('{{forms}}', array(
-            'form_id' => 'int unsigned NOT NULL',
+            'form_id' => 'int unsigned NOT NULL AUTO_INCREMENT',
             'org_id' => 'int unsigned NOT NULL',
             'name' => 'varchar(64) NOT NULL',
             'weight' => 'int NOT NULL DEFAULT 0',
@@ -173,18 +173,51 @@ class m130319_052114_initial extends CDbMigration {
         ));
     //*/
         $this->createTable('{{division_forms}}', array(
-            'div_id' => 'int unsigned NOT NULL',
+            'div_id' => 'int unsigned NOT NULL AUTO_INCREMENT',
             'form_id' => 'int unsigned NOT NULL',
             
             'PRIMARY KEY (`div_id`,`form_id`)',
             'KEY `division_form_fk2` (`form_id`)',
-            'CONSTRAINT `division_form_fk1` FOREIGN KEY (`div_id`) REFERENCES `{{divisions}}` (`div_id`)',
-            'CONSTRAINT `division_form_fk2` FOREIGN KEY (`form_id`) REFERENCES `{{forms}}` (`form_id`)',
+            'CONSTRAINT `division_form_fk1` FOREIGN KEY (`div_id`) REFERENCES `{{divisions}}` (`div_id`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT `division_form_fk2` FOREIGN KEY (`form_id`) REFERENCES `{{forms}}` (`form_id`) ON DELETE CASCADE ON UPDATE CASCADE',
         ));
 
+        $this->createTable('{{form_fields}}', array(
+            'field_id' => 'int unsigned NOT NULL AUTO_INCREMENT',
+            'form_id' => 'int unsigned NOT NULL',
+            'name' => 'varchar(256) NOT NULL',
+            'type' => 'varchar(32) NOT NULL',
+            'desc' => 'text NOT NULL',
+            'weight' => 'int NOT NULL DEFAULT 0',
+            'required' => 'int NOT NULL DEFAULT 0',
+            'options' => 'text',
+            'created' => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
+            
+            'PRIMARY KEY (`field_id`)',
+            'KEY `form_id` (`form_id`)',
+             'CONSTRAINT `form_field_fk1` FOREIGN KEY (`form_id`) REFERENCES `{{forms}}` (`form_id`) ON DELETE CASCADE ON UPDATE CASCADE',
+        ));
+
+        $this->createTable('{{form_values}}', array(
+            'value_id' => 'int unsigned NOT NULL AUTO_INCREMENT',
+            'field_id' => 'int unsigned NOT NULL',
+            'user_id' => 'int unsigned NOT NULL',
+            'value' => 'text',
+            'created' => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
+            'updated' => 'datetime DEFAULT NULL',
+           
+            'PRIMARY KEY (`value_id`)',
+            'KEY `field_id` (`field_id`)',
+            'KEY `user_id` (`user_id`)',
+            'CONSTRAINT `form_value_fk1` FOREIGN KEY (`field_id`) REFERENCES `{{form_fields}}` (`field_id`) ON DELETE CASCADE ON UPDATE CASCADE',
+            'CONSTRAINT `form_value_fk2` FOREIGN KEY (`user_id`) REFERENCES `{{users}}` (`id`) ON DELETE CASCADE ON UPDATE CASCADE',
+        ));
+        
     }
 
     public function safeDown() {
+        $this->dropTable('{{form_values}}');
+        $this->dropTable('{{form_fields}}');
         $this->dropTable('{{division_forms}}');
         $this->dropTable('{{forms}}');
         $this->dropTable('{{division_choices}}');

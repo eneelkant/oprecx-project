@@ -16,5 +16,7 @@ return array(
     'password' => 'oprecx',
     'charset' => 'utf8',
     'tablePrefix' => 'oprecx_',
+    'schemaCachingDuration' => 100,
+    'queryCachingDuration' => 10,
 );
 // */

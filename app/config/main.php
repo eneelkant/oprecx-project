@@ -75,7 +75,7 @@ return array(
             ),
         ),
         'cache' => array(
-            'class' => 'system.caching.CApcCache',
+            'class' => 'system.caching.CFileCache',
             'hashKey' => false,
             
         )
