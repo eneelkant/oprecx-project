@@ -11,11 +11,6 @@ $this->breadcrumbs = array(
 <h2><?php echo CHtml::link(CHtml::encode($org->full_name), array('index', 'org' => $org->name)); ?></h2>
 
 <?php
-if (isset($_REQUEST['division'])) {
-    var_dump($_REQUEST['division']);
-}
-?>
-<?php
 /* @var $form CActiveForm */
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'division-choice-form',
