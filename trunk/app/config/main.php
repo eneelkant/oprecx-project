@@ -36,23 +36,22 @@ return array(
         // uncomment the following to enable URLs in path-format
         //*
         'urlManager' => array(
-            //'urlFormat' => 'path',
-            //'showScriptName' => false,
+            'urlFormat' => 'path',
+            'showScriptName' => false,
             'rules' => array(
                 '/' => 'site/index',
-                '/site/page/<view:\w+>' => array('site/page', 'urlSuffix' => '.html'),
-                //'/<controller:\w+>/<id:\d+>' => array('<controller>/view', 'urlSuffix' => '.html'),
-                '/<org_name:(salamui)>' => 'register/default/index',
-                //'/reg/<controller:\w+>/<action:\w+>' => 'register/<controller>/<action>',
+                '/about/<view:\w+>' => array('site/page', 'urlSuffix' => '.html'),
+
+                '/<org:\w+>/' => array('register/default/index', 'caseSensitive'=>false),
+                '/<org:\w+>/<action:\w+>' => 'register/default/<action>',
+                //'/<org:[^(admin)]>/' => 'register/default/index',
+                //'/<org:[^(admin)]>/<action:\w+>' => 'register/default/<action>',
+
                 '/<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ),
         ),
         // */
-        //'db'=>array(
-        //	'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-        //),
-        // uncomment the following to use a MySQL database
-        ///*
+
         'db' => require (dirname(__FILE__) . '/db.php'),
         // */
         'errorHandler' => array(
@@ -75,7 +74,7 @@ return array(
             ),
         ),
         'cache' => array(
-            'class' => 'system.caching.CFileCache',
+            'class' => getCacheClassName(),
             'hashKey' => false,
             
         )
@@ -87,3 +86,7 @@ return array(
         'adminEmail' => 'webmaster@example.com',
     ),
 );
+
+function getCacheClassName() {
+    return (function_exists('apc_add') ? 'system.caching.CApcCache' : 'system.caching.CFileCache');
+}

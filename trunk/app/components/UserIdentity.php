@@ -6,6 +6,10 @@
  * data can identity the user.
  */
 class UserIdentity extends CUserIdentity {
+    private $_id;
+    private $email;
+    
+    private $authenticated = false;
 
     /**
      * Authenticates a user.
@@ -16,18 +20,39 @@ class UserIdentity extends CUserIdentity {
      * @return boolean whether authentication succeeds.
      */
     public function authenticate() {
-        $users = array(
-            // username => password
-            'demo' => 'demo',
-            'admin' => 'admin',
-        );
-        if (!isset($users[$this->username]))
+        /** @var Users $record Description */
+        $record = Users::model()->findByAttributes(array('email' => $this->username));
+        if ($record === null)
             $this->errorCode = self::ERROR_USERNAME_INVALID;
-        else if ($users[$this->username] !== $this->password)
+        else if ($record->password !== crypt($this->password, $record->password))
             $this->errorCode = self::ERROR_PASSWORD_INVALID;
-        else
+        else {
+            $this->_id = $record->id;
+            $this->setState('fullname', $record->full_name);
             $this->errorCode = self::ERROR_NONE;
+            $this->authenticated = true;
+        }
         return !$this->errorCode;
     }
 
+    public function getId() {
+        return $this->_id;
+    }
+    
+    public function login() {
+        if ($this->errorCode === self::ERROR_NONE) {
+            Yii::app()->user->login($this);
+            return true;
+        }
+        
+        return false;
+    }
+            
+
+
+    public function register ($fullname) {
+        
+    }
+
 }
+

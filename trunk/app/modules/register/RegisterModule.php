@@ -4,6 +4,7 @@
  * @property string $assetsUrl
  */
 class RegisterModule extends CWebModule {
+
     /** @var string $_assetsUrl */
     var $_assetsUrl;
 
@@ -15,27 +16,26 @@ class RegisterModule extends CWebModule {
             'register.models.*',
             'register.components.*',
         ));
-        
-        //$this->layout = 'main';
+
+        $this->layout = 'main';
     }
 
     public function beforeControllerAction($controller, $action) {
         if (parent::beforeControllerAction($controller, $action)) {
             // this method is called before any module controller action is performed
             // you may place customized code here
-            //$controller->layout = 'standard';
+            $controller->layout = 'standard';
             return true;
         }
         else
             return false;
     }
 
-	public function getAssetsUrl()
-	{
-		if($this->_assetsUrl===null)
-			//$this->_assetsUrl=Yii::app()->getAssetManager()->publish(dirname(__FILE__) . '/assets');
-                    $this->_assetsUrl = '/assets/register';
-		return $this->_assetsUrl;
-	}
-    
+    public function getAssetsUrl() {
+        if ($this->_assetsUrl === null)
+        //$this->_assetsUrl=Yii::app()->getAssetManager()->publish(dirname(__FILE__) . '/assets');
+            $this->_assetsUrl = '/assets/register';
+        return $this->_assetsUrl;
+    }
+
 }

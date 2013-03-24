@@ -17,7 +17,6 @@ $this->breadcrumbs = array(
             case 'select':
                 //print_r($options);
                 echo CHtml::dropDownList($field['name'], null, $options['options']);
-                
                 break;
 
             default:
