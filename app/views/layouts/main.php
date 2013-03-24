@@ -5,17 +5,19 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 	<link rel="stylesheet"  href="<?php echo Yii::app()->request->baseUrl; ?>/css/themes/default/jquery.mobile-1.3.0.css">
         <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/jqm-demos.css" />
-	<link rel="shortcut icon" href="docs/_assets/favicon.ico">
+	<link rel="shortcut icon" href="favicon.ico">
+	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
    
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-1.9.0.js"></script>
-<script type="text/javascript">
-$(document).bind("mobileinit", function () {
-    $.mobile.ajaxEnabled = false;
-});
-</script>	<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.mobile-1.3.0.js"></script>
+        <script type="text/javascript">
+            
+        $(document).bind("mobileinit", function () {
+            $.mobile.ajaxEnabled = false;
+        });
+        </script>
+        <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.mobile-1.3.0.js"></script>
 
 </head>
 <body>

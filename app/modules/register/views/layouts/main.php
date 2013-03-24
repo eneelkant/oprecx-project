@@ -1,67 +1,51 @@
-<?php /** @var $this RegisterController */ ?>
-<?php
-/** @var CClientScript $cs */
-$cs=Yii::app()->clientScript;
-$cs->coreScriptPosition=CClientScript::POS_HEAD;
-$cs->scriptMap=array();
-
-$baseUrl=$this->module->assetsUrl;
-
-// $cs->registerCoreScript('jquery');
-//$cs->registerScriptFile($baseUrl.'/js/jquery.tooltip-1.2.6.min.js');
-//$cs->registerScriptFile($baseUrl.'/js/fancybox/jquery.fancybox-1.3.1.pack.js');
-//$cs->registerCssFile($baseUrl.'/css/main.css');
-$cs->registerCssFile($baseUrl . '/css/main.css');
-?>
+<?php /* @var $this RegisterController */ ?>
 <!DOCTYPE html>
-<html xml:lang="en" lang="en">
-    <head>
-       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="language" content="<?php echo Yii::app()->locale->id; ?>" />
-        <title><?php echo CHtml::encode($this->pageTitle); ?></title>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet"  href="<?php echo Yii::app()->request->baseUrl; ?>/css/themes/default/jquery.mobile-1.3.0.css">
+        <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/jqm-demos.css" />
+	<link rel="shortcut icon" href="favicon.ico">
+	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
+   
+	<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery-1.9.0.js"></script>
+        <script type="text/javascript">
+            (function($){
+                $.noConflict();
+                $(document).bind("mobileinit", function () {
+                    $.mobile.ajaxEnabled = false;
+                });
+            })(jQuery);
+        </script>
+        <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.mobile-1.3.0.js"></script>
 
-    </head>
+</head>
+<body>
+<div data-role="page" id="jqm-demos" class="jqm-demos">
+<div data-role="header" class="jqm-header">
+    
+    <h1 class="jqm-logo">
+        <a href="<?php echo CHtml::normalizeUrl(array('/site/index')) ?>" data-role="none">
+            <?php echo CHtml::encode($this->org->full_name); ?>
+        </a>
+    </h1>
+    
+    <a href="#" class="jqm-search-link ui-btn-right" data-icon="search" data-iconpos="notext">Search</a>
 
-    <body>
-        <header id="header">
-            <h1><?php echo CHtml::encode($this->orgName) ?></h1>
-            <div id="mainmenu">
-                <?php
-                $this->widget('zii.widgets.CMenu', array(
-                    'items' => array(
-                        array('label' => 'Home', 'url' => array('/register/default/index')),
-                        array('label' => 'Back', 'url' => Yii::app()->homeUrl),
-                    //array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-                    //array('label'=>'Contact', 'url'=>array('/site/contact')),
-                    //array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-                    //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
-                    ),
-                ));
-                ?>
-            </div><!-- #mainmenu -->
-        </header>
-            
-        <div class="container" id="page">
-            
-            <?php if (isset($this->breadcrumbs)): ?>
-                <?php
-                $this->widget('zii.widgets.CBreadcrumbs', array(
-                    'links' => $this->breadcrumbs,
-                ));
-                ?><!-- breadcrumbs -->
-            <?php endif ?>
 
-            <?php echo $content; ?>
+</div><!-- /header -->
 
-            <div class="clear"></div>
 
-            <div id="footer">
-                Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
-                All Rights Reserved.<br/>
-                <?php echo Yii::powered(); ?>
-            </div><!-- footer -->
+<div data-role="content" class="jqm-content">
+    <?php echo $content; ?>
+</div><!-- /content -->
 
-        </div><!-- page -->
+	<div data-role="footer" class="jqm-footer">
+		<p class="jqm-version"></p>
+		<p>Copyright 2013 The jQuery Foundation</p>
+	</div><!-- /jqm-footer -->
 
-    </body>
+</div><!-- /page -->
+</body>
 </html>
