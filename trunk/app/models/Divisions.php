@@ -59,7 +59,25 @@ class Divisions extends CActiveRecord
 			array('div_id, org_id, name, description, leader, max_applicant, max_staff, min_staff, enabled, created', 'safe', 'on'=>'search'),
 		);
 	}
-
+        
+        public function findAllByOrg($orgId, $userId = 0, $conditions = '', $params = array()) {
+            $model = self::model();
+            if ($userId) {
+                $model = $model->with(array(
+                    'choices' => array(
+                        'select' => 'user_id, weight, choosed',
+                        //'joinType' => 'LEFT JOIN',
+                        'on' => 't.div_id = c.div_id AND c.user_id=:user_id', 
+                        'params' => array('user_id' => $userId),
+                        'alias' => 'c',
+                        'order' => 'weight, choosed',
+                    ),
+                ));
+            }
+            
+            return $model->findAllByAttributes(array('org_id' => $orgId), $conditions, $params);
+        }
+        
 	/**
 	 * @return array relational rules.
 	 */
@@ -70,6 +88,7 @@ class Divisions extends CActiveRecord
 		return array(
 			'oprecxUsers' => array(self::MANY_MANY, 'Users', '{{division_choices}}(div_id, user_id)'),
 			'oprecxForms' => array(self::MANY_MANY, 'Forms', '{{division_forms}}(div_id, form_id)'),
+                        'choices' => array(self::HAS_MANY, 'DivisionChoices', 'div_id'),
 			'org' => array(self::BELONGS_TO, 'Organizations', 'org_id'),
 		);
 	}

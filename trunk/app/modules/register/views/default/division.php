@@ -11,19 +11,20 @@ $this->breadcrumbs = array(
 <?php
 /* @var $form CActiveForm */
 $form = $this->beginWidget('CActiveForm', array(
-    'id' => 'division-choice-form',
-    'enableClientValidation' => false,
-    'clientOptions' => array(
-        'validateOnSubmit' => false,
-    ),
-        ));
+            'id' => 'division-choice-form',
+            'enableClientValidation' => false,
+            'clientOptions' => array(
+                'validateOnSubmit' => false,
+            ),
+        )
+);
 ?>
 <fieldset data-role="controlgroup">
 
     <?php
     /** @var Divisions $division */
     $divisions = array();
-    foreach ($this->org->divisions as $division) {
+    foreach (Divisions::model()->findAllByOrg($this->org->id) as $division) {
         // $id = $division->div_id;
         $divisions[$division->div_id] = $division->name;
     }
@@ -32,7 +33,7 @@ $form = $this->beginWidget('CActiveForm', array(
     <?php echo CHtml::activeDropDownList($model, 'divisions[0]', $divisions, array('prompt' => '-Pilih salah satu-')); ?>
     <?php echo CHtml::activeDropDownList($model, 'divisions[1]', $divisions, array('prompt' => '-Pilih salah satu-')); ?>
     <?php //echo CHtml::activeCheckBoxList($model, 'divisions', $divisions, array('separator' => ' ')); ?>
-    
+
 </fieldset>
 <fieldset class="ui-grid-a">
     <div class="ui-block-a">

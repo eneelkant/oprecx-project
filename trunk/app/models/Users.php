@@ -6,6 +6,7 @@
  * The followings are the available columns in table '{{users}}':
  * @property string $id
  * @property string $email
+ * @property string $password
  * @property string $token
  * @property string $full_name
  * @property string $img_id
@@ -38,6 +39,25 @@ class Users extends CActiveRecord
 		return '{{users}}';
 	}
 
+        /**
+         * 
+         * @param int $pk
+         * @param string|array $condition
+         * @param array $params
+         * @return type
+         */
+        public function findByPk($pk, $condition = '', $params = array()) {
+            $cache = Yii::app()->cache;
+            $cacheId = 'oprecx:User:id=' . $pk;
+            if (($obj = $cache->get($cacheId)) === false) {
+                $obj = $this->findByAttributes(array('id' => $pk), $condition, $params);
+                $depend = new CDbCacheDependency('SELECT updated FROM {{users}} WHERE id=:user_id LIMIT 1');
+                $depend->params = array('user_id', $pk);
+                $cache->set($cacheId, $obj, 10, null);
+            }
+            return $obj;
+        }
+        
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -46,14 +66,14 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('email, token, full_name, created', 'required'),
-			array('email, full_name, link', 'length', 'max'=>256),
+			array('email, token, full_name, password', 'required'),
+			array('email, full_name, link, password', 'length', 'max'=>256),
 			array('token', 'length', 'max'=>512),
 			array('img_id', 'length', 'max'=>10),
 			array('updated', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, email, token, full_name, img_id, link, created, updated', 'safe', 'on'=>'search'),
+			array('id, email, full_name, link', 'safe', 'on'=>'search'),
 		);
 	}
 

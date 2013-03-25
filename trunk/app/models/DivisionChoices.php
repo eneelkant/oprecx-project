@@ -64,6 +64,7 @@ class DivisionChoices extends CActiveRecord
 			'div_id' => 'Div',
 			'user_id' => 'User',
 			'choosed' => 'Choosed',
+                    
 		);
 	}
 

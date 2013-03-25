@@ -36,7 +36,7 @@ abstract class RegisterController extends Controller {
     public function init (){
         $params = $this->actionParams;
         if (isset($params['org'])) {
-            $this->org = Organizations::model()->findByAttributes(array('name' => $params['org']));
+            $this->org = Organizations::getByName($params['org']); // Organizations::model()->findByAttributes(array('name' => $params['org']));
             if (null == $this->org) {
                 throw new CHttpException(404,Yii::t('oprecx','Organization {org} Not Found.', array('{org}' => $params['org'])));
             }

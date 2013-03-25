@@ -12,21 +12,28 @@ class DefaultController extends RegisterController {
 
     public function actionIndex($org) {
         //$org = Organizations::model()->findByPk($org_id);
-        $theOrg = Organizations::model()->cache(30)->find('name=:name', array('name' => $org));
+        //$theOrg = Organizations::model()->cache(30)->find('name=:name', array('name' => $org));
 
         if (Yii::app()->user->isGuest) {
-            $regForm = new CForm(RegistrationForm::$formData, new RegistrationForm);
-            $loginForm = new CForm(LoginForm::$formData, $loginModel = new LoginForm);
+            $regForm = new CForm(UserRegistrationForm::$formConfig, new UserRegistrationForm);
+            $loginForm = new CForm(UserLoginForm::$formData, new UserLoginForm);
+            
+            $regForm->action['nexturl'] = $this->getURL('division');
+            $loginForm->action['nexturl'] = $this->getURL('division');
+            
 
-
-            if ($regForm->submitted('register') && $regForm->validate()) {
+            if (
+                    ($regForm->submitted('register') && $regForm->validate()) || 
+                    ($loginForm->submitted('login') && $loginForm->validate() && $loginModel->login())
+            ) {
                 $this->redirect(array('division', 'org' => $org));
-            } elseif ($loginForm->submitted('login') && $loginForm->validate() && $loginModel->login()) {
-                $this->redirect(array('division', 'org' => $org));
+                //return;
             } else {
                 $this->render('index', array('regForm' => $regForm, 'loginForm' => $loginForm));
             }
-        }
+        } else {
+            $this->render('index');
+        }        
     }
 
     public function actionDivision($org) {
