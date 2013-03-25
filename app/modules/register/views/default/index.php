@@ -9,10 +9,10 @@ $this->breadcrumbs = array(
 
 ?>
 <style>
-@media all and (max-width: 40em){
-    .register-login .description {
+    .register-login.description {
         margin-left: 100px;
     }
+@media all and (max-width: 40em){
     .register-login .ui-block-a, .register-login .ui-block-b {
         width: 99.99%;
     }
@@ -33,15 +33,11 @@ $this->breadcrumbs = array(
 }        
     
 </style>
-<div class ="description register-login"
+<div class ="description register-login">
 <p>
     <?php echo CHtml::encode($this->org->description); ?>
 </p>
- <?php echo CHtml::link('Daftar', $this->getURL('division'), array('inline' => true, 'icon' => 'check'))?>
 </div>
-<div class="ui-grid-a register-login">
-    <div class="ui-block-a">
-        <?php echo $regForm->render();?>
 <?php if (Yii::app()->user->isGuest) : ?>
 <?php
 /** @var CForm $regForm */
