@@ -7,7 +7,7 @@
  */
 class UserIdentity extends CUserIdentity {
     private $_id;
-    private $email;
+    //private $email;
     
     private $authenticated = false;
 
@@ -47,12 +47,17 @@ class UserIdentity extends CUserIdentity {
         
         return false;
     }
-            
+         
 
 
     public function register ($fullname) {
         
     }
 
+    public static function getFullName ($id) {
+        
+        return Users::model()->findByPk($id)->full_name;
+        
+    }
 }
 

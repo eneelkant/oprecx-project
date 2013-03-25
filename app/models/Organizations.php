@@ -10,6 +10,7 @@
  * @property string $email
  * @property string $password
  * @property string $created
+ * @property string $updated
  * @property string $description
  * @property string $type
  * @property string $scope
@@ -28,6 +29,8 @@
  */
 class Organizations extends CActiveRecord
 {
+    private $_metas;
+    
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -37,6 +40,26 @@ class Organizations extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        public static function getByName($name) {
+            /** @var CCache $cache */
+            $cache = Yii::app()->cache;
+            $cacheId = 'oprecx:Organization:name=' . $name;
+            if (($obj = $cache->get($cacheId)) == false) {
+                $obj = self::model()->findByAttributes(array('name' => $name));
+                $depend = new CDbCacheDependency('SELECT updated FROM {{organizations}} WHERE name=:name');
+                $depend->params = array('name', $name);
+                $cache->set($cacheId, $obj, 0, null);
+            }
+            return $obj;
+        }
+
+
+        public function __construct($scenario = 'insert') {
+            parent::__construct($scenario);
+            $this->_metas = array();
+        }
+        
 
 	/**
 	 * @return string the associated database table name
@@ -46,6 +69,26 @@ class Organizations extends CActiveRecord
 		return '{{organizations}}';
 	}
 
+        
+        /**
+         * 
+         * @param string $metaName
+         * @param string $default
+         * @param boolean $single
+         * 
+         * @return string|string[] Description
+         */
+        public function getMeta($metaName, $default = null, $single = true) {
+            if (isset($this->_metas[$metaName])) {
+                // TODO: Beresin
+            }
+        }
+        
+        public function getDivisions($user_id = 0) {
+            
+        }
+        
+        
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -60,9 +103,10 @@ class Organizations extends CActiveRecord
 			array('password', 'length', 'max'=>512),
 			array('type, scope, visibility', 'length', 'max'=>16),
 			array('img_id', 'length', 'max'=>10),
+                        array('updated', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name, full_name, email, password, created, description, type, scope, location, link, img_id, reg_time_begin, reg_time_end, visibility', 'safe', 'on'=>'search'),
+			array('id, name, full_name, email, created, description, type, scope, location, link, reg_time_begin, reg_time_end, visibility', 'safe', 'on'=>'search'),
 		);
 	}
 

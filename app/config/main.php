@@ -41,7 +41,11 @@ return array(
             'rules' => array(
                 '/' => 'site/index',
                 '/about/<view:\w+>' => array('site/page', 'urlSuffix' => '.html'),
-
+                '/user/<action:\w+>' => 'user/<action>',
+                
+                '/gii/<controller:\w+>' => 'gii/<controller>/index',
+                '/gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',
+                
                 '/<org:\w+>/' => array('register/default/index', 'caseSensitive'=>false),
                 '/<org:\w+>/<action:\w+>' => 'register/default/<action>',
                 //'/<org:[^(admin)]>/' => 'register/default/index',

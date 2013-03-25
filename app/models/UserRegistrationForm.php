@@ -6,29 +6,35 @@
  */
 
 /**
- * Description of RegistrationFrom
+ * Description of UserRegisterForm
  *
  * @author abie
  */
-class RegistrationForm extends CFormModel {
+class UserRegistrationForm extends CFormModel {
 
     public $name;
     public $email;
     public $password;
     public $password2;
     
-    static $formData = array(
-        'title' => '<h3>Register</h3>',
+    static $formConfig = array(
+        'action' => array('/user/login'),
+        'title' => 'Register Account',
         'elements' => array(
             'name' => array('type' => 'text'),
             'email' => array('type' => 'text'),
             'password' => array('type' => 'password'),
             'password2' => array('type' => 'password'),
+            'nexturl' => array('type' => 'hidden'),
         ),
         'buttons' => array(
             'register' => array('type' => 'submit', 'label' => 'Register'),
         ),
     );
+    
+    public static function getForm($options = array()) {
+        
+    }
 
     public function rules() {
         return array(

@@ -26,9 +26,19 @@
 <div data-role="header" class="jqm-header">
     
     <h1 class="jqm-logo">
-        <a href="<?php echo CHtml::normalizeUrl(array('/site/index')) ?>" data-role="none">
+        <a href="<?php echo $this->getURL('index') ?>" data-role="none">
             <?php echo CHtml::encode($this->org->full_name); ?>
         </a>
+        
+        <?php 
+        
+        /** @var CWebUser $user */
+        $user = Yii::app()->user;
+        if (! $user->isGuest) {
+            echo CHtml::encode(UserIdentity::getFullName($user->id));
+        }
+        
+        ?>
     </h1>
     
     <a href="#" class="jqm-search-link ui-btn-right" data-icon="search" data-iconpos="notext">Search</a>
