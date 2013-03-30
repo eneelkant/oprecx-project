@@ -28,7 +28,7 @@ class UserIdentity extends CUserIdentity {
             $this->errorCode = self::ERROR_PASSWORD_INVALID;
         else {
             $this->_id = $record->id;
-            $this->setState('fullname', $record->full_name);
+            //$this->setState('fullname', $record->full_name);
             $this->errorCode = self::ERROR_NONE;
             $this->authenticated = true;
         }
@@ -42,16 +42,26 @@ class UserIdentity extends CUserIdentity {
     public function login() {
         if ($this->errorCode === self::ERROR_NONE) {
             Yii::app()->user->login($this);
+            Users::model()->updateByPk($this->id, array('last_login' => 'NOW()'));
             return true;
         }
         
         return false;
     }
-         
-
-
+    
+    
     public function register ($fullname) {
-        
+        $user = new Users();
+        $user->full_name = $fullname;
+        $user->email = $this->username;
+        $user->password = crypt($this->password);
+        if ($user->save(false)) {
+            $this->_id = $user->getPrimaryKey();
+            $this->authenticated = true;
+            Yii::app()->user->login($this);
+            return true;
+        }
+        return false;
     }
 
     public static function getFullName ($id) {

@@ -16,7 +16,7 @@ class DefaultController extends RegisterController {
 
         if (Yii::app()->user->isGuest) {
             $regForm = new CForm(UserRegistrationForm::$formConfig, new UserRegistrationForm);
-            $loginForm = new CForm(UserLoginForm::$formData, new UserLoginForm);
+            $loginForm = new CForm(UserLoginForm::$formConfig, new UserLoginForm);
             
             $regForm->action['nexturl'] = $this->getURL('division');
             $loginForm->action['nexturl'] = $this->getURL('division');

@@ -16,22 +16,22 @@ class UserRegistrationForm extends CFormModel {
     public $email;
     public $password;
     public $password2;
+    private $_identity;
     
     static $formConfig = array(
-        'action' => array('/user/login'),
+        'action' => array('/user/register'),
         'title' => 'Register Account',
         'elements' => array(
             'name' => array('type' => 'text'),
             'email' => array('type' => 'text'),
             'password' => array('type' => 'password'),
             'password2' => array('type' => 'password'),
-            'nexturl' => array('type' => 'hidden'),
         ),
         'buttons' => array(
             'register' => array('type' => 'submit', 'label' => 'Register'),
         ),
     );
-    
+
     public static function getForm($options = array()) {
         
     }
@@ -52,6 +52,14 @@ class UserRegistrationForm extends CFormModel {
             'name' => Yii::t('oprecx', 'Full Name'),
             'password2' => Yii::t('oprecx', 'Retype Password'),
         );
+    }
+
+    public function register() {
+        if ($this->_identity === null) {
+            $this->_identity = new UserIdentity($this->email, $this->password);
+            //$this->_identity->authenticate();
+        }
+        return $this->_identity->register($this->name);
     }
 
 }
