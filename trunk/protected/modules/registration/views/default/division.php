@@ -39,7 +39,7 @@ $form = $this->beginWidget('CActiveForm', array(
 </fieldset>
 <fieldset class="ui-grid-a">
     <div class="ui-block-a">
-        <?php echo CJqm::link('back', $this->getURL('index'), array('icon' => 'arrow-l', 'iconpos' => 'left')); ?></div>
+        <?php echo CJqm::jqmLink('back', $this->getURL('index'), array('icon' => 'arrow-l', 'iconpos' => 'left')); ?></div>
     <div class="ui-block-b"><input type="submit" value="next" data-icon="arrow-r" data-iconpos="right" data-theme="b" /></div>
 </fieldset>
 <?php $this->endWidget(); ?>

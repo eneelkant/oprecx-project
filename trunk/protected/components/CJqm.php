@@ -11,7 +11,7 @@
  * @author abie
  */
 class CJqm extends CHtml {
-    public static function link($label, $href, $data = array(), $htmlOptions = array()) {
+    public static function jqmLink($label, $href, $data = array(), $htmlOptions = array()) {
         return parent::link($label, $href, self::_merge_options($data, $htmlOptions, 'button'));
     }
     

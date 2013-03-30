@@ -40,8 +40,8 @@ class DefaultController extends RegisterController {
         $this->cekLogin();
         
         /** @var Organizations */
-        $model = new DivisionChoiceForm($this->org, 1);
-
+        //$model = new DivisionChoiceForm($this->org, Yii::app()->user->isGuest ? 0 : Yii::app()->user->id);
+        
         if (isset($_POST['DivisionChoiceForm'])) {
             $model->attributes = $_POST['DivisionChoiceForm'];
             if ($model->validate()) {
