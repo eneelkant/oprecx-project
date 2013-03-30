@@ -51,9 +51,9 @@ class Users extends CActiveRecord
             $cacheId = 'oprecx:User:id=' . $pk;
             if (($obj = $cache->get($cacheId)) === false) {
                 $obj = $this->findByAttributes(array('id' => $pk), $condition, $params);
-                $depend = new CDbCacheDependency('SELECT updated FROM {{users}} WHERE id=:user_id LIMIT 1');
-                $depend->params = array('user_id', $pk);
-                $cache->set($cacheId, $obj, 10, null);
+                $depend = new CDbCacheDependency('SELECT updated FROM {{users}} WHERE id=' . $pk . ' LIMIT 1');
+                //$depend->params = array(':user_id', $pk);
+                $cache->set($cacheId, $obj, 3600, $depend);
             }
             return $obj;
         }

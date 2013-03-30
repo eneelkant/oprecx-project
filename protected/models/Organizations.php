@@ -48,8 +48,8 @@ class Organizations extends CActiveRecord
             if (($obj = $cache->get($cacheId)) == false) {
                 $obj = self::model()->findByAttributes(array('name' => $name));
                 $depend = new CDbCacheDependency('SELECT updated FROM {{organizations}} WHERE name=:name');
-                $depend->params = array('name', $name);
-                $cache->set($cacheId, $obj, 0, null);
+                $depend->params = array('name' => $name);
+                $cache->set($cacheId, $obj, 0, $depend);
             }
             return $obj;
         }

@@ -17,7 +17,7 @@ class UserLoginForm extends CFormModel {
     /** @var UserIdentity */
     private $_identity;
     
-    static $formData = array(
+    static $formConfig = array(
         'title' => 'Login',
         'action' => array('/user/login'),
         'elements' => array(
