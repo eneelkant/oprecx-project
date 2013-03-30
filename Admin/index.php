@@ -20,8 +20,8 @@
         <div data-options="region:'south',split:true" style="height:50px;"></div>    
         <div data-options="region:'west',split:true" title="Menu" style="width:230px;padding:10px;">
             <table style="padding-left:10px;margin:10px;font-size: 25px">
-                <tr><td>Pengaturan Umum</td></tr>
-                <tr><td>Divisi/Biro</td></tr>
+                <tr><td><a href ="index.php">Pengaturan Umum</a></td></tr>
+                <tr><td><a href ="divisi.php">Divisi/Biro</a></td></tr>
                 <tr><td>Form Pendaftaran</td></tr>
                 <tr><td>Slot Wawancara</td></tr>
             </table>

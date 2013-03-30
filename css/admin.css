@@ -1,0 +1,18 @@
+/* 
+    Document   : admin
+    Created on : 30 Mar 13, 11:15:13
+    Author     : Izza
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+head {
+    background-color: #C9E0ED;
+    height: 80px;
+    width: 960px;
+}
+
