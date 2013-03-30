@@ -18,15 +18,15 @@
           <img src="logo.png" />
         </div>
         <div data-options="region:'south',split:true" style="height:50px;"></div>
-        <div data-options="region:'west',split:true" title="Menu" style="width:230px;padding:10px;">
-            <table style="margin:10px;font-size: 25px" border="2">
-                <tr><td><a href ="index.php">Pengaturan Umum</a></td></tr>
+        <div data-options="region:'west',split:true" title="Menu" style="width:250px; padding:10px; background-color:#DAECF5">
+            <table style="margin:5px; font-size: 23px">
+                <tr><td><a href ="index.php">Pengaturan</a></td></tr>
                 <tr><td><a href ="divisi.php">Divisi/Biro</a></td></tr>
                 <tr><td>Form Pendaftaran</td></tr>
                 <tr><td>Slot Wawancara</td></tr>
             </table>
         </div>
-        <div data-options="region:'center',title:'Pengaturan Umum',iconCls:'icon-ok'">
+        <div data-options="region:'center',title:'Pengaturan',iconCls:'icon-ok'"">
 
         <div style="margin:10px 0;"></div>
             <div style="padding:10px 0 10px 60px">
@@ -66,11 +66,3 @@
 
 </body>
 </html>
-
-<?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-?>
