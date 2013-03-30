@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet"  href="<?php echo Yii::app()->request->baseUrl; ?>/css/themes/default/jquery.mobile-1.3.0.css">
         <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/jqm-demos.css" />
+        <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/registration.css" />
 	<link rel="shortcut icon" href="favicon.ico">
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
    
@@ -23,8 +24,7 @@
 </head>
 <body>
 <div data-role="page" id="jqm-demos" class="jqm-demos">
-<div data-role="header" class="jqm-header">
-    
+<div data-role="header" class="jqm-header head" style="min-height:135px;">
     <h1 class="jqm-logo">
         <a href="<?php echo $this->getURL('index') ?>" data-role="none">
             <?php echo CHtml::encode($this->org->full_name); ?>
