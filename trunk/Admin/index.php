@@ -1,7 +1,7 @@
 <html>
     <head>
     <meta charset="UTF-8">
-    <title>Basic Layout - jQuery EasyUI Demo</title>
+    <title>Oprecx</title>
     <link rel="stylesheet" type="text/css" href="jquery-easyui-1.3.2/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="jquery-easyui-1.3.2/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="../demo.css">
