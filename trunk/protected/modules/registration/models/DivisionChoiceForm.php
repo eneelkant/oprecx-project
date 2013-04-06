@@ -9,39 +9,84 @@
  * Description of DivisionChoiceForm
  *
  * @author abie
+ * 
+ * @property Divisions[] $allDivisions Divisions elem
+ * @property string[] $allDivisionsName 
+ * @property int $userId [write only] User ID
  */
 class DivisionChoiceForm extends CFormModel {
-    public $divisions;
+    private $_allDivisions;
+    private $_allDivisionsName;
+    private $_org;
+    
+    /** @var string[] */
+    public $choices;
+    
 
     /**
      * 
      * @param Organizations $org
      * @param int $user_id
      */
-    function __construct($org, $user_id) {
+    function __construct($org, $user_id = null) {
+        $this->_org =& $org;
+        $this->_allDivisions =& Divisions::model()->findAllByOrg($org->id);
         
+        $this->_allDivisionsName = array();
+        /* @var $division Divisions */
+        foreach ($this->_allDivisions as $division) {
+            $this->_allDivisionsName[$division->div_id] = $division->name;
+        }
+        $this->choices = array();
+        $this->setUserId($user_id);
+    }
+    
+    public function getAllDivisions() {
+        return $this->_allDivisions;
+    }
+    
+    public function getAllDivisionsName() {
+        return $this->_allDivisionsName;
+    }
+    
+    public function setUserId($userId) {
+        if ($userId) {
+            $this->choices = Yii::app()->db->createCommand()
+                        ->from('{{divisions}} d')->select('d.div_id')->from('{{division_choices}} dc')
+                        ->leftJoin('{{divisions}} d', 'dc.div_id = d.div_id AND d.org_id = :org_id AND d.enabled = 1', array('org_id' => $this->_org->id))
+                        ->order('dc.weight, d.weight, d.name')
+                        ->where('dc.user_id = :user_id', array('user_id' => $userId))
+                        ->queryColumn();
+        } else {
+            //$this->choices = array();
+        }
     }
     
     public function rules(){
         return array (
-            array('divisions', 'required'),
-            array('divisions', 'validateDivision'),
+            //array('choices', 'required'),
+            array('choices', 'validateDivision'),
         );
     }
     
     public function validateDivision($attribute, $param){
         //$div = $this->divisions;
         $divs = array();
-        foreach($this->divisions as $div) {
-            if ($div != '')
-                $divs[] = $div;
+        foreach($this->choices as $div_id) {
+            if ($div_id != ''){
+                if (! isset($this->_allDivisionsName[$div_id])) {
+                    $this->addError('choices', Yii::t('oprecx', 'Division :div_id not found.', array('div_id' => $div_id)));
+                }
+                $divs[] = $div_id;
+            }
         }
         $div_count = count($divs);
-        $this->divisions = $divs;
+        $this->choices = $divs;
         if ($div_count < 1 || $div_count > 3) {
-            $this->addError('divisions', 'Pilihan divisi ...');
+            $this->addError('choices', 'Minimal 1 Max 3');
         }
     }
+    
 }
 
 ?>

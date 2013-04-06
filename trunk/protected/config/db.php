@@ -10,7 +10,7 @@ return array(
 // */
 //*
 return array(
-    'connectionString' => 'mysql:host=localhost;dbname=oprecx',
+    'connectionString' => 'mysql:host=localhost;dbname=oprecx', //'sqlite:' . dirname(__FILE__) . '/../data/oprecx.sqlite',  // 
     'emulatePrepare' => true,
     'username' => 'oprecx',
     'password' => 'oprecx',

@@ -27,7 +27,7 @@ abstract class RegisterController extends Controller {
     
     public function getURL($actions, $args = array()) {
         $args[0] = $actions;
-        $args['org'] = $this->actionParams['org'];
+        $args['org_name'] = $this->actionParams['org_name'];
         return CHtml::normalizeUrl($args);
     }
 
@@ -35,10 +35,10 @@ abstract class RegisterController extends Controller {
 
     public function init (){
         $params = $this->actionParams;
-        if (isset($params['org'])) {
-            $this->org = Organizations::getByName($params['org']); // Organizations::model()->findByAttributes(array('name' => $params['org']));
+        if (isset($params['org_name'])) {
+            $this->org = Organizations::getByName($params['org_name']); // Organizations::model()->findByAttributes(array('name' => $params['org']));
             if (null == $this->org) {
-                throw new CHttpException(404,Yii::t('oprecx','Organization {org} Not Found.', array('{org}' => $params['org'])));
+                throw new CHttpException(404,Yii::t('oprecx','Organization {org} Not Found.', array('{org}' => $params['org_name'])));
             }
             $this->pageTitle = $this->orgName . ' | ' . Yii::t('oprecx', 'Registration');
         } else {

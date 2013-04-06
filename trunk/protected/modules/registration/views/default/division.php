@@ -1,11 +1,12 @@
 <?php
 /* @var $this DefaultController */
 /* @var $model DivisionChoiceForm */
-
+/* @var $divisions string[][] */
 
 $this->breadcrumbs = array(
     $this->module->id,
 );
+
 
 //$this->widget('')
 ?>
@@ -23,17 +24,10 @@ $form = $this->beginWidget('CActiveForm', array(
 ?>
 <fieldset data-role="controlgroup">
 
-    <?php
-    /** @var Divisions $division */
-    $divisions = array();
-    foreach (Divisions::model()->findAllByOrg($this->org->id) as $division) {
-        // $id = $division->div_id;
-        $divisions[$division->div_id] = $division->name;
-    }
-    ?>
+    
     <?php echo $form->errorSummary($model); ?>
-    <?php echo CHtml::activeDropDownList($model, 'divisions[0]', $divisions, array('prompt' => '-Pilih salah satu-')); ?>
-    <?php echo CHtml::activeDropDownList($model, 'divisions[1]', $divisions, array('prompt' => '-Pilih salah satu-')); ?>
+    <?php echo CHtml::activeDropDownList($model, 'choices[0]', $model->allDivisionsName, array('prompt' => '-Pilih salah satu-')); ?>
+    <?php echo CHtml::activeDropDownList($model, 'choices[1]', $model->allDivisionsName, array('prompt' => '-Pilih salah satu-')); ?>
     <?php //echo CHtml::activeCheckBoxList($model, 'divisions', $divisions, array('separator' => ' ')); ?>
 
 </fieldset>
