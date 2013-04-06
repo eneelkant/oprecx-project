@@ -57,7 +57,7 @@ $loginForm->buttons['login']->attributes['data-theme'] = 'b';
         </div>
     </div>
 <?php else : ?>
-    <?php echo CJqm::link('Daftar', $this->getURL('division'), array('inline' => true, 'icon' => 'check')) ?>
+    <?php echo CJqm::jqmLink('Daftar', $this->getURL('division'), array('inline' => true, 'icon' => 'check')) ?>
 <?php endif; ?>
 
 <p>

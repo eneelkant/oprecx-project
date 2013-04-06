@@ -18,7 +18,7 @@ $this->pageTitle = Yii::app()->name;
     if ($orgs) {
         echo '<ul data-role="listview" data-inset="true" data-filter="true" data-theme="d" data-icon="false" data-filter-placeholder="Search..." class="jqm-list jqm-home-list">';
         foreach ($orgs as $org) {
-            echo '<li>', CHtml::link($org->full_name, array('registration/default/index', 'org' => $org->name)), '</li>';
+            echo '<li>', CHtml::link($org->full_name, array('registration/default/index', 'org_name' => $org->name)), '</li>';
         }
         echo '</ul>';
     }

@@ -34,7 +34,6 @@ return array(
             'allowAutoLogin' => true,
         ),
         // uncomment the following to enable URLs in path-format
-        //*
         'urlManager' => array(
             'urlFormat' => 'path',
             'showScriptName' => false,
@@ -43,18 +42,16 @@ return array(
                 '/about/<view:\w+>' => array('site/page', 'urlSuffix' => '.html'),
                 '/user/<action:\w+>' => 'user/<action>',
                 
-                '/gii/<controller:\w+>' => 'gii/<controller>/index',
-                '/gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',
+                '/<module:(gii)>' => '<module>/default/index',
+                '/<module:(gii)>/<controller:\w+>' => '<module>/<controller>/index',
+                '/<module:(gii)>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
                 
-                '/<org:\w+>/' => array('registration/default/index', 'caseSensitive'=>false),
-                '/<org:\w+>/<action:\w+>' => 'registration/default/<action>',
-                //'/<org:[^(admin)]>/' => 'register/default/index',
-                //'/<org:[^(admin)]>/<action:\w+>' => 'register/default/<action>',
+                '/<org_name:\w+>/' => array('registration/default/index', 'caseSensitive'=>false),
+                '/<org_name:\w+>/<action:\w+>' => 'registration/default/<action>',
 
                 '/<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ),
         ),
-        // */
 
         'db' => require (dirname(__FILE__) . '/db.php'),
         // */
@@ -87,7 +84,7 @@ return array(
     // using Yii::app()->params['paramName']
     'params' => array(
         // this is used in contact page
-        'adminEmail' => 'webmaster@example.com',
+        'adminEmail' => 'admin@oprecx.com',
     ),
 );
 

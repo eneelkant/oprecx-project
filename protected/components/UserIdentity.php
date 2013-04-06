@@ -42,7 +42,7 @@ class UserIdentity extends CUserIdentity {
     public function login() {
         if ($this->errorCode === self::ERROR_NONE) {
             Yii::app()->user->login($this);
-            Users::model()->updateByPk($this->id, array('last_login' => 'NOW()'));
+            Users::model()->updateByPk($this->id, array('last_login' => new CDbExpression('CURRENT_TIMESTAMP')));
             return true;
         }
         

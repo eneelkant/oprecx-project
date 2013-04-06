@@ -66,10 +66,9 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('email, token, full_name, password', 'required'),
-			array('email, full_name, link, password', 'length', 'max'=>256),
-			array('token', 'length', 'max'=>512),
-			array('img_id', 'length', 'max'=>10),
+			array('email, full_name, password', 'required'),
+			array('email, full_name, link, password', 'length', 'max'=>255),
+			//array('img_id', 'length', 'max'=>10),
 			array('updated', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -85,7 +84,7 @@ class Users extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'oprecxDivisions' => array(self::MANY_MANY, 'Divisions', '{{division_choices}}(user_id, div_id)'),
+			//'oprecxDivisions' => array(self::MANY_MANY, 'Divisions', '{{division_choices}}(user_id, div_id)'),
 			'userMetases' => array(self::HAS_MANY, 'UserMetas', 'user_id'),
 			'img' => array(self::BELONGS_TO, 'Images', 'img_id'),
 		);
@@ -99,7 +98,7 @@ class Users extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'email' => 'Email',
-			'token' => 'Token',
+			'password' => 'Password',
 			'full_name' => 'Full Name',
 			'img_id' => 'Img',
 			'link' => 'Link',
@@ -121,12 +120,9 @@ class Users extends CActiveRecord
 
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('email',$this->email,true);
-		$criteria->compare('token',$this->token,true);
 		$criteria->compare('full_name',$this->full_name,true);
 		$criteria->compare('img_id',$this->img_id,true);
 		$criteria->compare('link',$this->link,true);
-		$criteria->compare('created',$this->created,true);
-		$criteria->compare('updated',$this->updated,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
