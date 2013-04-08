@@ -33,6 +33,7 @@ return array(
             // enable cookie-based authentication
             'allowAutoLogin' => true,
         ),
+        
         // uncomment the following to enable URLs in path-format
         'urlManager' => array(
             'urlFormat' => 'path',
@@ -57,7 +58,7 @@ return array(
         // */
         'errorHandler' => array(
             // use 'site/error' action to display errors
-            'errorAction' => 'site/error',
+            'errorAction' => 'site/error', 
         ),
         'log' => array(
             'class' => 'CLogRouter',
