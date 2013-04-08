@@ -104,6 +104,14 @@ class DefaultController extends RegisterController
     public function actionInterview()
     {
         $model = new InterviewSlotForm;
+        
+        if (isset($_POST['InterviewSlotForm'])) {
+            $model->setAttributes($_POST['InterviewSlotForm']);
+            if ($model->validate() && $model->save()) {
+                echo 'aa';
+                return;
+            }
+        }
         $model->initTable($this->org->id, Yii::app()->user->id);
         $this->render('interview', array('model' => $model));
     }

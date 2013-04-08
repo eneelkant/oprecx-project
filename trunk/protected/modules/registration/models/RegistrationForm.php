@@ -42,7 +42,7 @@ class RegistrationForm extends CFormModel
                 ->join('{{division_choices}} dc', 'dc.div_id = de.div_id AND dc.user_id = :user_id')
                 ->leftJoin('{{form_values}} fv', 'fv.field_id = ff.field_id AND fv.user_id = :user_id')
                 
-                ->group('ff.field_id') // takut dabel
+                ->group('oe.elm_id, oe.name, fv.value, ff.field_id') // takut dabel
                 ->order('oe.weight, oe.name, ff.weight, ff.created')
                 ->query(array (':user_id' => $user_id, ':org_id'  => $org_id));
 
