@@ -113,7 +113,7 @@ class m130331_135908_init extends CDbMigration
             
             //"FOREIGN KEY(img_id) REFERENCES {{images}} (img_id) ON DELETE SET NULL",
         ));
-        //$this->createIndex('users_img_id', '{{users}}', 'img_id');
+        //$this->createIndex('oprecx_users_users_img_id', '{{users}}', 'img_id');
 
         $this->createTable('{{user_metas}}', array (
             'meta_id'    => 'pk',
@@ -126,7 +126,7 @@ class m130331_135908_init extends CDbMigration
             //"FOREIGN KEY(user_id) REFERENCES {{users}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
         
-        $this->createIndex('user_id', '{{user_metas}}', 'user_id');
+        $this->createIndex('oprecx_user_metas_user_id', '{{user_metas}}', 'user_id');
     }
 
     private function tableOrg()
@@ -151,7 +151,7 @@ class m130331_135908_init extends CDbMigration
             'img_id'         => 'integer DEFAULT NULL',
             'reg_time_begin' => 'datetime NOT NULL',
             'reg_time_end'   => 'datetime NOT NULL',
-            'visibility'     => 'string NOT NULL DEFAULT "public"',
+            'visibility'     => 'string NOT NULL DEFAULT \'public\'',
             //"FOREIGN KEY(img_id) REFERENCES {{images}} (img_id) ON DELETE SET NULL",
         ));
 
@@ -174,7 +174,7 @@ class m130331_135908_init extends CDbMigration
             
             //"FOREIGN KEY(org_id) REFERENCES {{organizations}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
-        $this->createIndex('org_id', '{{organization_metas}}', 'org_id');
+        $this->createIndex('oprecx_organization_metas_org_id', '{{organization_metas}}', 'org_id');
 
         $this->createTable('{{org_elms}}', array (
             'elm_id'  => 'pk',
@@ -186,7 +186,7 @@ class m130331_135908_init extends CDbMigration
             
             //"FOREIGN KEY(org_id) REFERENCES {{organizations}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
-        $this->createIndex('org_id', '{{org_elms}}', 'org_id');
+        $this->createIndex('oprecx_org_elms_org_id', '{{org_elms}}', 'org_id');
     }
 
     private function tableDivision()
@@ -210,7 +210,7 @@ class m130331_135908_init extends CDbMigration
             
             //"FOREIGN KEY(org_id) REFERENCES {{organizations}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
-        $this->createIndex('org_id', '{{divisions}}', 'org_id');
+        $this->createIndex('oprecx_divisions_org_id', '{{divisions}}', 'org_id');
 
         $this->createTable('{{division_elms}}', array (
             'div_id' => 'int',
@@ -257,7 +257,7 @@ class m130331_135908_init extends CDbMigration
             
             //"FOREIGN KEY(form_id) REFERENCES {{forms}} (elm_id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
-        $this->createIndex('form_id', '{{form_fields}}', 'form_id');
+        $this->createIndex('oprecx_form_fields_form_id', '{{form_fields}}', 'form_id');
 
         $this->createTable('{{form_values}}', array (
             //'value_id' => 'pk',
@@ -272,8 +272,8 @@ class m130331_135908_init extends CDbMigration
             //"FOREIGN KEY(field_id) REFERENCES {{form_fields}} (field_id) ON UPDATE NO ACTION ON DELETE NO ACTION",
             //"FOREIGN KEY(user_id) REFERENCES {{users}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
-        //$this->createIndex('field_id', '{{form_values}}', 'field_id');
-        //$this->createIndex('user_id', '{{form_values}}', 'user_id');
+        //$this->createIndex('oprecx_form_values_field_id', '{{form_values}}', 'field_id');
+        //$this->createIndex('oprecx_form_values_user_id', '{{form_values}}', 'user_id');
     }
 
     function dataDiv()
