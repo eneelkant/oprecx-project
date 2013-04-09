@@ -4,12 +4,21 @@
 // Any writable CConsoleApplication properties can be configured here.
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-    'name' => 'My Console Application',
+    'name' => 'Oprecx Console',
     // preloading 'log' component
     'preload' => array('log'),
     // application components
     'components' => array(
-        'db' => require (dirname(__FILE__) . '/db.php'),
+        'db' => array(
+            'connectionString' => DB_CON_STRING ,
+            'emulatePrepare' => true,
+            'username' => DB_USER,
+            'password' => DB_PASSWORD,
+            'charset' => DB_CHARSET,
+            'tablePrefix' => DB_TABLE_PREFIX,
+            //'schemaCachingDuration' => 3600 * 24,
+            //'queryCachingDuration' => 100,
+        ),
         // uncomment the following to use a MySQL database
         /*
           'db'=>array(
