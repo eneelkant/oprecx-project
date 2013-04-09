@@ -6,7 +6,7 @@
 // CWebApplication properties can be configured here.
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-    'name' => 'OprecX',
+    'name' => 'Oprecx',
     
     // preloading 'log' component
     'preload' => array('log'),
@@ -54,7 +54,16 @@ return array(
             ),
         ),
 
-        'db' => require (dirname(__FILE__) . '/db.php'),
+        'db' => array(
+            'connectionString' => DB_CON_STRING ,
+            'emulatePrepare' => true,
+            'username' => DB_USER,
+            'password' => DB_PASSWORD,
+            'charset' => DB_CHARSET,
+            'tablePrefix' => DB_TABLE_PREFIX,
+            //'schemaCachingDuration' => 3600 * 24,
+            //'queryCachingDuration' => 100,
+        ),
         // */
         'errorHandler' => array(
             // use 'site/error' action to display errors
@@ -77,8 +86,7 @@ return array(
         ),
         'cache' => array(
             'class' => getCacheClassName(),
-            'hashKey' => false,
-            
+            'hashKey' => true,
         )
     ),
     // application-level parameters that can be accessed
