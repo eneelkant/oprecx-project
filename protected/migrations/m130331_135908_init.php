@@ -2,9 +2,21 @@
 
 class m130331_135908_init extends CDbMigration
 {
-
+    private $foreign, $driver;
+    
     public function up()
     {
+        $this->foreign = true;
+        
+        Yii::import('application.components.TableNames');
+        $tmp = explode(':', $this->getDbConnection()->connectionString, 2);
+        $this->driver = strtolower($tmp[0]);
+        
+        if ($this->driver == 'mysql')
+            $this->execute('SET FOREIGN_KEY_CHECKS = 0');
+        if ($this->driver == 'sqlite')
+            $this->foreign = false;
+        
         $this->dropTableIfExists('{{images}}');
         $this->createTable('{{images}}', array (
             'img_id'    => 'pk',
@@ -14,7 +26,7 @@ class m130331_135908_init extends CDbMigration
             'height'    => 'integer NOT NULL',
             'created'   => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
         ));
-
+        
         $this->tableUser();
         $this->dataUser();
 
@@ -29,11 +41,13 @@ class m130331_135908_init extends CDbMigration
         
         $this->tableWawancara();
         $this->dataWawancara();
+        
+        
     }
     
     private function tableWawancara() {
         $this->dropTableIfExists('{{interview_slots}}');
-        $this->dropTableIfExists('{{interview_user_values}}');
+        $this->dropTableIfExists('{{interview_user_slots}}');
         
         $this->createTable('{{interview_slots}}', array(
             'elm_id' => 'pk',
@@ -48,14 +62,21 @@ class m130331_135908_init extends CDbMigration
             'options' => 'text DEFAULT NULL',
         ));
         
-        $this->createTable('{{interview_user_values}}', array(
+        $this->createTable('{{interview_user_slots}}', array(
             'slot_id' => 'integer NOT NULL',
             'user_id' => 'integer NOT NULL',
             'time' => 'datetime NOT NULL',
-            'updated' => 'timestamp DEFAULT CURRENT_TIMESTAMP',
+            'created' => 'timestamp DEFAULT CURRENT_TIMESTAMP',
+            'updated' => 'datetime DEFAULT NULL',
             
             'PRIMARY KEY (slot_id, user_id, time)',
         ));
+        
+        if ($this->foreign) {
+            $this->addForeignKey('oprecx_interview_slots_elm_id_fkey', '{{interview_slots}}', 'elm_id', '{{org_elms}}', 'elm_id');
+            $this->addForeignKey('oprecx_interview_user_slots_slot_id_fkey', '{{interview_user_slots}}', 'slot_id', '{{interview_slots}}', 'elm_id');
+            $this->addForeignKey('oprecx_interview_user_slots_user_id_fkey', '{{interview_user_slots}}', 'user_id', '{{users}}', 'id');
+        }
     }
     
     private function dataWawancara() {
@@ -97,7 +118,7 @@ class m130331_135908_init extends CDbMigration
 
     private function tableUser()
     {
-        $this->dropTableIfExists('{{users}}');
+        $this->dropTableIfExists(TableNames::USERS);
         $this->dropTableIfExists('{{user_metas}}');
         
         $this->createTable('{{users}}', array (
@@ -124,9 +145,13 @@ class m130331_135908_init extends CDbMigration
             'updated'    => 'datetime DEFAULT NULL',
             
             //"FOREIGN KEY(user_id) REFERENCES {{users}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
-        ));
-        
+        ));        
         $this->createIndex('oprecx_user_metas_user_id', '{{user_metas}}', 'user_id');
+        
+        if ($this->foreign) {
+            $this->addForeignKey('oprecx_users_img_id_fkey', '{{users}}', 'img_id', '{{images}}', 'img_id');
+            $this->addForeignKey('oprecx_user_metas_user_id_fkey', '{{user_metas}}', 'user_id', '{{users}}', 'id');
+        }
     }
 
     private function tableOrg()
@@ -187,6 +212,18 @@ class m130331_135908_init extends CDbMigration
             //"FOREIGN KEY(org_id) REFERENCES {{organizations}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
         $this->createIndex('oprecx_org_elms_org_id', '{{org_elms}}', 'org_id');
+
+        if ($this->foreign) {
+            $this->addForeignKey('oprecx_organizations_img_id_fkey', '{{organizations}}', 'img_id', '{{images}}', 'img_id');
+            
+            $this->addForeignKey('oprecx_organization_metas_user_id_fkey', '{{organization_metas}}', 'org_id', '{{organizations}}', 'id');
+            
+            $this->addForeignKey('oprecx_org_admins_org_id_fkey', '{{org_admins}}', 'org_id', '{{organizations}}', 'id');
+            $this->addForeignKey('oprecx_org_admins_user_id_fkey', '{{org_admins}}', 'user_id', '{{users}}', 'id');
+            
+            $this->addForeignKey('oprecx_org_elms_org_id_fkey', '{{org_elms}}', 'org_id', '{{organizations}}', 'id');
+        }
+
     }
 
     private function tableDivision()
@@ -231,6 +268,16 @@ class m130331_135908_init extends CDbMigration
             //"FOREIGN KEY(div_id) REFERENCES {{divisions}} (div_id) ON UPDATE NO ACTION ON DELETE NO ACTION",
             //"FOREIGN KEY(user_id) REFERENCES {{users}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
+        
+        if ($this->foreign) {
+            $this->addForeignKey('oprecx_divisions_org_id_fkey', '{{divisions}}', 'org_id', '{{organizations}}', 'id');
+            
+            $this->addForeignKey('oprecx_division_elms_div_id_fkey', '{{division_elms}}', 'div_id', '{{divisions}}', 'div_id');
+            $this->addForeignKey('oprecx_division_elms_elm_id_fkey', '{{division_elms}}', 'elm_id', '{{org_elms}}', 'elm_id');
+            
+            $this->addForeignKey('oprecx_division_choices_div_id_fkey', '{{division_choices}}', 'div_id', '{{divisions}}', 'div_id');
+            $this->addForeignKey('oprecx_division_choices_user_id_fkey', '{{division_choices}}', 'user_id', '{{users}}', 'id');
+        }
     }
 
     private function tableForms()
@@ -274,6 +321,15 @@ class m130331_135908_init extends CDbMigration
         ));
         //$this->createIndex('oprecx_form_values_field_id', '{{form_values}}', 'field_id');
         //$this->createIndex('oprecx_form_values_user_id', '{{form_values}}', 'user_id');
+        
+        if ($this->foreign) {
+            $this->addForeignKey('oprecx_forms_elm_id_fkey', '{{forms}}', 'elm_id', '{{org_elms}}', 'elm_id');
+            
+            $this->addForeignKey('oprecx_form_fields_form_id_fkey', '{{form_fields}}', 'form_id', '{{forms}}', 'elm_id');
+            
+            $this->addForeignKey('oprecx_form_values_field_id_fkey', '{{form_values}}', 'field_id', '{{form_fields}}', 'field_id');
+            $this->addForeignKey('oprecx_form_values_user_id_fkey', '{{form_values}}', 'user_id', '{{users}}', 'id');
+        }
     }
 
     function dataDiv()
@@ -445,8 +501,17 @@ class m130331_135908_init extends CDbMigration
     
     public function dropTableIfExists($table)
     {
-        //if (is_array($table)) $table = implode (',', $table);
-        $this->execute('DROP TABLE IF EXISTS ' . $table);
+        $scheme = $this->getDbConnection()->getSchema();
+        if (is_array($table)) {
+            foreach ($table as $k => $v) {
+                $table[$k] = $scheme->quoteTableName($v);
+            }
+            $table = implode (', ', $table);
+        } 
+        else $table = $scheme->quoteTableName($table);
+        $sql = 'DROP TABLE IF EXISTS ' . $table;
+        if ($this->driver == 'pgsql') $sql .= ' CASCADE';
+        $this->execute($sql);
     }
     
     /*

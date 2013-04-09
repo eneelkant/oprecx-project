@@ -25,10 +25,12 @@ abstract class RegisterController extends Controller {
     }
     
     
-    public function getURL($actions, $args = array()) {
-        $args[0] = $actions;
-        $args['org_name'] = $this->actionParams['org_name'];
-        return CHtml::normalizeUrl($args);
+    public function getURL($actions, $args = array(), $relative = true) {
+        if ($relative) {
+            return CHtml::normalizeUrl(array_merge(array($actions, 'org_name' => $this->actionParams['org_name']), $args));
+        } else {
+            return $this->createUrl($actions, $args);
+        }        
     }
 
 

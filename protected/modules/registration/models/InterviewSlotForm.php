@@ -16,32 +16,35 @@ class InterviewSlotForm extends CFormModel
     private $_orgId, $_userId, $_tables;
     public $time;
     
-    public function initTable($org_id, $user_id)
+    public function __construct($scenario = '', $org_id = null, $user_id = null)
     {
+        parent::__construct($scenario);
         $this->_orgId = $org_id;
         $this->_userId = $user_id;
-        $reader = Yii::app()->db->createCommand()
-                ->select('oe.elm_id as id, oe.name, i.*')
-                ->from('{{interview_slots}} i')
-                ->join('{{org_elms}} oe', 'oe.elm_id = i.elm_id AND oe.org_id = :org_id')
-                ->join('{{division_elms}} de', 'de.elm_id = oe.elm_id')
-                ->join('{{division_choices}} dc', 'dc.div_id = de.div_id AND dc.user_id = :user_id')
-                ->group('i.elm_id, oe.elm_id, oe.name')
-                ->order('oe.weight, oe.name')
-                ->query(array ('user_id' => $user_id, 'org_id'  => $org_id));
-        
-        $tables = array();
-        foreach ($reader as $row) {
-            $row['time_range'] = unserialize($row['time_range']);
-            $row['options'] = unserialize($row['options']);
-            
-            $row['slots'] = $this->parseSlotTable($row);
-            $tables[$row['id']] = $row;
-        }
-        $this->_tables =& $tables;
     }
     
     public function getTables(){
+        if (! isset($this->_tables)) {
+            $reader = Yii::app()->db->createCommand()
+                    ->select('oe.elm_id as id, oe.name, i.*')
+                    ->from('{{interview_slots}} i')
+                    ->join('{{org_elms}} oe', 'oe.elm_id = i.elm_id AND oe.org_id = :org_id')
+                    ->join('{{division_elms}} de', 'de.elm_id = oe.elm_id')
+                    ->join('{{division_choices}} dc', 'dc.div_id = de.div_id AND dc.user_id = :user_id')
+                    ->group('i.elm_id, oe.elm_id, oe.name')
+                    ->order('oe.weight, oe.name')
+                    ->query(array ('user_id' => $this->_userId, 'org_id'  => $this->_orgId));
+
+            $tables = array();
+            foreach ($reader as $row) {
+                $row['time_range'] = unserialize($row['time_range']);
+                $row['options'] = unserialize($row['options']);
+
+                $row['slots'] = $this->parseSlotTable($row);
+                $tables[$row['id']] = $row;
+            }
+            $this->_tables =& $tables;
+        }
         return $this->_tables;
     }
     
@@ -123,13 +126,46 @@ class InterviewSlotForm extends CFormModel
     }
     
     public function save() {
-        foreach($this->time as $id => $time) {
-            Yii::app()->db->createCommand()->insert('{{interview_user_slots}}', array(
-                'slot_id' => $id,
-                'user_id' => $this->_userId,
-                'time' => $time,
-            ));
+        $db = Yii::app()->getDb();
+        
+        $slots = $db->createCommand()
+                ->select('us.slot_id')
+                ->from('{{interview_user_slots}} us')
+                ->join('{{org_elms}} oe', 'oe.elm_id = us.slot_id AND oe.org_id = :org_id')
+                ->where('us.user_id = :user_id')
+                ->queryColumn(array('org_id' => $this->_orgId, 'user_id' => $this->_userId));
+        if ($slots)
+            $slots = array_flip($slots);
+        else
+            $slots = array();
+        
+        $transaction = $db->beginTransaction();
+        try {
+            foreach($this->time as $id => $time) {
+                if (isset($slots[$id])) {
+                    $db->createCommand()->update(
+                            '{{interview_user_slots}}', 
+                            array('time' => $time, 'updated' => new CDbExpression('CURRENT_TIMESTAMP')),
+                            'slot_id = :slot_id AND user_id = :user_id',
+                            array('slot_id' => $id, 'user_id' => $this->_userId)
+                    );
+                } else {
+                    $db->createCommand()->insert('{{interview_user_slots}}', array(
+                        'slot_id' => $id,
+                        'user_id' => $this->_userId,
+                        'time' => $time,
+                    ));
+                }
+                
+            }
+            $transaction->commit();
+            return true;
+        }        
+        catch (Exception $e) {
+            $transaction->rollback();
+            throw $e;
         }
+        return false;
     }
     
     public function validateTime($attribute, $param) {

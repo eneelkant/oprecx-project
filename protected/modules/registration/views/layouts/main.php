@@ -52,8 +52,7 @@
 </div><!-- /content -->
 
 	<div data-role="footer" class="jqm-footer">
-		<p class="jqm-version"></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+            <p>Copyright 2013 <a href="<?php echo Yii::app()->request->baseUrl; ?>/">The Oprecx Team</a></p>
 	</div><!-- /jqm-footer -->
 
 </div><!-- /page -->
