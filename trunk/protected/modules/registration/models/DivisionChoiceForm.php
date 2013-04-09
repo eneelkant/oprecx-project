@@ -51,12 +51,12 @@ class DivisionChoiceForm extends CFormModel {
     
     public function setUserId($userId) {
         if ($userId) {
-            $this->choices = Yii::app()->db->createCommand()
+            $command = Yii::app()->db->createCommand()
                         ->from('{{divisions}} d')->select('d.div_id')->from('{{division_choices}} dc')
-                        ->leftJoin('{{divisions}} d', 'dc.div_id = d.div_id AND d.org_id = :org_id AND d.enabled = 1', array('org_id' => $this->_org->id))
+                        ->join('{{divisions}} d', 'dc.div_id = d.div_id AND d.org_id = :org_id AND d.enabled = 1', array('org_id' => $this->_org->id))
                         ->order('dc.weight, d.weight, d.name')
-                        ->where('dc.user_id = :user_id', array('user_id' => $userId))
-                        ->queryColumn();
+                        ->where('dc.user_id = :user_id', array('user_id' => $userId));
+            $this->choices = $command->queryColumn();
         } else {
             //$this->choices = array();
         }

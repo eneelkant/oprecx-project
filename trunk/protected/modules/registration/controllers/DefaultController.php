@@ -3,12 +3,14 @@
 class DefaultController extends RegisterController
 {
 
-    private function cekLogin()
+    private function cekLogin($next)
     {
         if (Yii::app()->user->isGuest) {
-            throw new CHttpException(403,
+            $url = $this->getURL('index', array('next' => $next));
+            $this->redirect($url);
+            /*throw new CHttpException(403,
             Yii::t('oprecx', 'You must login to access this page. goto {link} to login',
-                    array ('{link}' => $this->createAbsoluteUrl('index', array ('org' => $this->actionParams['org_name'])))));
+                    array ('{link}' => $url)));*/
         }
     }
 
@@ -21,10 +23,19 @@ class DefaultController extends RegisterController
             $regForm   = new CForm(UserRegistrationForm::$formConfig, new UserRegistrationForm);
             $loginForm = new CForm(UserLoginForm::$formConfig, new UserLoginForm);
 
-            $regForm->action['nexturl']   = $this->getURL('division');
-            $loginForm->action['nexturl'] = $this->getURL('division');
+            if (isset($this->actionParams['next'])) $next = $this->getURL($this->actionParams['next']);
+            else $next = $this->getURL('index', array('just_login' => 1));
+            $regForm->action['nexturl']   = $next;
+            $loginForm->action['nexturl'] = $next;
 
             $this->render('index', array ('regForm'   => $regForm, 'loginForm' => $loginForm));
+        }
+        elseif (isset($this->actionParams['just_login'])) {
+            // TODO : CEK apakah user udah pilih divisi, jika ya redirect ke divisi kalo ga munculin info user terkait
+            // organisasi ini
+             $this->redirect($this->getURL('division'));
+            
+            //$this->render('index');
         }
         else {
             $this->render('index');
@@ -33,7 +44,7 @@ class DefaultController extends RegisterController
 
     public function actionDivision()
     {
-        $this->cekLogin();
+        $this->cekLogin('division');
         $userId    = Yii::app()->user->id;
         $divisions = Divisions::model()->findAllByOrg($this->org->id);
         $model     = new DivisionChoiceForm($this->org);
@@ -67,31 +78,25 @@ class DefaultController extends RegisterController
             }
         }
         else {
-            $model->userId = $userId;
+            $model->setUserId($userId);
         }
         $this->render('division', array ('model' => $model));
     }
 
     public function actionForm()
     {
-        $this->cekLogin();
-        /*
-          SELECT f.name as form_name, ff.*
-          FROM `{{form_fields}}` ff, {{forms}} f, {{division_forms}} df, {{division_choices}} dc, {{divisions}} d
-          WHERE f.form_id = ff.form_id AND f.form_id = df.form_id AND df.div_id = dc.div_id AND dc.user_id = :user_id AND d.div_id = dc.div_id AND d.org_id = :org_id
-          GROUP BY ff.field_id
-          ORDER BY f.weight, f.name, ff.weight, ff.created';
-         */
-
-
+        $this->cekLogin('form');
+        
         $model = new RegistrationForm();
         $model->initComponent($this->org->id, Yii::app()->user->id);
-        $form  = new CForm(array (
-            'elements' => $model->elements,
-            'buttons'  => array (
-                'submit-form' => array ('type'  => 'submit', 'label' => 'Submit'),
-            )
-                ), $model
+        $form  = new CForm(
+                array (
+                    'elements' => $model->elements,
+                    'buttons'  => array (
+                        'submit-form' => array ('type'  => 'submit', 'label' => 'Submit'),
+                    )
+                ),
+                $model
         );
 
         if ($form->submitted('submit-form') && $form->validate() && $model->save()) {
@@ -103,7 +108,8 @@ class DefaultController extends RegisterController
 
     public function actionInterview()
     {
-        $model = new InterviewSlotForm;
+        $this->cekLogin('interview');
+        $model = new InterviewSlotForm('', $this->org->id, Yii::app()->user->id);
         
         if (isset($_POST['InterviewSlotForm'])) {
             $model->setAttributes($_POST['InterviewSlotForm']);
@@ -112,7 +118,6 @@ class DefaultController extends RegisterController
                 return;
             }
         }
-        $model->initTable($this->org->id, Yii::app()->user->id);
         $this->render('interview', array('model' => $model));
     }
 

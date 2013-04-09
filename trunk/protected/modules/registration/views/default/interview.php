@@ -39,6 +39,7 @@
         background-color: #57a !important;
         font-weight: bold;
         color: #fff;
+        text-shadow: none;
     }
     
     .time-label-full {
