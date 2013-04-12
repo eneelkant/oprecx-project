@@ -2,6 +2,12 @@
 
 class SiteController extends Controller
 {
+    
+    public function init()
+     {
+         parent::init();
+         $this->layout = 'global';
+     }
 
     /**
      * Declares class-based actions.
@@ -30,10 +36,15 @@ class SiteController extends Controller
     {
         // renders the view file 'protected/views/site/index.php'
         // using the default layout 'protected/views/layouts/main.php'
-        $orgs = Organizations::model()->findAll(array (
-            'condition' => 'reg_time_begin <= CURRENT_TIMESTAMP AND reg_time_end >= CURRENT_TIMESTAMP',
-            'order'     => 'reg_time_end DESC'
-        ));
+        $cache_name = 'oprecx:Organizations:active10';
+        if (($orgs = Yii::app()->cache->get($cache_name)) == false) {
+            $orgs = Organizations::model()->findAll(array (
+                'condition' => 'reg_time_begin <= CURRENT_TIMESTAMP AND reg_time_end >= CURRENT_TIMESTAMP',
+                'order'     => 'reg_time_end DESC',
+                'limit'     => 10,
+            ));
+            Yii::app()->cache->set($cache_name, $orgs);
+        }        
         $this->render('index', array ('orgs' => $orgs));
     }
 
@@ -47,62 +58,12 @@ class SiteController extends Controller
             else $this->render('error', $error);
         }
     }
-
-    /**
-     * Displays the contact page
-     */
-    public function actionContact()
+    
+    public function actionLang($locale, $return)
     {
-        $model = new ContactForm;
-        if (isset($_POST['ContactForm'])) {
-            $model->attributes = $_POST['ContactForm'];
-            if ($model->validate()) {
-                $name    = '=?UTF-8?B?' . base64_encode($model->name) . '?=';
-                $subject = '=?UTF-8?B?' . base64_encode($model->subject) . '?=';
-                $headers = "From: $name <{$model->email}>\r\n" .
-                        "Reply-To: {$model->email}\r\n" .
-                        "MIME-Version: 1.0\r\n" .
-                        "Content-type: text/plain; charset=UTF-8";
-
-                mail(Yii::app()->params['adminEmail'], $subject, $model->body, $headers);
-                Yii::app()->user->setFlash('contact',
-                        'Thank you for contacting us. We will respond to you as soon as possible.');
-                $this->refresh();
-            }
-        }
-        $this->render('contact', array ('model' => $model));
+        Yii::app()->session->add('lang', $locale);
+        $this->redirect($return);
     }
-
-    /**
-     * Displays the login page
-     */
-    public function actionLogin()
-    {
-        $model = new LoginForm;
-
-        // if it is ajax validation request
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'login-form') {
-            echo CActiveForm::validate($model);
-            Yii::app()->end();
-        }
-
-        // collect user input data
-        if (isset($_POST['LoginForm'])) {
-            $model->attributes = $_POST['LoginForm'];
-            // validate user input and redirect to the previous page if valid
-            if ($model->validate() && $model->login()) $this->redirect(Yii::app()->user->returnUrl);
-        }
-        // display the login form
-        $this->render('login', array ('model' => $model));
-    }
-
-    /**
-     * Logs out the current user and redirect to homepage.
-     */
-    public function actionLogout()
-    {
-        Yii::app()->user->logout();
-        $this->redirect(Yii::app()->homeUrl);
-    }
+    
 
 }

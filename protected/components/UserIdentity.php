@@ -21,13 +21,20 @@ class UserIdentity extends CUserIdentity {
      */
     public function authenticate() {
         /** @var Users $record Description */
-        $record = Users::model()->findByAttributes(array('email' => $this->username));
-        if ($record === null)
+        $row = Yii::app()->db->createCommand()
+                ->select('id, password')
+                ->from(TableNames::USERS)
+                ->where('email = :email', array('email' => $this->username))
+                ->limit(1)
+                ->queryRow();
+        
+        //$record = Users::model()->findByAttributes(array('email' => $this->username));
+        if ($row === false)
             $this->errorCode = self::ERROR_USERNAME_INVALID;
-        else if ($record->password !== crypt($this->password, $record->password))
+        else if ($row['password'] !== crypt($this->password, $row['password']))
             $this->errorCode = self::ERROR_PASSWORD_INVALID;
         else {
-            $this->_id = $record->id;
+            $this->_id = $row['id'];
             //$this->setState('fullname', $record->full_name);
             $this->errorCode = self::ERROR_NONE;
             $this->authenticated = true;

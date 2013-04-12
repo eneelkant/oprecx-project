@@ -12,9 +12,15 @@
  */
 class UserController extends CController {
     
+     public function init()
+     {
+         parent::init();
+         $this->layout = 'global';
+     }
+    
     public function actionLogin() {
         $model = new UserLoginForm;
-        $form = new CForm(UserLoginForm::$formConfig, $model);
+        $form = $model->createForm();
         if(isset($this->actionParams['nexturl']))
             $nexturl = $this->actionParams['nexturl'];
         else
@@ -32,8 +38,8 @@ class UserController extends CController {
     }
     
     public function actionRegister() {
-        $model = new UserRegistrationForm;
-        $form = new CForm(UserRegistrationForm::$formConfig, $model);
+        $model = new UserRegisterForm;
+        $form = $model->createForm();
         if(isset($this->actionParams['nexturl']))
             $nexturl = $this->actionParams['nexturl'];
         else
@@ -47,6 +53,11 @@ class UserController extends CController {
         else {
             $this->render('register', array('form' => $form));
         }
+    }
+    
+    public function actionLogout() {
+        Yii::app()->user->logout();
+        $this->redirect(Yii::app()->homeUrl);
     }
 }
 

@@ -17,14 +17,14 @@ class RegistrationModule extends CWebModule {
             'registration.components.*',
         ));
 
-        $this->layout = 'main';
+        //$this->layout = 'main';
     }
 
     public function beforeControllerAction($controller, $action) {
         if (parent::beforeControllerAction($controller, $action)) {
             // this method is called before any module controller action is performed
             // you may place customized code here
-            $controller->layout = 'standard';
+            $controller->layout = 'registration';
             return true;
         }
         else

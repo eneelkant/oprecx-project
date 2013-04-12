@@ -28,9 +28,11 @@ class DivisionChoiceForm extends CFormModel {
      * @param Organizations $org
      * @param int $user_id
      */
-    function __construct($org, $user_id = null) {
-        $this->_org =& $org;
-        $this->_allDivisions =& Divisions::model()->findAllByOrg($org->id);
+    function __construct($scenario = '', $org = null, $divisions = null) {
+        $this->_org = $org;
+        $this->_allDivisions = $divisions;
+        
+        parent::__construct($scenario);
         
         $this->_allDivisionsName = array();
         /* @var $division Divisions */
@@ -38,7 +40,7 @@ class DivisionChoiceForm extends CFormModel {
             $this->_allDivisionsName[$division->div_id] = $division->name;
         }
         $this->choices = array();
-        $this->setUserId($user_id);
+        //$this->setUserId($user_id);
     }
     
     public function getAllDivisions() {

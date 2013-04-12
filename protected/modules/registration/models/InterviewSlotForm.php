@@ -93,7 +93,7 @@ class InterviewSlotForm extends CFormModel
         $month_len = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
         $month_len[1] = $y % 4 == 0 ? 29 : 28;
         
-        while ($d < $endDate[2] || $m < $endDate[1] || $y < $endDate[0]) {
+        while ($d <= $endDate[2] || $m < $endDate[1] || $y < $endDate[0]) {
             $tmp = array();
             foreach ($time_ranges as $time_range) {
                 for ($time = $time_range[0]; $time < $time_range[1]; $time += $duration) {
