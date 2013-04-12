@@ -14,17 +14,16 @@
     </div>
     <div style="margin-left: 50px"></div>
     <div class="easyui-layout" style="width:1000px; height:585px; border: none;">
-        <div data-options="region:'north'" style="height:50px; border: none;">
-          <img src="logo.png" />
+        <div data-options="region:'north'" style="height:80px; border: none;">
+          <img src="../images/logo.png" />
         </div>
         <div data-options="region:'south',split:true" style="height:50px;"></div>
         <div data-options="region:'west',split:true" title="Menu" style="width:250px; padding:10px; background-color:#DAECF5">
-            <table style="margin:5px; font-size: 23px">
-                <tr><td><a href ="index.php">Pengaturan</a></td></tr>
-                <tr><td><a href ="divisi.php">Divisi/Biro</a></td></tr>
-                <tr><td>Form Pendaftaran</td></tr>
-                <tr><td>Slot Wawancara</td></tr>
-            </table>
+            <ul>
+                <li><a href="index.php">Pengaturan</a></li>
+                <li><a href="divisi.php">Departemen/Biro</a></li>
+            </ul>
+            
         </div>
         <div data-options="region:'center',title:'Pengaturan',iconCls:'icon-ok'"">
 

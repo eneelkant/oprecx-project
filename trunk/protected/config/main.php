@@ -15,6 +15,7 @@ return array(
     'import' => array(
         'application.models.*',
         'application.components.*',
+        'ext.giix-components.*',
     ),
     
     'modules' => array(
@@ -24,6 +25,9 @@ return array(
             'password' => 'gii',
             // If removed, Gii defaults to localhost only. Edit carefully to taste.
             'ipFilters' => array('127.0.0.1', '::1'),
+            'generatorPaths' => array(
+                'ext.giix-core', // giix generators
+            )
         ),
         'admin', 'registration',
     ),
@@ -41,7 +45,7 @@ return array(
             'rules' => array(
                 '/' => 'site/index',
                 '/about/<view:\w+>' => array('site/page', 'urlSuffix' => '.html'),
-                '/user/<action:\w+>' => 'user/<action>',
+                '/<controller:(user|site)>/<action:\w+>' => '<controller>/<action>',
                 
                 '/<module:(gii)>' => '<module>/default/index',
                 '/<module:(gii)>/<controller:\w+>' => '<module>/<controller>/index',
@@ -61,7 +65,7 @@ return array(
             'password' => DB_PASSWORD,
             'charset' => DB_CHARSET,
             'tablePrefix' => DB_TABLE_PREFIX,
-            //'schemaCachingDuration' => 3600 * 24,
+            'schemaCachingDuration' => 3600 * 24,
             //'queryCachingDuration' => 100,
         ),
         // */
@@ -72,10 +76,12 @@ return array(
         'log' => array(
             'class' => 'CLogRouter',
             'routes' => array(
+                //*
                 array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'error, warning',
                 ),
+                 // */
             // uncomment the following to show log messages on web pages
             /*
               array(
@@ -84,19 +90,44 @@ return array(
              */
             ),
         ),
+        //*
+        'messages' => array(
+            'class' =>  'CPhpMessageSource',
+            'onMissingTranslation' => array('CPhpMessageTranslator', 'appendMessage'),
+            //'cachingDuration' => 3600 * 24,
+            'language' => 'en_us',
+        ),
+        // */
+        
         'cache' => array(
-            'class' => getCacheClassName(),
-            'hashKey' => true,
-        )
+            'class' => 'CApcCache',
+            //'hashKey' => false,
+            //'serializer' => false,
+        ),
+        // */
+        
+        'request'=>array(
+            'enableCookieValidation'=>true,
+            'enableCsrfValidation'=>true,
+            'csrfTokenName' => 'token',
+        ),
     ),
     // application-level parameters that can be accessed
     // using Yii::app()->params['paramName']
+    //'language' => 'id',
+    'onBeginRequest' => 'oprecx_init',
     'params' => array(
         // this is used in contact page
         'adminEmail' => 'admin@oprecx.com',
+        
+        'supportedLang' => array(
+            'en_us' => 'English',
+            'id' => 'Bahasa Indonesia',
+        ),
     ),
 );
 
 function getCacheClassName() {
+    //return 'system.caching.CFileCache';
     return (function_exists('apc_add') ? 'system.caching.CApcCache' : 'system.caching.CFileCache');
 }
