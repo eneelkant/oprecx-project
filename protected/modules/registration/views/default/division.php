@@ -34,8 +34,12 @@ $form = $this->beginWidget('CActiveForm', array(
 </fieldset>
 <fieldset class="ui-grid-a">
     <div class="ui-block-a">
-        <?php echo CJqm::jqmLink('back', $this->getURL('index'), array('icon' => 'arrow-l', 'iconpos' => 'left')); ?></div>
-    <div class="ui-block-b"><input type="submit" value="next" data-icon="arrow-r" data-iconpos="right" data-theme="b" /></div>
+        <?php JqmTag::buttonLink(Yii::t('oprecx', 'Back'), $this->getURL('index'))->icon('back')->iconPos('left')->render(true); ?>
+    </div>
+    <div class="ui-block-b">
+        <?php JqmTag::jSubmit(Yii::t('oprecx', 'Save'))->icon('check')->iconPos('right')->theme('b')->render(true); ?>
+        
+    </div>
 </fieldset>
 <?php 
 $this->endWidget(); 
@@ -56,5 +60,6 @@ endif;
 
 <?php 
 if (Yii::app()->user->getIsGuest())
-    echo CJqm::jqmLink(Yii::t('oprecx', 'Register Now'), $this->getURL('index'));
+    JqmTag::buttonLink(Yii::t('oprecx', 'Register Now'), $this->getURL('index'))->theme('b')->render(true);
+
 ?>

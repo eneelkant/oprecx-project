@@ -11,16 +11,25 @@ $this->pageTitle = Yii::app()->name;
     <hr />
 
     <h2><?php echo Yii::t('oprecx', 'Active Open Recruitment') ?></h2>
+    
     <?php
     /* @var $org Organizations */
+    //JqmTag::listview()->render(TRUE);
+    //*
     if ($orgs) {
-        echo '<ul data-role="listview" data-inset="true" data-filter="true" data-theme="d" data-icon="false" 
-            data-filter-placeholder="', Yii::t('oprecx', 'Search organizations'),  '" class="jqm-list jqm-home-list">';
+        $ul = JqmTag::listview()
+                ->inset()
+                ->theme('d')
+                ->icon('false')
+                ->data('filter', true)
+                ->data('filter-placeholder', Yii::t('oprecx', 'Search organizations'))
+                ;
         foreach ($orgs as $org) {
-            echo '<li>', CHtml::link($org->full_name, array('registration/default/index', 'org_name' => $org->name)), '</li>';
+            $ul->appendLvItem(HtmlTag::link($org->full_name, array('registration/default/index', 'org_name' => $org->name)));
         }
-        echo '</ul>';
+        $ul->render(true);
     }
+    // */
     ?>
 
 </div>

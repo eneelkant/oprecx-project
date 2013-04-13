@@ -3,7 +3,41 @@
 $user = Yii::app()->user;
 ?>
 <?php $this->beginContent(); ?>
-<div data-role="panel" id="main-panel" data-position="left" data-display="overlay" data-theme="a">
+
+<div data-role="header" class="head registration">
+    <div class="wrapper">
+        <h1 class="org-name">
+            <a href="#main-panel" data-role="button" data-inline="true" data-iconpos="notext" data-icon="arrow-r" 
+               class="ui-icon-alt" data-theme="c" data-mini="true" id="panel-show-button">Menu</a>
+            <a href="#main-panel"><?php echo CHtml::encode($this->org->full_name); ?></a>
+        </h1>
+        <div class="user-name">
+            <?php
+            if (!$user->isGuest) {
+                echo '<span>', CHtml::encode(UserIdentity::getFullName($user->id)), '</span> | ';
+                echo CHtml::link(Yii::t('oprecx', 'Log Out'), array ('/user/logout'));
+            }
+            else {
+
+                echo Yii::t('oprecx', 'Hi, gees! please {reg}/{login}.',
+                        array (
+                            '{reg}'   => CHtml::link(Yii::t('oprecx', 'register'), array('/user/register', 'nexturl' => $_SERVER['REQUEST_URI'])),
+                            '{login}' => CHtml::link(Yii::t('oprecx', 'login'), array('/user/login', 'nexturl' => $_SERVER['REQUEST_URI'])),
+                        )
+                );
+            }
+            ?>
+        </div>
+
+    </div>
+    <div class="clear"></div>
+</div><!-- /header -->
+
+<div data-role="content" class="wrapper" style="clear: both">
+<?php echo $content; ?>
+</div><!-- /content -->
+
+<div data-role="panel" id="main-panel" data-position="left" data-display="overlay" data-theme="a" class="ui-panel ui-panel-closed">
     <ul data-role="listview" data-inset="false">
         <li><?php echo CHtml::link(Yii::t('oprecx',
                 'Summary'), $this->getURL('index')); ?></li>
@@ -29,7 +63,7 @@ $user = Yii::app()->user;
                     'Oprecx') ?></li>
         <li data-icon="home"><?php
             echo CHtml::link(Yii::t('oprecx', 'Home'), array ('/site/index'),
-                    array ('data-icon' => 'home', 'data-rel'  => 'external'));
+                    array ('data-icon' => 'home'));
             ?></li>
         <li><?php
             echo CHtml::link(Yii::t('oprecx', 'About'), array ('/site/page', 'view' => 'oprecx'));
@@ -38,41 +72,6 @@ $user = Yii::app()->user;
             <?php echo CHtml::link(Yii::t('oprecx', 'Cancel'), '#', array('data-rel'=>'close')); ?>
         </li>
     </ul>
-    
-       
 </div><!-- /panel -->
-<div data-role="header" class="head registration">
-    <div class="wrapper">
-        <h1 class="org-name">
-            <a href="#main-panel" data-role="button" data-inline="true" data-iconpos="notext" data-icon="arrow-r" 
-               class="ui-icon-alt" data-theme="c" data-mini="true">Menu</a>
-            <a href="#main-panel"><?php echo CHtml::encode($this->org->full_name); ?></a>
-        </h1>
-        <div class="user-name">
-            <?php
-            if (!$user->isGuest) {
-                echo '<span>', CHtml::encode(UserIdentity::getFullName($user->id)), '</span> | ';
-                echo CHtml::link(Yii::t('oprecx', 'Log Out'), array ('/user/logout'));
-            }
-            else {
-
-                echo Yii::t('oprecx', 'Hi, gees! please {reg}/{login}.',
-                        array (
-                    '{reg}'   => CHtml::link(Yii::t('oprecx', 'register'), $this->getURL('index') . '#userregister'),
-                    '{login}' => CHtml::link(Yii::t('oprecx', 'login'), $this->getURL('index') . '#userlogin'),
-                        )
-                );
-            }
-            ?>
-        </div>
-
-    </div>
-    <div class="clear"></div>
-</div><!-- /header -->
-
-
-<div data-role="content" class="wrapper" style="clear: both">
-<?php echo $content; ?>
-</div><!-- /content -->
 
 <?php $this->endContent(); ?>

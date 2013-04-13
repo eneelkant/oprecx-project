@@ -1,12 +1,15 @@
 <?php return array(
 
 ///////////   UNTRANSLATED //////////// 
-  'Register'=> 'Daftar',
-  'Register Account'=> 'Daftar Akun',
+  'Back'=> 'Kembali',
+  'Save'=> 'Simpan',
 
 
 
 //Translated
+  'Forget password'=> 'Lupa Password',
+  'Register'=> 'Daftar',
+  'Register Account'=> 'Daftar Akun',
   'Login'=> 'Masuk Log',
   'Active Open Recruitment'=> 'Daftar rekruitmen terbuka',
   'Search organizations'=> 'Cari organisasi',

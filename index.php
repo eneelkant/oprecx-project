@@ -5,7 +5,7 @@ $yii=dirname(__FILE__).'/../framework/yii.php';
 $main_config=dirname(__FILE__).'/protected/config/main.php';
 
 // remove the following lines when in production mode
-defined('YII_DEBUG') or define('YII_DEBUG',false);
+defined('YII_DEBUG') or define('YII_DEBUG',true);
 
 
 $config_file = dirname(__FILE__).'/config.php';
@@ -32,5 +32,7 @@ require_once($yii);
 Yii::createWebApplication($main_config)->run();
 
 function oprecx_init() {
-    Yii::app()->language = Yii::app()->session->get('lang', 'id');
+    //Yii::app()->language = Yii::app()->session->get('lang', 'id');
+    Yii::app()->language = Yii::app()->request->cookies->contains('lang') ?
+        Yii::app()->request->cookies['lang']->value : 'id';
 }
