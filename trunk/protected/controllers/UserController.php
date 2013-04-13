@@ -19,15 +19,20 @@ class UserController extends CController {
      }
     
     public function actionLogin() {
-        $model = new UserLoginForm;
-        $form = $model->createForm();
         if(isset($this->actionParams['nexturl']))
             $nexturl = $this->actionParams['nexturl'];
         else
-            $nexturl = array('/user/index');
-        $form->action['nexturl'] = $nexturl;
+            $nexturl = array('/user/profile');
+        if (! Yii::app()->user->getIsGuest()) {
+            $this->redirect($nexturl);
+        }
         
+        $model = new UserLoginForm;
+        $form = $model->createForm();
+        $form->action['nexturl'] = CHtml::normalizeUrl($nexturl);
+
         //var_dump($this->actionParams);
+        //if ($form->submitted('login')) exit;
         if ($form->submitted('login') && $form->validate() && $model->login()) {
             $this->redirect($nexturl);
         }
@@ -38,13 +43,14 @@ class UserController extends CController {
     }
     
     public function actionRegister() {
-        $model = new UserRegisterForm;
-        $form = $model->createForm();
         if(isset($this->actionParams['nexturl']))
             $nexturl = $this->actionParams['nexturl'];
         else
-            $nexturl = array('/user/index');
-        $form->action['nexturl'] = $nexturl;
+            $nexturl = array('/user/profile');
+
+        $model = new UserRegisterForm;
+        $form = $model->createForm();
+        $form->action['nexturl'] = CHtml::normalizeUrl($nexturl);
         
         //var_dump($this->actionParams);
         if ($form->submitted('register') && $form->validate() && $model->register()) {

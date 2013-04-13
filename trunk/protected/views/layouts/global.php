@@ -21,7 +21,7 @@ $user = Yii::app()->user;
                 echo Yii::t('oprecx', 'Hi, gees! please {reg}/{login}.',
                         array (
                     '{reg}'   => CHtml::link(Yii::t('oprecx', 'register'), array('user/register')),
-                    '{login}' => CHtml::link(Yii::t('oprecx', 'login'), array('user/register')),
+                    '{login}' => CHtml::link(Yii::t('oprecx', 'login'), array('user/login')),
                         )
                 );
             }

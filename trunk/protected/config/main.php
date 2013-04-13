@@ -40,8 +40,8 @@ return array(
         
         // uncomment the following to enable URLs in path-format
         'urlManager' => array(
-            'urlFormat' => 'path',
-            'showScriptName' => false,
+            'urlFormat' => 'get',
+            'showScriptName' => true,
             'rules' => array(
                 '/' => 'site/index',
                 '/about/<view:\w+>' => array('site/page', 'urlSuffix' => '.html'),
@@ -121,8 +121,8 @@ return array(
         'adminEmail' => 'admin@oprecx.com',
         
         'supportedLang' => array(
-            'en_us' => 'English',
             'id' => 'Bahasa Indonesia',
+            'en_us' => 'English',
         ),
     ),
 );

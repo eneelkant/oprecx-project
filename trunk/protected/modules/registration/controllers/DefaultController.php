@@ -104,18 +104,22 @@ class DefaultController extends RegisterController
                 array (
                     'elements' => $model->elements,
                     'buttons'  => array (
-                        'submit-form' => array ('type'  => 'submit', 'label' => 'Submit'),
+                        'submit-form' => array ('type'  => 'submit', 'label' => Yii::t('oprecx', 'Save')),
                     ),
                     'activeForm' => array(
                         'class' => 'CActiveForm', 
-                        'enableClientValidation' => true,
+                        /*'enableClientValidation' => true,
                         'clientOptions' => array(
                             'validateOnSubmit' => true,
-                        ),
+                        ),*/
+                        
                     ),
+                    
+                    'attributes' => array('id' => 'reg-form'),
                 ),
                 $model
         );
+        
 
         if ($form->submitted('submit-form') && $form->validate() && $model->save()) {
             $this->redirect($this->getURL('interview'));

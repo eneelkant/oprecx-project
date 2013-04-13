@@ -25,6 +25,7 @@ class RegistrationForm extends CFormModel
     {
         $this->_orgId  = $org_id;
         $this->_userId = $user_id;
+        //$this-> = array('id' => "reg-form-{$org_id}-{$user_id}");
 
         $this->_elements = array ();
         $this->_labels   = array ();

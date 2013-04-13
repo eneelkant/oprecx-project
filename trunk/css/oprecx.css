@@ -10,6 +10,20 @@ body {
   -webkit-border-radius: 0.2em;
   border-radius: 0.2em; }
 
+#main-load, #main-load div {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0; }
+
+#main-load div {
+  background: black url(images/ajax-loader.gif) no-repeat center center;
+  opacity: .5; }
+
+body.loading {
+  overflow: hidden; }
+
 @media all and (min-width: 50em) {
   .wrapper {
     width: 50em;
@@ -86,6 +100,19 @@ form .hint {
   font-size: .8em;
   color: #777; }
 
+@media all and (max-width: 40em) {
+  #page-user-login .ui-block-a, #page-user-login .ui-block-b, #page-user-register .ui-block-a, #page-user-register .ui-block-b {
+    width: 99.99%; }
+  #page-user-login .ui-block-a, #page-user-register .ui-block-a {
+    border-bottom: 1px solid #aaa;
+    padding-bottom: .5em;
+    margin-bottom: .5em; } }
+@media all and (min-width: 40em) {
+  #page-user-login .ui-block-a, #page-user-register .ui-block-a {
+    border-right: 2pt solid #ccc; }
+  #page-user-login form, #page-user-register form {
+    padding: 10px; } }
+
 /* 
     Document   : registration
     Created on : Apr 9, 2013, 8:42:16 PM
@@ -116,19 +143,22 @@ form .hint {
   .head.registration .user-name {
     margin-top: 3em; } }
 
+.no-js #panel-show-button {
+  display: none; }
+
 #page-registration-default-index .org-description p {
   text-align: justify; }
 @media all and (max-width: 40em) {
-  #page-registration-default-index .register-login .ui-block-a, #page-registration-default-index .register-login .ui-block-b {
+  #page-registration-default-index .ui-block-a, #page-registration-default-index .ui-block-b {
     width: 99.99%; }
-  #page-registration-default-index .register-login .ui-block-a {
+  #page-registration-default-index .ui-block-a {
     border-bottom: 1px solid #aaa;
     padding-bottom: .5em;
     margin-bottom: .5em; } }
 @media all and (min-width: 40em) {
   #page-registration-default-index .view-division {
     text-align: right !important; }
-  #page-registration-default-index .register-login .ui-block-a {
+  #page-registration-default-index .ui-block-a {
     border-right: 2pt solid #ccc; }
   #page-registration-default-index .register-login form {
     padding: 10px; } }

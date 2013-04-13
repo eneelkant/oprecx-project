@@ -15,6 +15,20 @@ body
 	border-radius: 						0.2em /*{global-radii-blocks}*/;
 }
 
+#main-load, #main-load div {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+#main-load div {
+    background: #000 url(images/ajax-loader.gif) no-repeat center center;
+    opacity: .5;
+}
+body.loading {
+    overflow: hidden;
+}
 
 //.oprecx {
 @media all and (min-width: 50em) {
@@ -130,5 +144,7 @@ form {
     }
 }
 
-@import "_registration.scss"
+@import "_user.scss";
+
+@import "_registration.scss";
 //}

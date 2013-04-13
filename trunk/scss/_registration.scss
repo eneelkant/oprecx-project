@@ -49,6 +49,9 @@
 
 }
 
+.no-js #panel-show-button {
+    display: none;
+}
 
 //////////////////////////////////////////////////////////////////
 /// HOME
@@ -64,11 +67,11 @@
     
     
     @media all and (max-width: 40em){
-        .register-login .ui-block-a, .register-login .ui-block-b {
+        .ui-block-a, .ui-block-b {
             width: 99.99%;
         }
         
-        .register-login .ui-block-a {
+        .ui-block-a {
             border-bottom: 1px solid #aaa;
             padding-bottom: .5em;
             margin-bottom: .5em;
@@ -77,7 +80,7 @@
     @media all and (min-width: 40em){
         .view-division {text-align: right !important;}
         
-        .register-login .ui-block-a {
+        .ui-block-a {
             border-right: 2pt solid #ccc;
         }
         
