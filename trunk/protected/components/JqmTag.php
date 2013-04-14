@@ -20,10 +20,20 @@ class JqmTag extends HtmlTag
         return self::jTag('a', 'button', $attr, $content);
     }
     
-    public static function jSubmit($label, $attr = array()) {
-        return self::jTag('input', null, $attr, null, false)->attr('type', 'submit')->attr('value', $label);
+    public static function jSubmit($label, $name = 'submit', $attr = array()) {
+        return self::jTag('input', null, $attr, null, false)
+                ->attr('name', $name)->attr('type', 'submit')->attr('value', $label);
     }
 
+    /**
+     * 
+     * @param string $tag
+     * @param string $role [optional]
+     * @param array $attributes
+     * @param string|array $html
+     * @param boolean $close_tag
+     * @return JqmTag
+     */
     public static function jTag($tag, $role = null, $attributes = array(), $html = null, $close_tag = true) {
         if ($role) $attributes['data-role'] = $role;
         return new JqmTag($tag, $attributes, $html, $close_tag);

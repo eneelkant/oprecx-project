@@ -1,12 +1,13 @@
 <?php return array(
 
 ///////////   UNTRANSLATED //////////// 
-  'Back'=> 'Kembali',
-  'Save'=> 'Simpan',
+  '-- choose one --'=> '',
 
 
 
 //Translated
+  'Back'=> 'Kembali',
+  'Save'=> 'Simpan',
   'Forget password'=> 'Lupa Password',
   'Register'=> 'Daftar',
   'Register Account'=> 'Daftar Akun',
