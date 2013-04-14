@@ -20,6 +20,7 @@ return array(
     
     'modules' => array(
         // uncomment the following to enable the Gii tool
+        /*
         'gii' => array(
             'class' => 'system.gii.GiiModule',
             'password' => 'gii',
@@ -29,6 +30,7 @@ return array(
                 'ext.giix-core', // giix generators
             )
         ),
+         */
         'admin', 'registration',
     ),
     // application components
@@ -40,8 +42,8 @@ return array(
         
         // uncomment the following to enable URLs in path-format
         'urlManager' => array(
-            'urlFormat' => 'get',
-            'showScriptName' => true,
+            'urlFormat' => 'path',
+            'showScriptName' => false,
             'rules' => array(
                 '/' => 'site/index',
                 '/about/<view:\w+>' => array('site/page', 'urlSuffix' => '.html'),
@@ -63,8 +65,8 @@ return array(
             'emulatePrepare' => true,
             'username' => DB_USER,
             'password' => DB_PASSWORD,
-            'charset' => DB_CHARSET,
-            'tablePrefix' => DB_TABLE_PREFIX,
+            'charset' => defined('DB_CHARSET') ? DB_CHARSET : 'utf8',
+            'tablePrefix' => defined('DB_TABLE_PREFIX') ? DB_TABLE_PREFIX : 'oprecx_',
             'schemaCachingDuration' => 3600 * 24,
             //'queryCachingDuration' => 100,
         ),
@@ -93,14 +95,14 @@ return array(
         //*
         'messages' => array(
             'class' =>  'CPhpMessageSource',
-            'onMissingTranslation' => array('CPhpMessageTranslator', 'appendMessage'),
+            'onMissingTranslation' => YII_DEBUG ? array('CPhpMessageTranslator', 'appendMessage') : NULL,
             //'cachingDuration' => 3600 * 24,
             'language' => 'en_us',
         ),
         // */
         
         'cache' => array(
-            'class' => 'CApcCache',
+            'class' => defined('OPRECX_CACHE') ? OPRECX_CACHE : 'CApcCache',
             //'hashKey' => false,
             //'serializer' => false,
         ),
@@ -126,8 +128,3 @@ return array(
         ),
     ),
 );
-
-function getCacheClassName() {
-    //return 'system.caching.CFileCache';
-    return (function_exists('apc_add') ? 'system.caching.CApcCache' : 'system.caching.CFileCache');
-}
