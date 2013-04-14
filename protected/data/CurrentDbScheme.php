@@ -356,6 +356,49 @@ class CurrentDbScheme extends CDbMigration
         ));
 
 
+        $this->insert('{{divisions}}', array (
+            'div_id'      => 5,
+            'org_id'      => 4,
+            'name'        => 'Departemen Pendidikan',
+            'description' => '<p>Merupakan departemen yang bla-bla-bla</p>',
+        ));
+
+        $this->insert('{{divisions}}', array (
+            'div_id'      => 6,
+            'org_id'      => 4,
+            'name'        => 'Departemen Sosmas',
+            'description' => '<p>Merupakan departemen yang bla-bla-bla</p>',
+        ));
+
+        $this->insert('{{divisions}}', array (
+            'div_id'      => 7,
+            'org_id'      => 4,
+            'name'        => 'Departemen Puskaban',
+            'description' => '<p>Merupakan departemen yang bla-bla-bla</p>',
+        ));
+
+        $this->insert('{{divisions}}', array (
+            'div_id'      => 8,
+            'org_id'      => 4,
+            'name'        => 'Departemen Orsen',
+            'description' => '<p>Merupakan departemen yang bla-bla-bla</p>',
+        ));
+
+        $this->insert('{{divisions}}', array (
+            'div_id'      => 9,
+            'org_id'      => 4,
+            'name'        => 'Biro Kominfo',
+            'description' => '<p>Merupakan departemen yang bla-bla-bla</p>',
+        ));
+
+        $this->insert('{{divisions}}', array (
+            'div_id'      => 10,
+            'org_id'      => 4,
+            'name'        => 'Biro PSDM',
+            'description' => '<p>Merupakan departemen yang bla-bla-bla</p>',
+        ));
+
+
 
         $this->insert('{{division_choices}}', array (
             'div_id'  => 1,
@@ -429,7 +472,7 @@ class CurrentDbScheme extends CDbMigration
         ));
     }
 
-    function dataOrg()
+    private function dataOrg()
     {
         $this->insert('{{organizations}}',
                 array (
@@ -457,6 +500,22 @@ class CurrentDbScheme extends CDbMigration
             'scope'          => 'university',
             'location'       => 'Universitas Indonesia',
             'link'           => "http://pemira.ui.ac.id/",
+            'reg_time_begin' => "2013-03-10 00:00:00",
+            'reg_time_end'   => "2013-04-19 00:00:00",
+        ));
+
+        $this->insert('{{organizations}}',
+                array (
+            'id'             => 4,
+            'name'           => 'forkomauibanten13',
+            'full_name'      => 'Forkoma UI Banten 2013',
+            'email'          => 'forkomabanten@gmail.com',
+            'description'    => '<p>Forum Komununikasi Mahasiswa dan Alumni Universitas Indonesia asal Banten atau 
+                sering disingkat dengan Forkoma UI Banten merupakan paguyuban daearah yang ...</p>',
+            'type'           => 'org',
+            'scope'          => 'university',
+            'location'       => 'Universitas Indonesia',
+            'link'           => "http://forkomauibanten.com/",
             'reg_time_begin' => "2013-03-10 00:00:00",
             'reg_time_end'   => "2013-04-19 00:00:00",
         ));

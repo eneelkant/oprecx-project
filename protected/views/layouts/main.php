@@ -3,13 +3,25 @@
 
 $page_class = explode('/', $this->route);
 $jsUrl = Yii::app()->request->baseUrl . '/js/';
-$jsFiles = array(
-    array($jsUrl . 'jquery-1.9.0.js', 
-        array($jsUrl . 'jquery.mobile-1.3.1.js', 
-            $jsUrl . 'oprecx.js?m=' . filemtime(Yii::app()->basePath . '/../js/oprecx.js')
-        )
-    ),
-);
+if (! YII_DEBUG) {
+    $jsFiles = array(
+        array('http://code.jquery.com/jquery-1.9.1.min.js', 
+            array('http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js', 
+                $jsUrl . 'oprecx.js?m=' . filemtime(Yii::app()->basePath . '/../js/oprecx.js')
+            )
+        ),
+    );
+    $jqmCss = 'http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css';
+} else {
+    $jsFiles = array(
+        array($jsUrl . 'jquery-1.9.0.js', 
+            array($jsUrl . 'jquery.mobile-1.3.1.js', 
+                $jsUrl . 'oprecx.js?m=' . filemtime(Yii::app()->basePath . '/../js/oprecx.js')
+            )
+        ),
+    );
+    $jqmCss = Yii::app()->request->baseUrl . '/css/jquery.mobile-1.3.1.css';
+}
 
 ?>
 <!DOCTYPE html>
@@ -20,28 +32,20 @@ $jsFiles = array(
         
         <?php if (!Yii::app()->request->isAjaxRequest) : ?>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet"  href="<?php echo Yii::app()->request->baseUrl; ?>/css/jquery.mobile-1.3.1.css">
+        <link rel="stylesheet"  href="<?php echo $jqmCss; ?>">
         <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/oprecx.css" />
         <link rel="shortcut icon" href="<?php echo Yii::app()->request->baseUrl; ?>/favicon.ico">
         <script>
         var lazyLoad = <?php echo json_encode($jsFiles); ?>;
-        //lazyLoad.disableCache = true;
         </script>
-        <?php
-        /*
-            echo CHtml::scriptFile($jsUrl . 'jquery-1.9.0.js'),
-                 CHtml::scriptFile($jsUrl . 'jquery.mobile-1.3.1.js'), 
-                 CHtml::scriptFile($jsUrl . 'oprecx.js');
-         * 
-         */
-        ?>
         <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/load.js" async></script>
         <?php endif; ?>
     </head>
     <body class="ui-mobile-viewport ui-overlay-c" id="body">
         <div data-role="page" id="<?php echo 'page-', implode('-', $page_class) ?>" 
+             data-title="<?php echo CHtml::encode($this->pageTitle); ?>"
              class="<?php echo implode(' ', $page_class) ?> ui-page ui-body-c ui-page-panel ui-page-active" 
-             data-url="<?php echo Yii::app()->request->requestUri; ?>">
+             data-url="<?php echo CHtml::encode(Yii::app()->request->requestUri); ?>">
             
             <?php echo $content; ?>
             
