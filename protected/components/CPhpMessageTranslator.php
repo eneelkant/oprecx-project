@@ -2,6 +2,7 @@
 class CPhpMessageTranslator extends CApplicationComponent{
 	public static $message = array();
 	public static $init = FALSE;
+    
     public static function appendMessage(CMissingTranslationEvent $event){
     	self::$message[$event->language][$event->category][$event->message] = '';
     	if (! self::$init){

@@ -1,7 +1,5 @@
 <?php
 
-
-
 $config_file = dirname(__FILE__).'/config.php';
 if (!file_exists($config_file)) {
     header('location: setup.php?a=config');
@@ -15,9 +13,6 @@ if (!defined('YII_PHP') || !defined('DB_CON_STRING') || !defined('DB_USER') || !
     header('location: setup.php?a=config');
     return;
 }
-
-// change the following paths if necessary
-$main_config=dirname(__FILE__).'/protected/config/main.php';
 
 // remove the following lines when in production mode
 defined('YII_DEBUG') or define('YII_DEBUG', defined('OPRECX_DEBUG') && (OPRECX_DEBUG == '1'));
@@ -37,10 +32,6 @@ if (defined('YII_DEBUG') && YII_DEBUG) {
 }
 
 require_once($yii);
-Yii::createWebApplication($main_config)->run();
-
-function oprecx_init() {
-    //Yii::app()->language = Yii::app()->session->get('lang', 'id');
-    Yii::app()->language = Yii::app()->request->cookies->contains('lang') ?
-        Yii::app()->request->cookies['lang']->value : 'id';
-}
+$app = Yii::createWebApplication(dirname(__FILE__).'/protected/config/main.php');
+OprecxHelper::initializeApp($app);
+$app->run();

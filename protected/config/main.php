@@ -15,7 +15,6 @@ return array(
     'import' => array(
         'application.models.*',
         'application.components.*',
-        'ext.giix-components.*',
     ),
     
     'modules' => array(
@@ -27,10 +26,10 @@ return array(
             // If removed, Gii defaults to localhost only. Edit carefully to taste.
             'ipFilters' => array('127.0.0.1', '::1'),
             'generatorPaths' => array(
-                'ext.giix-core', // giix generators
+                //'ext.giix-core', // giix generators
             )
         ),
-         */
+         //*/
         'admin', 'registration',
     ),
     // application components
@@ -95,14 +94,15 @@ return array(
         //*
         'messages' => array(
             'class' =>  'CPhpMessageSource',
-            'onMissingTranslation' => YII_DEBUG ? array('CPhpMessageTranslator', 'appendMessage') : NULL,
+            //'onMissingTranslation' => YII_DEBUG ? array('CPhpMessageTranslator', 'appendMessage') : NULL,
             //'cachingDuration' => 3600 * 24,
             'language' => 'en_us',
         ),
         // */
         
         'cache' => array(
-            'class' => defined('OPRECX_CACHE') ? OPRECX_CACHE : 'CApcCache',
+            'class' => defined('OPRECX_CACHE') ? OPRECX_CACHE : 
+                    (function_exists('apc_add') ? 'CApcCache' : 'CDummyCache'),
             //'hashKey' => false,
             //'serializer' => false,
         ),
@@ -116,8 +116,8 @@ return array(
     ),
     // application-level parameters that can be accessed
     // using Yii::app()->params['paramName']
-    //'language' => 'id',
-    'onBeginRequest' => 'oprecx_init',
+    
+    
     'params' => array(
         // this is used in contact page
         'adminEmail' => 'admin@oprecx.com',

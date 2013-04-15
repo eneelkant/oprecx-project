@@ -62,9 +62,11 @@ class SiteController extends Controller
     public function actionLang($locale, $return)
     {
         //Yii::app()->session->add('lang', $locale);
-        $cookies= new CHttpCookie('lang', $locale);
-        $cookies->expire = time() + 31104000;
-        Yii::app()->request->cookies['lang'] = $cookies;
+        //$cookies= new CHttpCookie('lang', $locale);
+        //$cookies->expire = time() + 31104000;
+        //Yii::app()->request->cookies['lang'] = $cookies;
+        
+        OprecxHelper::changeLanguage($locale);
         $this->redirect($return);
     }
     

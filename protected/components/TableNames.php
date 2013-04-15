@@ -17,19 +17,19 @@ abstract class TableNames
     
     const ORGANIZATIONS = '{{organizations}}';
     const ORGANIZATION_METAS = '{{organization_metas}}';
-    const ORG_ADMINS = 'org_admins';
-    const ORG_ELMS = 'org_elms';
+    const ORG_ADMINS = '{{org_admins}}';
+    const ORG_ELMS = '{{org_elms}}';
     
-    const DIVISIONS = 'divisions';
-    const DIVISION_CHOICES = 'division_choices';
-    const DIVISION_ELMS = 'division_elms';
+    const DIVISIONS = '{{divisions}}';
+    const DIVISION_CHOICES = '{{division_choices}}';
+    const DIVISION_ELMS = '{{division_elms}}';
     
-    const FORMS = 'forms';
-    const FORM_FIELDS = 'form_fields';
-    const FORM_VALUES = 'form_values';
+    const FORMS = '{{forms}}';
+    const FORM_FIELDS = '{{form_fields}}';
+    const FORM_VALUES = '{{form_values}}';
     
-    const INTERVIEW_SLOTS = 'interview_slots';
-    const INTERVIEW_USER_SLOTS = 'interview_user_slots';
+    const INTERVIEW_SLOTS = '{{interview_slots}}';
+    const INTERVIEW_USER_SLOTS = '{{interview_user_slots}}';
 }
 
 ?>

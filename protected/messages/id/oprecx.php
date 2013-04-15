@@ -1,11 +1,13 @@
 <?php return array(
 
 ///////////   UNTRANSLATED //////////// 
-  '-- choose one --'=> '',
+  '- select -'=> '- pilih -',
 
 
 
 //Translated
+  'Welcome to Oprecx!'=> 'Selamat Datang di Oprecx!',
+  '-- choose one --'=> '-- pilih --',
   'Back'=> 'Kembali',
   'Save'=> 'Simpan',
   'Forget password'=> 'Lupa Password',
@@ -14,7 +16,6 @@
   'Login'=> 'Masuk Log',
   'Active Open Recruitment'=> 'Daftar rekruitmen terbuka',
   'Search organizations'=> 'Cari organisasi',
-  'Welcome to Oprecx!'=> 'Selamat datang di Oprecx!',
   'About'=> 'Tentang',
   'Cancel'=> 'Batal',
   'Division Choices'=> 'Pilihan Divisi',
