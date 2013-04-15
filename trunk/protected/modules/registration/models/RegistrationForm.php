@@ -48,6 +48,7 @@ class RegistrationForm extends CFormModel
                 ->query(array (':user_id' => $user_id, ':org_id'  => $org_id));
 
 
+        /** @var array $row */
         foreach ($reader as $row) {
             $options = unserialize($row['options']);
             if (!is_array($options)) 
@@ -60,6 +61,9 @@ class RegistrationForm extends CFormModel
             $options['hint']     = $row['desc'];
             $options['required'] = $row['required'];
             $options['visible']  = true;
+            if ('dropdownlist' === $options['type'] && !isset($options['prompt'])) {
+                $options['prompt'] = Yii::t('oprecx', '- select -');
+            }
             
             $this->_values[$name]   = array ($row['value'], $row['value']);
             $this->_elements[$name] = $options;

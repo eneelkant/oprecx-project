@@ -36,7 +36,7 @@ class Users extends CActiveRecord
          */
         public function tableName()
         {
-                return '{{users}}';
+                return TableNames::USERS;
         }
 
         /**
@@ -59,6 +59,17 @@ class Users extends CActiveRecord
         }
         
         /**
+         * 
+         * @return array
+         */
+        public function defaultScope()
+        {
+            return array (
+                'select' => 'id, email, full_name, img_id',
+            );
+        }
+        
+        /**
          * @return array validation rules for model attributes.
          */
         public function rules()
@@ -69,7 +80,7 @@ class Users extends CActiveRecord
                         array('email, full_name, password', 'required'),
                         array('email, full_name, link, password', 'length', 'max'=>255),
                         //array('img_id', 'length', 'max'=>10),
-                        array('updated', 'safe'),
+                        //array('updated', 'safe'),
                         // The following rule is used by search().
                         // Please remove those attributes that should not be searched.
                         array('id, email, full_name, link', 'safe', 'on'=>'search'),
@@ -85,8 +96,8 @@ class Users extends CActiveRecord
                 // class name for the relations automatically generated below.
                 return array(
                         //'oprecxDivisions' => array(self::MANY_MANY, 'Divisions', '{{division_choices}}(user_id, div_id)'),
-                        'userMetases' => array(self::HAS_MANY, 'UserMetas', 'user_id'),
-                        'img' => array(self::BELONGS_TO, 'Images', 'img_id'),
+                        //'userMetases' => array(self::HAS_MANY, 'UserMetas', 'user_id'),
+                        //'img' => array(self::BELONGS_TO, 'Images', 'img_id'),
                 );
         }
 
