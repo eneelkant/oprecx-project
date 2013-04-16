@@ -8,7 +8,7 @@ if (!file_exists($config_file)) {
 include($config_file);
 
 if (!defined('YII_PHP') || !defined('DB_CON_STRING') || !defined('DB_USER') || !defined('DB_PASSWORD') || 
-        !file_exists($yii=dirname(__FILE__). '/' . YII_PHP)) {
+        !file_exists(YII_PHP)) {
     
     header('location: setup.php?a=config');
     return;
@@ -31,7 +31,7 @@ if (defined('YII_DEBUG') && YII_DEBUG) {
     defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',3);
 }
 
-require_once($yii);
+require_once(YII_PHP);
 $app = Yii::createWebApplication(dirname(__FILE__).'/protected/config/main.php');
 OprecxHelper::initializeApp($app);
 $app->run();
