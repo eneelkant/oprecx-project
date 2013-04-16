@@ -2,16 +2,31 @@
 defined('YII_DEBUG') or define('YII_DEBUG',false);
 defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',0);
 
+$realm = 'Oprecx Setup';
+$user_name = 'oprecx';
+$password_file = dirname(__FILE__) . '/.confpsw';
+if (file_exists($password_file)) {
+    $password = file_get_contents ($password_file);
+} else {
+    $password =  md5($user_name . ':' . $realm . ':oprecx');
+    // '347386c721b20746ef1ef5a6ae910b78'; // oprecx:Oprecx Setup:oprecx
+}
+
+if (! http_digest_check()) {
+    die('Wrong Credentials!');
+}
+
 
 $config_file = dirname(__FILE__).'/config.php';
 if (file_exists($config_file)) include $config_file;
-if (!defined('DB_VERSION'))
+if (!defined('DB_VERSION')){
     define('DB_VERSION', 0);
+}
 
 $fieldmap = array (
     'yii' => array('YII_PHP', ''),
     'debug' => array('OPRECX_DEBUG', '0'),
-    
+
     'dsn' => array('DB_CON_STRING', ''),
     'user' => array('DB_USER', 'oprecx'),
     'password' => array('DB_PASSWORD',  'oprecx'),
@@ -19,17 +34,12 @@ $fieldmap = array (
     'charset' => array('DB_CHARSET', 'utf8'),
 );
 
-function field_value($field_name, $ret_def = true) {
-    global $fieldmap;
-    if (isset($_POST[$field_name])) return $_POST[$field_name];
-    elseif (defined($fieldmap[$field_name][0])) return constant ($fieldmap[$field_name][0]);
-    else return $ret_def ? $fieldmap[$field_name][1] : '';
-}
-
-
 if (isset($_POST['post_config'])) {
     $fh = fopen($config_file, 'w');
     fwrite($fh, "<?php\n");
+    if ($_POST['yii'] && $_POST['yii'][0] != '/') {
+        $_POST['yii'] = realpath(dirname(__FILE__) . '/' . $_POST['yii']);
+    }
     foreach ($fieldmap as $k => $v) {
         $value = addslashes($_POST[$k]);
         fwrite($fh, "define('{$v[0]}', \"$value\");\n");
@@ -40,8 +50,7 @@ if (isset($_POST['post_config'])) {
     return;
 }
 
-
-if (field_value('yii', false) && file_exists($yii = dirname(__FILE__) . '/' . field_value('yii', false))) {
+if (field_value('yii', false) && file_exists($yii = field_value('yii', false))) {
     require_once($yii);
 
     try {
@@ -71,8 +80,11 @@ else $page_act = 'config';
 <head>
     <title>Oprecx Setup Wizard</title>
     <style>
+        body, input {
+            font-family: "Open Sans", Calibri, Ubuntu, sans-serif;
+        }
         body {
-            font-family: "Open Sans", sans-serif;
+            
             font-size: 11pt;
             color: #444;
         }
@@ -83,15 +95,14 @@ else $page_act = 'config';
         }
         
         input[type='text'], select {
-            font-family: "Open Sans", sans-serif;
+            
             font-size: 10pt;
             width: 200px;
         }
         
         input[type='submit'] {
-            font-family: "Open Sans", sans-serif;
-            font-size: 11pt;
-            width: 120px;
+            font-size: 13pt;
+            width: 160px;
         }
         
         #header {
@@ -171,7 +182,7 @@ else $page_act = 'config';
                 <legend>General</legend>
                 <div class="row">
                     <label><span>Yii.php</span>: <input name="yii" type="text" value="<?php echo field_value('yii'); ?>" /></label>
-                    <div class="desc">relative to index.php. default: <code>framework/yiilite.php</code></div>
+                    <div class="desc">yii framework bootstrap file. can be relative or absolute. default: <code>framework/yiilite.php</code></div>
                 </div>
                 <div class="row">
                     <label><span>Debug</span>: <input name="debug" type="text" value="<?php echo field_value('debug'); ?>" /></label>
@@ -198,9 +209,8 @@ else $page_act = 'config';
                     <label><span>Charset</span>: <select name="charset"><option>utf8</option></select></label>
                 </div>
             </fieldset>
-            <input type="submit" name="post_config" value="submit" />
+            <p align="center"><input type="submit" name="post_config" value="submit" /></p>
         </form>
-        <p><i>Connection string yang disarankan = </i><code>mysql:host=localhost;dbname=oprecx</code></p>
         <?php endif; ?>
         
         
@@ -253,3 +263,57 @@ else $page_act = 'config';
     </div>
 </body>
 </html>
+<?php
+
+
+
+function field_value($field_name, $ret_def = true) {
+    global $fieldmap;
+    if (isset($_POST[$field_name])) return $_POST[$field_name];
+    elseif (defined($fieldmap[$field_name][0])) return constant ($fieldmap[$field_name][0]);
+    else return $ret_def ? $fieldmap[$field_name][1] : '';
+}
+
+
+function http_digest_check() {
+    global $realm, $user_name, $password;
+    
+    if (empty($_SERVER['PHP_AUTH_DIGEST'])) {
+        header('HTTP/1.1 401 Unauthorized');
+        header('WWW-Authenticate: Digest realm="'.$realm.
+               '",qop="auth",nonce="'.uniqid().'",opaque="'.md5($realm).'"');
+
+        die('Not Authenticated');
+    }
+
+
+    // analyze the PHP_AUTH_DIGEST variable
+    if (!($data = http_digest_parse($_SERVER['PHP_AUTH_DIGEST'])) || $data['username'] !== $user_name)
+        return false;
+
+
+    // generate the valid response
+    //$A1 = md5($data['username'] . ':' . $realm . ':' . $users[$data['username']]);
+    
+    $A2 = md5($_SERVER['REQUEST_METHOD'].':'.$data['uri']);
+    $valid_response = md5($password.':'.$data['nonce'].':'.$data['nc'].':'.$data['cnonce'].':'.$data['qop'].':'.$A2);
+
+    return ($data['response'] == $valid_response);
+}
+// function to parse the http auth header
+function http_digest_parse($txt)
+{
+    // protect against missing data
+    $needed_parts = array('nonce'=>1, 'nc'=>1, 'cnonce'=>1, 'qop'=>1, 'username'=>1, 'uri'=>1, 'response'=>1);
+    $data = array();
+    $keys = implode('|', array_keys($needed_parts));
+
+    preg_match_all('@(' . $keys . ')=(?:([\'"])([^\2]+?)\2|([^\s,]+))@', $txt, $matches, PREG_SET_ORDER);
+
+    foreach ($matches as $m) {
+        $data[$m[1]] = $m[3] ? $m[3] : $m[4];
+        unset($needed_parts[$m[1]]);
+    }
+
+    return $needed_parts ? false : $data;
+}
