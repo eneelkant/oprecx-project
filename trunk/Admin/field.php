@@ -27,18 +27,17 @@
         <div data-options="region:'center',title:'Divisi/Biro',iconCls:'icon-ok'">  
             <div style="margin:10px 10;">
     
-    <table id="dg" title="" class="easyui-datagrid" style="width:700px;height:250px"  
+    <table id="dg" class="easyui-datagrid" style="width:700px;height:250px"  
             url="get_users.php"  
             toolbar="#toolbar" pagination="true"  
             rownumbers="true" fitColumns="true" singleSelect="true">  
         <thead>  
             <tr>  
                 <th field="nama" width="100">Nama</th>  
-                <th field="PJ" width="100">Nama PJ</th>  
-                <th field="kuota" width="50">Kuota</th>   
+                <th field="PJ" width="100">Berlaku untuk</th>  
             </tr>  
         </thead>  
-    </table>
+    </table>  
     <div id="toolbar">  
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">New</a>  
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">Edit</a>  
@@ -54,12 +53,12 @@
                 <input name="firstname" class="easyui-validatebox" required="true">  
             </div>  
             <div class="fitem">  
-                <label>Nama PJ:</label>  
-                <input name="lastname" class="easyui-validatebox" required="true">  
-            </div>  
-            <div class="fitem">  
-                <label>Kuota:</label>  
-                <input name="phone">  
+                <label>berlaku :</label>
+                <!-- ke input gak ya datanya?? -->
+                <select name="berlaku">
+                <option value="all">Semua Divisi</option>
+                </select>
+                <!--<input name="lastname" class="easyui-validatebox" required="true">-->  
             </div>  
         </form>  
     </div>  
