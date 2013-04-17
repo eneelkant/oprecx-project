@@ -1,11 +1,12 @@
 <?php return array(
 
 ///////////   UNTRANSLATED //////////// 
-  '- select -'=> '- pilih -',
+  'Next'=> 'Lanjut',
 
 
 
 //Translated
+  '- select -'=> '- pilih -',
   'Welcome to Oprecx!'=> 'Selamat Datang di Oprecx!',
   '-- choose one --'=> '-- pilih --',
   'Back'=> 'Kembali',

@@ -35,7 +35,8 @@ class RegistrationForm extends CFormModel
          * @var CDbDataReader sql ini manggil 
          */
         $reader = Yii::app()->db->createCommand()
-                ->select('oe.elm_id AS form_id, oe.name AS form_name, fv.value, ff.*')
+                //->select('oe.elm_id AS form_id, oe.name AS form_name, fv.value, ff.*')
+                ->selectDistinct('oe.elm_id AS form_id, oe.name AS form_name, oe.weight AS oe_weight, fv.value, ff.*')
                 
                 ->from('{{form_fields}} ff')
                 ->join('{{org_elms}} oe', 'oe.elm_id = ff.form_id AND oe.org_id = :org_id')
@@ -43,7 +44,7 @@ class RegistrationForm extends CFormModel
                 ->join('{{division_choices}} dc', 'dc.div_id = de.div_id AND dc.user_id = :user_id')
                 ->leftJoin('{{form_values}} fv', 'fv.field_id = ff.field_id AND fv.user_id = :user_id')
                 
-                ->group('oe.elm_id, oe.name, fv.value, ff.field_id') // takut dabel
+                //->group('ff.field_id') // takut dabel
                 ->order('oe.weight, oe.name, ff.weight, ff.created')
                 ->query(array (':user_id' => $user_id, ':org_id'  => $org_id));
 
@@ -62,8 +63,10 @@ class RegistrationForm extends CFormModel
             $options['required'] = $row['required'];
             $options['visible']  = true;
             if ('dropdownlist' === $options['type'] && !isset($options['prompt'])) {
-                $options['prompt'] = Yii::t('oprecx', '- select -');
+                $options['prompt'] = '<<' . $options['label'] . '>>'; //Yii::t('oprecx', '- select -');
             }
+            if (!isset($options['placeholder']))
+                $options['placeholder'] = $options['label'];
             
             $this->_values[$name]   = array ($row['value'], $row['value']);
             $this->_elements[$name] = $options;

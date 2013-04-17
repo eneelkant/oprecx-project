@@ -22,7 +22,7 @@ class UserIdentity extends CUserIdentity {
     public function authenticate() {
         /** @var Users $record Description */
         $row = Yii::app()->db->createCommand()
-                ->select('id, password')
+                ->select('id, password, full_name')
                 ->from(TableNames::USERS)
                 ->where('email = :email', array('email' => $this->username))
                 ->limit(1)
@@ -35,7 +35,7 @@ class UserIdentity extends CUserIdentity {
             $this->errorCode = self::ERROR_PASSWORD_INVALID;
         else {
             $this->_id = $row['id'];
-            //$this->setState('fullname', $record->full_name);
+            $this->setState('fullname', $row['full_name']);
             $this->errorCode = self::ERROR_NONE;
             $this->authenticated = true;
         }
@@ -72,7 +72,7 @@ class UserIdentity extends CUserIdentity {
     }
 
     public static function getFullName ($id) {
-        
+        //return $user->getState('fullname');
         return Users::model()->findByPk($id)->full_name;
         
     }

@@ -60,10 +60,18 @@ class Divisions extends CActiveRecord
                 );
         }
         
+        /**
+         * 
+         * @param int $orgId
+         * @param string $conditions
+         * @param array $params
+         * @return Divisions[]
+         */
         public function findAllByOrg($orgId, $conditions = '', $params = array()) {
-            $model = self::model();
-            
-            return $model->findAllByAttributes(array('org_id' => $orgId), $conditions, $params);
+            $depend = new CDbCacheDependency;
+            $depend->sql = 'SELECT updated FROM ' . TableNames::ORGANIZATIONS . ' WHERE id = :org_id LIMIT 1';
+            $depend->params = array('org_id' => $orgId);
+            return $this->cache(900, $depend)->findAllByAttributes(array('org_id' => $orgId), $conditions, $params);
         }
         
         /**

@@ -21,7 +21,10 @@ class DivisionChoiceForm extends CFormModel {
     
     /** @var string[] */
     public $choices;
+
+    public $min_choice, $max_choice;
     
+
 
     /**
      * 
@@ -31,6 +34,8 @@ class DivisionChoiceForm extends CFormModel {
     function __construct($scenario = '', $org = null, $divisions = null) {
         $this->_org = $org;
         $this->_allDivisions = $divisions;
+        $this->min_choice = 1;
+        $this->max_choice = 3;
         
         parent::__construct($scenario);
         
@@ -54,7 +59,8 @@ class DivisionChoiceForm extends CFormModel {
     public function setUserId($userId) {
         if ($userId) {
             $command = Yii::app()->db->createCommand()
-                        ->from('{{divisions}} d')->select('d.div_id')->from('{{division_choices}} dc')
+                        ->select('d.div_id')
+                        ->from('{{division_choices}} dc')
                         ->join('{{divisions}} d', 'dc.div_id = d.div_id AND d.org_id = :org_id AND d.enabled = 1', array('org_id' => $this->_org->id))
                         ->order('dc.weight, d.weight, d.name')
                         ->where('dc.user_id = :user_id', array('user_id' => $userId));
@@ -84,8 +90,11 @@ class DivisionChoiceForm extends CFormModel {
         }
         $div_count = count($divs);
         $this->choices = $divs;
-        if ($div_count < 1 || $div_count > 3) {
-            $this->addError('choices', 'Minimal 1 Max 3');
+        if ($div_count < $this->min_choice || $div_count > $this->max_choice) {
+            $this->addError('choices', Yii::t('oprecx', 'You must select at least {min} and at most {max}.',array(
+                    '{min}' => Yii::t('oprecx', 'a division|{count} divisions', $this->min_choice),
+                    '{max}' => Yii::t('oprecx', 'a division|{count} divisions', $this->max_choice),
+                )));
         }
     }
     

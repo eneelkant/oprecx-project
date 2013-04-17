@@ -26,33 +26,29 @@ jQuery(function($, undefined){
 
 
 /* @var $form CActiveForm */
-$form = $this->beginWidget('CActiveForm', array(
-            'id' => 'interview-slot-form',
-            'enableClientValidation' => false,
-            'clientOptions' => array(
-                'validateOnSubmit' => false,
-            ),
-        )
-);
+//$form = 
+$this->beginWidget('CActiveForm', array(
+    'id' => 'interview-slot-form',
+    'enableClientValidation' => false,
+    'clientOptions' => array(
+        'validateOnSubmit' => false,
+    ),
+));
 
-$tables = $model->getTables();
-foreach ($tables as $id => $table) {
+foreach ($model->getTables() as $id => $table) {
     echo '<fieldset>', $table['name'], '<div class="slots">';
     //$slots = array();
     foreach ($table['slots'] as $date) {
         $value = sprintf('%04d-%02d-%02d', $date[0], $date[1], $date[2]); // "{$date[0]}-{$date[1]}-{$date[2]}";
         $elmid = "InterviewSlotForm_time_{$id}_{$date[0]}_{$date[1]}_{$date[2]}_";
         //$date_str = sprintf('%02d/%02d/%02d', $date[2], $date[1], $date[0]);
-        $date_str = strftime('%A %d %B %Y', mktime(1, 0, 0, $date[1], $date[2], $date[0]));
+        //$date_str = strftime('%A %d %B %Y', mktime(1, 0, 0, $date[1], $date[2], $date[0]));
+        $date_str = Yii::app()->getLocale()->getDateFormatter()->formatDateTime($value, 'full', NULL);
         echo '<div class="date"><h3>', $date_str, '</h3><div data-role="controlgroup" data-type="horizontal">';
         foreach ($date[3] as $slot) {
             $time = $slot[0];
             
             $thisId = $elmid . $time;
-            /*echo '<span class="time"><input type="radio" name="InterviewSlotForm[time][', $id, ']" value="', $value, ' ', 
-                    int_to_time($time, true), '" id="', $thisId, '" data-role="none" data-inline="true" /><label for="', 
-                    $thisId, '" class="time-label" data-time="', $date_str, '" data-slotid="', $id, '">', 
-                    int_to_time($time), '-', int_to_time($time + $table['duration']), '</label></span>', PHP_EOL; */
             $label_class = 'time-label ';
             if ($slot[1]) $label_class .= 'time-label-available time-label-selected';
             elseif ($slot[2] >= $slot[3]) $label_class .= 'time-label-full';
@@ -91,7 +87,7 @@ function int_to_time($t, $second = false) {
     <p><span id="selected-time"></span><input type="submit" value="Submit" data-theme="b" id="submit-button-alt" /></p>
 </div>
 <?php
-echo CHtml::submitButton('Submit', array('data-theme' => 'b'));
+$this->renderPartial('submit');
 $this->endWidget();
 ?>
 </div>

@@ -30,7 +30,7 @@ class OprecxHelper
                         'password' => 'gii',
                     ))
             );
-            
+            $app->cache->hashKey = false;
         }
     }
 }

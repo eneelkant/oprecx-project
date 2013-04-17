@@ -13,7 +13,7 @@ $user = Yii::app()->user;
         <div class="user-name">
             <?php
             if (!$user->isGuest) {
-                echo '<span>', CHtml::encode(UserIdentity::getFullName($user->id)), '</span> | ';
+                echo '<span>', CHtml::encode($user->getState('fullname')), '</span> | ';
                 echo CHtml::link(Yii::t('oprecx', 'Log Out'), array ('/user/logout'));
             }
             else {

@@ -1,4 +1,12 @@
 <?php
+/**
+ * Oprecx Configuration Editor
+ * 
+ * @version 0.1
+ * @package oprecx
+ */
+
+
 defined('YII_DEBUG') or define('YII_DEBUG',false);
 defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL',0);
 
@@ -36,7 +44,7 @@ $fieldmap = array (
 
 if (isset($_POST['post_config'])) {
     $fh = fopen($config_file, 'w');
-    fwrite($fh, "<?php\n");
+    fwrite($fh, "<?php\n/* DO NOT EDIT -- USE SETUP.PHP TO CONFIGURE OPRECX */\n\n");
     if ($_POST['yii'] && $_POST['yii'][0] != '/') {
         $_POST['yii'] = realpath(dirname(__FILE__) . '/' . $_POST['yii']);
     }

@@ -26,12 +26,12 @@ class InterviewSlotForm extends CFormModel
     public function getTables(){
         if (! isset($this->_tables)) {
             $reader = Yii::app()->db->createCommand()
-                    ->select('oe.elm_id as id, oe.name, i.*')
+                    ->selectDistinct('i.*, oe.name, oe.weight')
                     ->from('{{interview_slots}} i')
                     ->join('{{org_elms}} oe', 'oe.elm_id = i.elm_id AND oe.org_id = :org_id')
                     ->join('{{division_elms}} de', 'de.elm_id = oe.elm_id')
                     ->join('{{division_choices}} dc', 'dc.div_id = de.div_id AND dc.user_id = :user_id')
-                    ->group('i.elm_id, oe.elm_id, oe.name')
+                    //->group('i.elm_id, oe.elm_id')
                     ->order('oe.weight, oe.name')
                     ->query(array ('user_id' => $this->_userId, 'org_id'  => $this->_orgId));
 
@@ -41,7 +41,7 @@ class InterviewSlotForm extends CFormModel
                 $row['options'] = unserialize($row['options']);
 
                 $row['slots'] = $this->parseSlotTable($row);
-                $tables[$row['id']] = $row;
+                $tables[$row['elm_id']] = $row;
             }
             $this->_tables =& $tables;
         }
@@ -63,7 +63,7 @@ class InterviewSlotForm extends CFormModel
 12	December	31 days
      */
     private function parseSlotTable($arg) {
-        $id = $arg['id'];
+        $id = $arg['elm_id'];
         $startDate = $arg['start_date'];
         $endDate = $arg['end_date'];
         $time_ranges = $arg['time_range'];
