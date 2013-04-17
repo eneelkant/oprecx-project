@@ -49,7 +49,7 @@ class Organizations extends CActiveRecord
         $cacheId = 'oprecx:Organization:name=' . $name;
         if (($obj     = $cache->get($cacheId)) == false) {
             $obj            = self::model()->findByAttributes(array ('name' => $name));
-            $depend         = new CDbCacheDependency('SELECT updated FROM ' . TableNames::ORGANIZATIONS . ' WHERE name=:name');
+            $depend         = new CDbCacheDependency('SELECT updated FROM ' . TableNames::ORGANIZATIONS . ' WHERE name=:name LIMIT 1');
             $depend->params = array ('name' => $name);
             $cache->set($cacheId, $obj, 0, $depend);
         }
@@ -68,11 +68,6 @@ class Organizations extends CActiveRecord
     public function tableName()
     {
         return TableNames::ORGANIZATIONS;
-    }
-
-    public function getDivisions($user_id = 0)
-    {
-        
     }
 
     /**
@@ -114,9 +109,9 @@ class Organizations extends CActiveRecord
         // class name for the relations automatically generated below.
         return array (
             'divisions'           => array (self::HAS_MANY, 'Divisions', 'org_id'),
-            'forms'               => array (self::HAS_MANY, 'Forms', 'org_id'),
-            'organizationMetases' => array (self::HAS_MANY, 'OrganizationMetas', 'org_id'),
-            'img'                 => array (self::BELONGS_TO, 'Images', 'img_id'),
+            //'forms'               => array (self::HAS_MANY, 'Forms', 'org_id'),
+            //'organizationMetases' => array (self::HAS_MANY, 'OrganizationMetas', 'org_id'),
+            //'img'                 => array (self::BELONGS_TO, 'Images', 'img_id'),
         );
     }
 

@@ -24,10 +24,11 @@ if (! Yii::app()->user->getIsGuest()) {
     $dropDownListAttr = array('prompt' => Yii::t('oprecx', '-- choose one --'));
     $fieldSet = JqmTag::jTag('fieldset', 'controlgroup')
             ->appendContent($form->errorSummary($model));
-    for($i = 0; $i < 2; ++$i) {
+    for($i = 0; $i < $model->max_choice; ++$i) {
         $fieldSet->appendContent(CHtml::activeDropDownList($model, "choices[$i]", $model->allDivisionsName, $dropDownListAttr));
     }
     $fieldSet->render(true);
+    echo CHtml::error($model, 'choices');
     
     // render submit button
     $this->renderPartial('submit');

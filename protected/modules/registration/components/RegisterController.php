@@ -16,13 +16,14 @@ abstract class RegisterController extends Controller {
     /** @var Organizations $org current organization */
     private $_org;
     public $page_class;
+    public $isWizard = false;
     
     public function getURL($actions, $args = array(), $relative = true) {
-        if ($relative) {
-            return CHtml::normalizeUrl(array_merge(array($actions, 'org_name' => $this->actionParams['org_name']), $args));
-        } else {
-            return $this->createUrl($actions, $args);
-        }        
+        $theArg = array($actions, 'org_name' => $this->actionParams['org_name']);
+        //if ($this->isWizard) $theArg['wiz'] = 1;
+        
+        $url = CHtml::normalizeUrl(array_merge($theArg, $args));
+        return $relative ? $url : Yii::app()->getRequest()->getHostInfo() . $url;
     }
 
     public function getOrg() {
@@ -40,6 +41,8 @@ abstract class RegisterController extends Controller {
         } else {
             throw new CHttpException(404,Yii::t('oprecx','Page Not Found "{action}".'));
         }
+        
+        //$this->isWizard = isset($params['wiz']) && $params['wiz'] == 1;
         
         //var_dump($this->actionParams);
         

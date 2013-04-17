@@ -21,8 +21,10 @@ $this->page_class[] = 'page-home';
 <?php if (Yii::app()->user->isGuest) : ?>
 <?php
 /** @var CForm $regForm */
-
+$regForm->activeForm['htmlOptions']['data-ajax'] = 'false';
 $regForm->buttons['register']->attributes['data-theme'] = 'b';
+
+$loginForm->activeForm['htmlOptions']['data-ajax'] = 'false';
 $loginForm->buttons['login']->attributes['data-theme'] = 'b';
 
 ?>

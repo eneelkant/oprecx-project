@@ -4,9 +4,8 @@
 
 $this->pageTitle = Yii::app()->name;
 
-$btnAttr =& $form->buttons['login']->attributes;
-$btnAttr['data-theme'] = 'b';
-$form->activeForm['htmlOptions'] = array('data-ajax' => 'false');
+$form->buttons['login']->attributes['data-theme'] = 'b';
+$form->activeForm['htmlOptions']['data-ajax'] = 'false';
 ?>
 <div class="ui-grid-a">
     <div class="ui-block-a">
