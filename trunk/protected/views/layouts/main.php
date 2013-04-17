@@ -6,8 +6,9 @@ $jsUrl = Yii::app()->request->baseUrl . '/js/';
 if (! YII_DEBUG) {
     $jsFiles = array(
         array('http://code.jquery.com/jquery-1.9.1.min.js', 
-            array('http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js', 
-                $jsUrl . 'oprecx.js?m=' . filemtime(Yii::app()->basePath . '/../js/oprecx.js')
+            array(
+                $jsUrl . 'oprecx.js?m=' . filemtime(Yii::app()->basePath . '/../js/oprecx.js'),
+                'http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js', 
             )
         ),
     );
@@ -15,8 +16,8 @@ if (! YII_DEBUG) {
 } else {
     $jsFiles = array(
         array($jsUrl . 'jquery-1.9.0.js', 
-            array($jsUrl . 'jquery.mobile-1.3.1.js', 
-                $jsUrl . 'oprecx.js?m=' . filemtime(Yii::app()->basePath . '/../js/oprecx.js')
+            array($jsUrl . 'oprecx.js?m=' . filemtime(Yii::app()->basePath . '/../js/oprecx.js'),
+                $jsUrl . 'jquery.mobile-1.3.1.js',                 
             )
         ),
     );
@@ -38,7 +39,7 @@ if (! YII_DEBUG) {
         <script>
         var lazyLoad = <?php echo json_encode($jsFiles); ?>;
         </script>
-        <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/load.js" async></script>
+        <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/load.js"></script>
         <?php endif; ?>
     </head>
     <body class="ui-mobile-viewport ui-overlay-c" id="body">

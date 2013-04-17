@@ -210,7 +210,8 @@ form .hint {
   margin-bottom: .5em; }
 #page-registration-default-interview .date h3 {
   margin-bottom: 0;
-  font-size: 1.1em; }
+  font-size: 1.1em;
+  padding: .2em; }
 @media all and (min-width: 32em) {
   #page-registration-default-interview .date {
     width: 25%;

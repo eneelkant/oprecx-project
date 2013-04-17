@@ -1,25 +1,3 @@
-<script>
-jQuery(function($, undefined){
-    var curSelect = [];
-    $('#submit-button-alt').click(function(){
-        $('#interview-slot-form').submit();
-    });
-    $('.time-label-selected').each(function(i, elm) {
-        var dis = $(this);
-        curSelect[dis.data('slotid')] = dis;
-    });
-    $('.time-label-available').click(function(e) {
-        var dis = $(this);
-        var curElm = curSelect[dis.data('slotid')];
-        if (curElm) curElm.removeClass('time-label-selected');
-        dis.addClass('time-label-selected');
-        curSelect[dis.data('slotid')] = dis;
-        $('#selected-time').html(dis.data('time') + ' ' + dis.html());
-        $('#submit-popup').popup('open', {positionTo: this, transition: 'pop'});
-    });
-});
-</script>
-<div id="interview">
 <?php
 /* @var $this DefaultController */
 /* @var $model InterviewSlotForm */
@@ -89,5 +67,3 @@ function int_to_time($t, $second = false) {
 <?php
 $this->renderPartial('submit');
 $this->endWidget();
-?>
-</div>
