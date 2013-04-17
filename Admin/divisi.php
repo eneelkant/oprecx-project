@@ -38,7 +38,7 @@
                 <th field="kuota" width="50">Kuota</th>   
             </tr>  
         </thead>  
-    </table>
+    </table>  
     <div id="toolbar">  
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">New</a>  
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">Edit</a>  
