@@ -11,31 +11,31 @@ $this->page_class[] = 'page-home';
 
 <div class ="org-description">
 <?php echo $this->org->description; ?>
+    
+</div>
+
+
+<?php if (Yii::app()->user->isGuest) : ?>
     <p class="view-division">
         <?php echo CHtml::link(Yii::t('oprecx', 'View all divisions on {org}', array('{org}' => $this->org->full_name)), 
                 $this->getURL('division')); ?>
     </p>
-</div><hr class="sep" />
+    <?php
+    $grid = JqmGrid::createGrid();
 
+    $loginForm->activeForm['htmlOptions']['data-ajax'] = 'false';
+    $loginForm->buttons['login']->attributes['data-theme'] = 'b';
+    $grid->addColumn($loginForm->render())->id('userregister')
+            ->appendContent(Yii::t('oprecx', 'Have Facebook or Twitter account? You can login via {facebook} or {twiiter}.'));
 
-<?php if (Yii::app()->user->isGuest) : ?>
-<?php
-/** @var CForm $regForm */
-$regForm->activeForm['htmlOptions']['data-ajax'] = 'false';
-$regForm->buttons['register']->attributes['data-theme'] = 'b';
+    $regForm->activeForm['htmlOptions']['data-ajax'] = 'false';
+    $regForm->buttons['register']->attributes['data-theme'] = 'b';
+    $grid->addColumn($regForm->render())->id('userregister');
 
-$loginForm->activeForm['htmlOptions']['data-ajax'] = 'false';
-$loginForm->buttons['login']->attributes['data-theme'] = 'b';
-
-?>
-    <div class="ui-grid-a register-login">
-        <div class="ui-block-a" id="userregister">
-            <?php echo $regForm->render();?>
-        </div>
-        <div class="ui-block-b" id="userlogin">
-            <?php echo $loginForm->render();?>
-        </div>
-    </div>
+    $grid->appendClass('register-login')
+         ->render(true);
+    ?>
 <?php else : ?>
-    <?php JqmTag::buttonLink('Daftar', $this->getURL('division'))->inline()->icon('check')->render(true); ?>
+    <hr class="sep" />
+    <?php $this->renderPartial('summary'); ?>
 <?php endif; ?>

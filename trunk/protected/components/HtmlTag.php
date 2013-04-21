@@ -38,6 +38,14 @@ class HtmlTag
         );
     }
    
+    /**
+     * 
+     * @param type $tag
+     * @param type $attributes
+     * @param type $html
+     * @param type $close_tag
+     * @return HtmlTag
+     */
     public static function tag($tag, $attributes = array(), $html = null, $close_tag = true) {
         return new HtmlTag($tag, $attributes, $html, $close_tag);
     }
@@ -88,7 +96,7 @@ class HtmlTag
         if (is_array($class)) $class = implode (' ', $class);
         
         if (isset($this->attributes['class']))
-            $this->attributes['class'] .= $class;
+            $this->attributes['class'] .= ' ' . $class;
         else 
             $this->attributes['class'] = $class;
         
