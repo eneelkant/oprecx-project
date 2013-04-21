@@ -96,7 +96,7 @@ return array(
             'class' =>  'CPhpMessageSource',
             //'onMissingTranslation' => YII_DEBUG ? array('CPhpMessageTranslator', 'appendMessage') : NULL,
             //'cachingDuration' => 3600 * 24,
-            'language' => 'en_us',
+            'language' => 'en', // dont change it
         ),
         // */
         
@@ -122,9 +122,14 @@ return array(
         // this is used in contact page
         'adminEmail' => 'admin@oprecx.com',
         
+        'defaultLang' => 'id',
         'supportedLang' => array(
             'id' => 'Bahasa Indonesia',
-            'en_us' => 'English',
+            'en' => 'English',
         ),
+        'langMap' => array(
+            'en-us' => 'en',
+            'id-id' => 'id',
+        )
     ),
 );

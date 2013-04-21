@@ -1,11 +1,19 @@
 <?php return array(
 
 ///////////   UNTRANSLATED //////////// 
-  'Next'=> 'Lanjut',
+  'Have Facebook or Twitter account? You can login via {facebook} or {twiiter}.'=> 'Punya akun Facebook atau Twitter? Kamu juga bisa daftar oprecx dengan {facebook} atau {twitter}.',
 
 
 
 //Translated
+  'You have choosen {division}.'=> 'Kamu memilih {division}.',
+  '1#a division|>1#{n} divisions'=> '1#satu divisi|>1#{n} divisi',
+  'You must select at least {min} and at most {max}.'=> 'Kamu harus memilih minimal {min} dan maksimal {max}.',
+  'Not Filled'=> 'Belum diisi',
+  'OK'=> 'Oke',
+  'You have choosen {divisions} and {division}.'=> 'Kamu memilih {divisions} dan {division}',
+  '{date} at {time}'=> '{date} pukul {time}',
+  'Next'=> 'Lanjut',
   '- select -'=> '- pilih -',
   'Welcome to Oprecx!'=> 'Selamat Datang di Oprecx!',
   '-- choose one --'=> '-- pilih --',
@@ -14,7 +22,7 @@
   'Forget password'=> 'Lupa Password',
   'Register'=> 'Daftar',
   'Register Account'=> 'Daftar Akun',
-  'Login'=> 'Masuk Log',
+  'Login'=> 'Masuk',
   'Active Open Recruitment'=> 'Daftar rekruitmen terbuka',
   'Search organizations'=> 'Cari organisasi',
   'About'=> 'Tentang',

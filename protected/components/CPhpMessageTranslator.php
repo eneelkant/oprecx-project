@@ -35,8 +35,10 @@ class CPhpMessageTranslator extends CApplicationComponent{
                 $fh = fopen($fileName, 'w');
                 fwrite($fh, "<?php return array(\n\n///////////   UNTRANSLATED //////////// \n");
                 self::writeKeyPair($fh, $untranslated);
+                
                 fwrite($fh, "\n\n\n//Translated\n");
-                self::writeKeyPair($fh, $translated);
+                if (isset($translated))
+                    self::writeKeyPair($fh, $translated);
                 fwrite($fh, ");\n");
                 fclose($fh);
                 //$merged = array_merge($untranslated, $translated);

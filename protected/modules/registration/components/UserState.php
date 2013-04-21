@@ -56,13 +56,13 @@ class UserState extends CComponent
         //$cacheName = "oprecx:UserState:userId={$userId}:orgId={$orgId}";
         $objName = "{$userId}:{$orgId}";
         if (!isset(self::$_loaded[$objName])) {
+            $obj = new UserState;
+            $obj->_userId = $userId;
+            $obj->_orgId = $orgId;
             if (false === ($data = Yii::app()->cache->get(sprintf(self::$_cacheName, $userId, $orgId)))) {
                 $data = array();
                 $obj->setModified();
             }
-            $obj = new UserState;
-            $obj->_userId = $userId;
-            $obj->_orgId = $orgId;
             $obj->_data = $data;
             self::$_loaded[$objName] =& $obj;
         }
@@ -78,7 +78,8 @@ class UserState extends CComponent
     
     public function save() {
         if ($this->_modified) {
-            Yii::app()->cache->set(sprintf(self::$_cacheName, $this->_userId, $this->_orgId), $this, 60);
+            Yii::app()->cache->set(sprintf(self::$_cacheName, $this->_userId, $this->_orgId), $this->_data, 60);
+            $this->_modified = false;
         }
     }
 
@@ -101,33 +102,57 @@ class UserState extends CComponent
         return $this->_orgId;
     }
     
+    /**
+     * 
+     * @param CDbDataReader $reader
+     * @param string $pk
+     * @return Object[]
+     */
+    private static function &arrayToObject($reader, $pk = null)
+    {
+        $arr = array();
+        foreach ($reader as $row) {
+            if ($pk) {
+                $arr[$row[$pk]] = (Object) $row;
+            } else {
+                $arr[] = (Object) $row;
+            }
+        }
+        return $arr;
+    }
     
     /**
      * 
-     * @return array
+     * @return UserStateDivisionChoice[]
      */
     public function getDivisionChoices()
     {
         if (! isset($this->_data['division'])) {
-            $this->_data['division'] = Yii::app()->db->createCommand()
-                    ->select('d.div_id')
-                    ->from(TableNames::DIVISION_CHOICES . ' dc')
-                    ->join(TableNames::DIVISION_CHOICES . ' d', 
-                            'dc.div_id = d.div_id AND d.org_id = :org_id AND d.enabled = 1')
-                    ->order('dc.weight, d.weight, d.name')
-                    ->where('dc.user_id = :user_id')
-                    ->queryColumn(array('org_id' => $this->_orgId, 'user_id' => $this->_userId));
+            $this->_data['division'] = self::arrayToObject(
+                    Yii::app()->db->createCommand()
+                        ->select('d.div_id, d.name AS div_name')
+                        ->from(TableNames::DIVISION_CHOICES . ' dc')
+                        ->join(TableNames::DIVISIONS . ' d', 
+                                'dc.div_id = d.div_id AND d.org_id = :org_id AND d.enabled = 1')
+                        ->order('dc.weight, d.weight, d.name')
+                        ->where('dc.user_id = :user_id')
+                        ->queryAll(true, array('org_id' => $this->_orgId, 'user_id' => $this->_userId))
+                    );
             $this->setModified();
         }
         
-        return $this->$this->_data['division'];
+        return $this->_data['division'];
     }
     
+    /**
+     * 
+     * @return UserStateFormStatus[]
+     */
     public function getFormStatus() 
     {
         if (! isset($this->_data['form'])) {
-            $reader = Yii::app()->db->createCommand()
-                    ->select('f.elm_id AS form_id,  COUNT(*) AS unfilled')
+            $command = Yii::app()->db->createCommand()
+                    ->select('f.elm_id AS form_id, oe.name as form_name,  (COUNT(ff2.*) - COUNT(fv.value)) = 0 AS filled')
                     ->from(TableNames::FORMS . ' f')
                     ->join(TableNames::ORG_ELMS . ' oe',
                             'oe.elm_id = f.elm_id AND oe.org_id = :org_id')
@@ -136,21 +161,41 @@ class UserState extends CComponent
                     ->join(TableNames::DIVISION_CHOICES . ' dc',
                             'dc.div_id = de.div_id AND dc.user_id = :user_id')
                     ->leftJoin(TableNames::FORM_FIELDS . ' ff', 
-                            'ff.form_id = f.elm_id AND ff.required')
+                            'ff.form_id = f.elm_id AND ff.required = 1')
+                    ->leftJoin(TableNames::FORM_FIELDS . ' ff2', 
+                            'ff2.form_id = f.elm_id AND ff2.required = 1')
                     ->leftJoin(TableNames::FORM_VALUES . ' fv', 
                             'fv.field_id = ff.field_id AND fv.user_id = :user_id')
-                    ->order('f.elm_id, oe.name')
-                    //->where('dc.user_id = :user_id')
-                    ->query(array('org_id' => $this->_orgId, 'user_id' => $this->_userId));
-            $form = array();
-            foreach ($reader as $row) {
-                $form[$row['form_id']] = $row['unfilled'];
-            }
-            $this->_data['form'] = $form;
+                    ->order('oe.weight, oe.name')
+                    ->group('f.elm_id, oe.weight, oe.name');
+            $this->_data['form'] = self::arrayToObject(
+                    $command->queryAll(true, array('org_id' => $this->_orgId, 'user_id' => $this->_userId))
+                );
             $this->setModified();
         }
         
-        return $this->$this->_data['form'];
+        return $this->_data['form'];
+    }
+    
+    public function getSelectedInterviewSlot() {
+        if (!isset($this->_data['slots'])) {
+            $this->_data['slots'] = Yii::app()->db->createCommand()
+                    ->selectDistinct('iss.elm_id as slot_id, oe.name AS slot_name, ius.time, oe.weight')
+                    ->from(TableNames::INTERVIEW_SLOTS . ' iss')
+                    ->join(TableNames::ORG_ELMS . ' oe',
+                            'oe.elm_id = iss.elm_id AND oe.org_id = :org_id')
+                    ->join(TableNames::DIVISION_ELMS . ' de',
+                            'de.elm_id = oe.elm_id')
+                    ->join(TableNames::DIVISION_CHOICES . ' dc',
+                            'dc.div_id = de.div_id AND dc.user_id = :user_id')
+                    ->leftJoin(TableNames::INTERVIEW_USER_SLOTS . ' ius', 
+                            'ius.slot_id = iss.elm_id AND ius.user_id = :user_id')
+                    ->order('oe.weight, oe.name')
+                    //->where('dc.user_id = :user_id')
+                    ->queryAll(true, array('org_id' => $this->_orgId, 'user_id' => $this->_userId));
+            $this->setModified();
+        }
+        return self::arrayToObject($this->_data['slots']);
     }
 }
 

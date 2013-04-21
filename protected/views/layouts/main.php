@@ -17,7 +17,7 @@ if (! YII_DEBUG) {
     $jsFiles = array(
         array($jsUrl . 'jquery-1.9.0.js', 
             array($jsUrl . 'oprecx.js?m=' . filemtime(Yii::app()->basePath . '/../js/oprecx.js'),
-                $jsUrl . 'jquery.mobile-1.3.1.js',                 
+                $jsUrl . 'jquery.mobile-1.3.0.js',                 
             )
         ),
     );

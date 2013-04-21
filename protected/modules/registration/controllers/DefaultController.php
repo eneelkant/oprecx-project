@@ -88,7 +88,7 @@ class DefaultController extends RegisterController
                             );
                         }
                         catch (Exception $e) {
-
+                             Yii::log($e);
                         }
 
                         try {
@@ -96,7 +96,7 @@ class DefaultController extends RegisterController
                                     array ('div_id'  => $div_id, 'user_id' => $userId, 'weight'  => $weight));
                         }
                         catch (Exception $e) {
-
+                            Yii::log($e);
                         }
                     }
                     //if ($this->isWizard) $this->redirect($this->getURL('form', array('wiz' => 1)));

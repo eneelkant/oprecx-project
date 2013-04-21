@@ -2,7 +2,7 @@
 /** @var string $submit_name */
 /** @var RegisterController $this */
 if (!isset($submit_name))
-    $submit_name = 'submit';
+    $submit_name = 'save';
 
 $grid = JqmGrid::createGrid('fieldset');
 $back_link_args = $this->isWizard ? array('wiz' => 1) : array() ;
