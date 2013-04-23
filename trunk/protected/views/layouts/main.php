@@ -5,14 +5,14 @@ $page_class = explode('/', $this->route);
 $jsUrl = Yii::app()->request->baseUrl . '/js/';
 if (! YII_DEBUG) {
     $jsFiles = array(
-        array('http://code.jquery.com/jquery-1.9.1.min.js', 
+        array('//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js', 
             array(
                 $jsUrl . 'oprecx.js?m=' . filemtime(Yii::app()->basePath . '/../js/oprecx.js'),
-                'http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js', 
+                '//cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.3.1/jquery.mobile.min.js', 
             )
         ),
     );
-    $jqmCss = 'http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css';
+    $jqmCss = '//cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.3.1/jquery.mobile.min.css';
 } else {
     $jsFiles = array(
         array($jsUrl . 'jquery-1.9.0.js', 
