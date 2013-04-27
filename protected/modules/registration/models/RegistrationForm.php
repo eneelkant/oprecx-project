@@ -34,15 +34,15 @@ class RegistrationForm extends CFormModel
         /**
          * @var CDbDataReader sql ini manggil 
          */
-        $reader = Yii::app()->db->createCommand()
+        $reader = CDbCommandEx::create()
                 //->select('oe.elm_id AS form_id, oe.name AS form_name, fv.value, ff.*')
                 ->selectDistinct('oe.elm_id AS form_id, oe.name AS form_name, oe.weight AS oe_weight, fv.value, ff.*')
                 
                 ->from('{{form_fields}} ff')
-                ->join('{{org_elms}} oe', 'oe.elm_id = ff.form_id AND oe.org_id = :org_id')
-                ->join('{{division_elms}} de', 'de.elm_id = oe.elm_id')
-                ->join('{{division_choices}} dc', 'dc.div_id = de.div_id AND dc.user_id = :user_id')
-                ->leftJoin('{{form_values}} fv', 'fv.field_id = ff.field_id AND fv.user_id = :user_id')
+                ->join('{{org_elms}} oe', '$oe.elm_id = $ff.form_id AND $oe.org_id = :org_id')
+                ->join('{{division_elms}} de', '$de.elm_id = $oe.elm_id')
+                ->join('{{division_choices}} dc', '$dc.div_id = $de.div_id AND $dc.user_id = :user_id')
+                ->leftJoin('{{form_values}} fv', '$fv.field_id = $ff.field_id AND $fv.user_id = :user_id')
                 
                 //->group('ff.field_id') // takut dabel
                 ->order('oe.weight, oe.name, ff.weight, ff.created')
@@ -113,6 +113,7 @@ class RegistrationForm extends CFormModel
             }
 
             $transaction->commit();
+            UserState::invalidate($this->_userId, $this->_orgId, 'form');
             return true;
         }
         catch (Exception $e) {

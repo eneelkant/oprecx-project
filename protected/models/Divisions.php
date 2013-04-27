@@ -71,7 +71,11 @@ class Divisions extends CActiveRecord
             $depend = new CDbCacheDependency;
             $depend->sql = 'SELECT updated FROM ' . TableNames::ORGANIZATIONS . ' WHERE id = :org_id LIMIT 1';
             $depend->params = array('org_id' => $orgId);
-            return $this->cache(900, $depend)->findAllByAttributes(array('org_id' => $orgId), $conditions, $params);
+            $criteria = new CDbCriteria();
+            $criteria->select = '*';
+            $criteria->compare('org_id', $orgId);
+            $criteria->order = 'weight, name';            
+            return $this->query($criteria, TRUE);
         }
         
         /**

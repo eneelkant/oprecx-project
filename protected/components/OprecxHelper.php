@@ -18,7 +18,7 @@ class OprecxHelper
     
     /**
      * 
-     * @param CWebApplication $app
+     * @param OprecxWebApplication $app
      */
     public static function initializeApp($app) {
         $supportedLang = $app->params['supportedLang'];

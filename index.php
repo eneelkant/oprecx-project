@@ -1,11 +1,11 @@
 <?php
 
-$config_file = dirname(__FILE__).'/config.php';
-if (!file_exists($config_file)) {
+$oprecx_config = dirname(__FILE__).'/config.php';
+if (!file_exists($oprecx_config)) {
     header('location: setup.php?a=config');
     return;
 }
-include($config_file);
+include($oprecx_config);
 
 if (!defined('YII_PHP') || !defined('DB_CON_STRING') || !defined('DB_USER') || !defined('DB_PASSWORD') || 
         !file_exists(YII_PHP)) {
@@ -32,6 +32,7 @@ if (defined('YII_DEBUG') && YII_DEBUG) {
 }
 
 require_once(YII_PHP);
-$app = Yii::createWebApplication(dirname(__FILE__).'/protected/config/main.php');
-OprecxHelper::initializeApp($app);
-$app->run();
+require_once(dirname(__FILE__) . '/oprecx.php');
+
+$config = dirname(__FILE__).'/protected/config/main.php';
+O::createOprecxWebApplication($config)->run();

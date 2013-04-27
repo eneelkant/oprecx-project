@@ -1,9 +1,14 @@
 <?php
 
-class DefaultController extends Controller {
+class DefaultController extends AdminController {
+     public function init()
+     {
+         parent::init();
+         $this->layout = 'standard';
+     }
 
     public function actionIndex() {
-        // $this->layout = 'column2';
+        
         $this->render('index');
     }
 
