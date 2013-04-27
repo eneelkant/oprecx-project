@@ -1,21 +1,21 @@
-<html>  
+<html>
 <head>  
-    <meta charset="UTF-8">  
-    <title>Oprecx</title>  
-    <link rel="stylesheet" type="text/css" href="jquery-easyui-1.3.2/themes/default/easyui.css">  
-    <link rel="stylesheet" type="text/css" href="jquery-easyui-1.3.2/themes/icon.css">  
-    <link rel="stylesheet" type="text/css" href="../demo.css">  
-    <script type="text/javascript" src="jquery-easyui-1.3.2/jquery-1.8.0.min.js"></script>  
+    <meta charset="UTF-8">
+    <title>Oprecx</title>
+    <link rel="stylesheet" type="text/css" href="jquery-easyui-1.3.2/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="jquery-easyui-1.3.2/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../demo.css">
+    <script type="text/javascript" src="jquery-easyui-1.3.2/jquery-1.8.0.min.js"></script>
     <script type="text/javascript" src="jquery-easyui-1.3.2/jquery.easyui.min.js"></script>
-</head>  
-<body style="font-family: Calibri; margin-left: 150px; margin-top: 50px">
-    <div class="demo-info">  
-        <div class="demo-tip icon-tip"></div>  
-    </div>  
+</head>
+<body style="font-family: Calibri; margin-left: 150px; margin-top: 50px">  
+    <div class="demo-info">
+        <div class="demo-tip icon-tip"></div>
+    </div>
     <div style="margin-left:50px 0;"></div>  
     <div class="easyui-layout" style="width:1000px;height:585px;border:none;">  
         <div data-options="region:'north'" style="height:75px;border:none;" ><img src="../images/logo.png" /></div>  
-        <div data-options="region:'south',split:true" style="height:50px;"></div>    
+        <div data-options="region:'south',split:true" style="height:50px;"></div>
         <div data-options="region:'west',split:true" title="Menu" style="width:230px;padding:10px;background-color:#DAECF5">
             <table style="margin:5px; font-size: 23px">
                 <tr><td><a href ="index.php">Pengaturan</a></td></tr>
@@ -23,22 +23,22 @@
                 <tr><td><a href ="field.php">Form Pendaftaran</a></td></tr>
                 <tr><td>Slot Wawancara</td></tr>
             </table>
-        </div>  
-        <div data-options="region:'center',title:'Divisi/Biro',iconCls:'icon-ok'">  
+        </div>
+        <div data-options="region:'center',title:'Divisi/Biro',iconCls:'icon-ok'">
             <div style="margin:10px 10;">
-    
+      
     <table id="dg" title="" class="easyui-datagrid" style="width:700px;height:250px"  
             url="get_users.php"  
             toolbar="#toolbar" pagination="true"  
             rownumbers="true" fitColumns="true" singleSelect="true">  
-        <thead>  
-            <tr>  
+                    <thead>
+                    <tr>
                 <th field="nama" width="100">Nama</th>  
                 <th field="PJ" width="100">Nama PJ</th>  
                 <th field="kuota" width="50">Kuota</th>   
-            </tr>  
+                    </tr>
         </thead>  
-    </table>  
+                </table>
     <div id="toolbar">  
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">New</a>  
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">Edit</a>  
@@ -142,5 +142,5 @@
             width:80px;  
         }  
     </style>  
-</body>  
+</body>
 </html>  
