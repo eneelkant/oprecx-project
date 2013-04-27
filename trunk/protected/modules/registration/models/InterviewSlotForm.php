@@ -25,12 +25,12 @@ class InterviewSlotForm extends CFormModel
     
     public function getTables(){
         if (! isset($this->_tables)) {
-            $reader = Yii::app()->db->createCommand()
+            $reader = CDbCommandEx::create()
                     ->selectDistinct('i.*, oe.name, oe.weight')
                     ->from('{{interview_slots}} i')
-                    ->join('{{org_elms}} oe', 'oe.elm_id = i.elm_id AND oe.org_id = :org_id')
-                    ->join('{{division_elms}} de', 'de.elm_id = oe.elm_id')
-                    ->join('{{division_choices}} dc', 'dc.div_id = de.div_id AND dc.user_id = :user_id')
+                    ->join('{{org_elms}} oe', '$oe.elm_id = $i.elm_id AND $oe.org_id = :org_id')
+                    ->join('{{division_elms}} de', '$de.elm_id = $oe.elm_id')
+                    ->join('{{division_choices}} dc', '$dc.div_id = $de.div_id AND $dc.user_id = :user_id')
                     //->group('i.elm_id, oe.elm_id')
                     ->order('oe.weight, oe.name')
                     ->query(array ('user_id' => $this->_userId, 'org_id'  => $this->_orgId));
@@ -64,17 +64,17 @@ class InterviewSlotForm extends CFormModel
      */
     private function parseSlotTable($arg) {
         $id = $arg['elm_id'];
-        $startDate = $arg['start_date'];
-        $endDate = $arg['end_date'];
+        $startDate = explode('-', $arg['start_date']);
+        $endDate = explode('-', $arg['end_date']);
         $time_ranges = $arg['time_range'];
         $duration = $arg['duration'];
         //$options = $arg['options'];
         // SELECT t1.time, count(t1.user_id), t2.user_id FROM `oprecx_interview_user_slots` t1 LEFT JOIN `oprecx_interview_user_slots` t2 ON t2.slot_id = t1.slot_id AND t2.time = t1.time AND t2.user_id = 6 group by t1.time
-        $reader = Yii::app()->db->createCommand()
+        $reader = CDbCommandEx::create()
                 ->select('t1.time, COUNT(t1.user_id) as cnt, t2.user_id')
                 ->from('{{interview_user_slots}} t1')
-                ->leftJoin('{{interview_user_slots}} t2', 't2.slot_id = t1.slot_id AND t2.time = t1.time AND t2.user_id = :user_id')
-                ->where('t1.slot_id = :slot_id')
+                ->leftJoin('{{interview_user_slots}} t2', '$t2.slot_id = $t1.slot_id AND $t2.time = $t1.time AND $t2.user_id = :user_id')
+                ->where('$t1.slot_id = :slot_id')
                 ->group('t1.time, t2.user_id')
                 ->order('t1.time')
                 ->query(array('slot_id' => $id, 'user_id' => Yii::app()->user->id));
@@ -82,8 +82,6 @@ class InterviewSlotForm extends CFormModel
         foreach ($reader as $row) {
             $slot_count[$row['time']] = array($row['cnt'], $row['user_id'] != null);
         }
-        $startDate = explode('-', $startDate);
-        $endDate = explode('-', $endDate);
         
         $y = $startDate[0];
         $m = $startDate[1];
@@ -159,6 +157,7 @@ class InterviewSlotForm extends CFormModel
                 
             }
             $transaction->commit();
+            UserState::invalidate($this->_userId, $this->_orgId, 'slots');
             return true;
         }        
         catch (Exception $e) {

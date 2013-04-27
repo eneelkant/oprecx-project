@@ -41,19 +41,32 @@ class Organizations extends CActiveRecord
     {
         return parent::model($className);
     }
+    
+    private static function getCacheName($name) {
+        return 'oprecx:Organizations:name=' . $name;
+    }
 
-    public static function getByName($name)
+    public function findByName($name, $cache = TRUE)
     {
-        /** @var CCache $cache */
-        $cache   = Yii::app()->cache;
-        $cacheId = 'oprecx:Organization:name=' . $name;
-        if (($obj     = $cache->get($cacheId)) == false) {
-            $obj            = self::model()->findByAttributes(array ('name' => $name));
-            $depend         = new CDbCacheDependency('SELECT updated FROM ' . TableNames::ORGANIZATIONS . ' WHERE name=:name LIMIT 1');
-            $depend->params = array ('name' => $name);
-            $cache->set($cacheId, $obj, 0, $depend);
+        $cache = O::app()->getCache();
+        
+        if (!$cache || ($obj = $cache->get(self::getCacheName($name))) == false) {
+            $attributes = CDbCommandEx::create($this->dbConnection)
+                    ->select()
+                    ->from($this->tableName())
+                    ->where('$name = :org_name', array('org_name' => $name))
+                    ->limit(1)
+                    ->queryRow();
+            
+            $obj = $this->populateRecord($attributes);
+            if ($cache) $cache->set(self::getCacheName($name), $obj, 60);
         }
         return $obj;
+    }
+    
+    public function invalidateCache($name = NULL) {
+        if ($name == NULL) $name = $this->name;
+        O::app()->getCache()->delete(self::getCacheName($name));
     }
 
     public function __construct($scenario = 'insert')
@@ -78,12 +91,11 @@ class Organizations extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array (
-            array ('name, full_name, email, description, type, scope, location, reg_time_begin, reg_time_end',
-                'required'),
+            array ('full_name, email, description, type, scope, location, reg_time_begin, reg_time_end', 'required'),
             array ('name', 'length', 'max' => 32),
             array ('full_name, email, location, link', 'length', 'max' => 255),
             array ('type, scope, visibility', 'length', 'max' => 16),
-            array ('img_id', 'length', 'max' => 10),
+            //array ('img_id', 'length', 'max' => 10),
             array ('updated', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
@@ -92,14 +104,6 @@ class Organizations extends CActiveRecord
         );
     }
     
-    /*
-    public function defaultScope()
-    {
-        return array_merge(parent::defaultScope(), 
-                array('')
-            );
-    }
-    */
     /**
      * @return array relational rules.
      */

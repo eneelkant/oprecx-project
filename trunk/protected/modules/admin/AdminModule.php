@@ -5,6 +5,12 @@ class AdminModule extends CWebModule {
     private $_assetsUrl;
 
     public function init() {
+        if (Yii::app()->user->isGuest) {
+            $url = Yii::app()->getUser()->loginUrl;
+            $url['nexturl'] = Yii::app()->getRequest()->requestUri;
+            Yii::app()->getRequest()->redirect(CHtml::normalizeUrl($url));
+        }
+        
         // this method is called when the module is being created
         // you may place code here to customize the module or the application
         // import the module-level models and components
@@ -14,6 +20,9 @@ class AdminModule extends CWebModule {
         ));
 
         $this->layout = 'main';
+        
+        O::app()->clientScript->scriptMap['jquery.js'] = '/js/jquery-1.9.1.min.js';
+        O::app()->clientScript->scriptMap['jquery-ui.js'] = '/js/ui/jquery-ui.js';
     }
 
     /**
@@ -26,7 +35,7 @@ class AdminModule extends CWebModule {
         if (parent::beforeControllerAction($controller, $action)) {
             // this method is called before any module controller action is performed
             // you may place customized code here
-            $controller->layout = 'main';
+            //$controller->layout = 'standard';
             return true;
         }
         else

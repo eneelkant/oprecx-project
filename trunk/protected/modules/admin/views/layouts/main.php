@@ -1,69 +1,88 @@
-<?php 
-/**
- * @var CController $this
- */
+<?php /* @var $this AdminController */ 
 
-/** @var CClientScript $cs */
-$cs=Yii::app()->clientScript;
-$cs->coreScriptPosition=CClientScript::POS_HEAD;
-$cs->scriptMap=array();
-
-$baseUrl=$this->module->assetsUrl;
-// $cs->registerCoreScript('jquery');
-//$cs->registerScriptFile($baseUrl.'/js/jquery.tooltip-1.2.6.min.js');
-//$cs->registerScriptFile($baseUrl.'/js/fancybox/jquery.fancybox-1.3.1.pack.js');
-//$cs->registerCssFile($baseUrl.'/css/main.css');
-$cs->registerCss('register-css-file', file_get_contents(dirname(__FILE__).'/../../assets/css/main.css'));
 ?>
 <!DOCTYPE html>
-<html xml:lang="en" lang="en">
-    <head>
-       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="language" content="<?php echo Yii::app()->locale->id; ?>" />
-        <title><?php echo CHtml::encode($this->pageTitle); ?></title>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="en" />
 
-    </head>
+    <link rel="stylesheet" href="<?php echo O::app()->baseUrl ?>/css/admin.css" />
 
-    <body>
-        <header id="header">
-            <h1>OprecX Admin Page</h1>
-            <div id="mainmenu">
-                <?php
-                $this->widget('zii.widgets.CMenu', array(
-                    'items' => array(
-                        array('label' => 'Home', 'url' => array('/register/default/index')),
-                        array('label' => 'Back', 'url' => Yii::app()->homeUrl),
-                    //array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-                    //array('label'=>'Contact', 'url'=>array('/site/contact')),
-                    //array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-                    //array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
-                    ),
-                ));
-                ?>
-            </div><!-- #mainmenu -->
-        </header>
-            
-        <div class="container" id="page">
-            
-            <?php if (isset($this->breadcrumbs)): ?>
-                <?php
-                $this->widget('zii.widgets.CBreadcrumbs', array(
-                    'links' => $this->breadcrumbs,
-                ));
-                ?><!-- breadcrumbs -->
-            <?php endif ?>
+	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
-            <?php echo $content; ?>
+	<?php O::app()->getComponent('bootstrap', true); // initialize bootstrap ?>
+</head>
 
-            <div class="clear"></div>
+<body>
 
-            <div id="footer">
-                Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
-                All Rights Reserved.<br/>
-                <?php echo Yii::powered(); ?>
-            </div><!-- footer -->
+<?php 
 
-        </div><!-- page -->
+$cur_org_id = $this->org ? $this->org->id : 0;
+$cur_org_name = $this->org ? $this->org->full_name : '-- Select Organization --';
 
-    </body>
+$my_orgs = $this->getMyOrgs();
+$org_menus = array();
+$htmlOptions = array('data-org' => '123');
+foreach ($my_orgs as $org) {
+    if ($cur_org_id != 0) $htmlOptions['target'] = 'org_' . $org->id;
+    if ($org->id != $cur_org_id)
+        $org_menus[] = array('label' => $org->full_name, 'url' => array('setting/info', 'org' => $org->name),
+            'linkOptions' => $htmlOptions, 'data-org' => 'tes');
+}
+if (count($org_menus) > 0) $org_menus[] = '---';
+
+$this->widget('bootstrap.widgets.TbNavbar', array(
+    'type'=>'inverse',
+    'items'=>array(
+        array(
+            'class'=>'bootstrap.widgets.TbMenu',
+            'items'=>array(
+                array('label'=>$cur_org_name, 'url'=>'#', 'items'=> array_merge($org_menus, array(
+                    array('label'=>'My Organizations'),
+                    array('label'=>'Manage', 'url'=>'#', 'icon' => 'icon-pencil'),
+                    array('label'=>'Add', 'url'=>'#', 'icon' => 'icon-plus'),
+                ))),
+                array('label'=>'Results', 'url'=>array('result/index'), 'icon' => 'icon-list-alt', 
+                    'visible' => $cur_org_id != 0, 'active' => $this->layout == 'result'),
+                array('label'=>'Settings', 'url'=>array('setting/info'), 'icon' => 'icon-wrench', 
+                    'visible' => $cur_org_id != 0, 'active' => $this->layout == 'setting'),
+            ),
+        ),
+        //'<form class="navbar-search pull-left" action=""><input type="text" class="search-query span2" placeholder="Search"></form>',
+        array(
+            'class'=>'bootstrap.widgets.TbMenu',
+            'htmlOptions'=>array('class'=>'pull-right'),
+            'items'=>array(
+                array('label'=>O::app()->getUser()->getState('fullname'), 'url'=>'#', 'items'=>array(
+                    array('label'=>'Profile', 'url'=>'#', 'icon' => 'icon-user'),
+                    array('label'=>'Log Off', 'url'=>array('/user/logout'), 'icon' => 'icon-lock'),
+                )),
+            ),
+        ),
+    ),
+));
+?>
+    
+<div class="container" id="page">
+
+	<?php if(isset($this->breadcrumbs)):?>
+		<?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+			'links'=>$this->breadcrumbs,
+		)); ?><!-- breadcrumbs -->
+	<?php endif?>
+
+	<?php echo $content; ?>
+
+	<div class="clear"></div>
+
+
+</div><!-- page -->
+
+<div id="footer">
+    Thank you for recruiting with us. <i>oprecx</i>
+
+</div><!-- footer -->
+
+</body>
 </html>

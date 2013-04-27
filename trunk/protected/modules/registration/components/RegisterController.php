@@ -33,7 +33,7 @@ abstract class RegisterController extends Controller {
     public function init (){
         $params = $this->actionParams;
         if (isset($params['org_name'])) {
-            $this->_org = Organizations::getByName($params['org_name']); // Organizations::model()->findByAttributes(array('name' => $params['org']));
+            $this->_org = Organizations::model()->findByName($params['org_name']); // Organizations::model()->findByAttributes(array('name' => $params['org']));
             if (null == $this->_org) {
                 throw new CHttpException(404,Yii::t('oprecx','Organization {org} Not Found.', array('{org}' => $params['org_name'])));
             }

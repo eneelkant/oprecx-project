@@ -1,6 +1,5 @@
-<?php /* @var $this Controller */ ?>
 <?php $this->beginContent(); ?>
-<div id="content">
-    <?php echo $content; ?>
-</div><!-- content -->
+<div id="inner-content">
+        <?php echo $content; ?>
+</div>
 <?php $this->endContent(); ?>

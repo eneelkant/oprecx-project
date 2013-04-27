@@ -183,6 +183,8 @@ class CurrentDbScheme extends CDbMigration
             'org_id'  => 'int NOT NULL',
             'user_id' => 'int NOT NULL',
             'rule'    => 'string NOT NULL',
+            'last_access' => 'datetime DEFAULT NULL',
+            
             "PRIMARY KEY (org_id,user_id)",
             //"FOREIGN KEY(org_id) REFERENCES {{organizations}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
             //"FOREIGN KEY(user_id) REFERENCES {{users}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
@@ -243,6 +245,7 @@ class CurrentDbScheme extends CDbMigration
             'min_staff'     => 'integer DEFAULT NULL',
             'enabled'       => 'integer NOT NULL DEFAULT 1',
             'created'       => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
+            'updated'       => 'datetime DEFAULT NULL',
             'weight'        => 'integer NOT NULL DEFAULT 0',
 
             //"FOREIGN KEY(org_id) REFERENCES {{organizations}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
@@ -520,7 +523,16 @@ class CurrentDbScheme extends CDbMigration
             'reg_time_end'   => "2013-04-19 00:00:00",
         ));
 
-
+        $this->insert('{{org_admins}}', array (
+            'org_id'  => '1',
+            'user_id' => '6',
+            'rule'    => 'super',
+        ));
+        $this->insert('{{org_admins}}', array (
+            'org_id'  => '4',
+            'user_id' => '6',
+            'rule'    => 'super',
+        ));
     }
 
     function dataUser()

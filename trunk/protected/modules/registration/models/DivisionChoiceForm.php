@@ -58,13 +58,14 @@ class DivisionChoiceForm extends CFormModel {
     
     public function setUserId($userId) {
         if ($userId) {
-            $command = Yii::app()->db->createCommand()
+            $command = CDbCommandEx::create()
                         ->select('d.div_id')
                         ->from('{{division_choices}} dc')
-                        ->join('{{divisions}} d', 'dc.div_id = d.div_id AND d.org_id = :org_id AND d.enabled = 1', array('org_id' => $this->_org->id))
+                        ->join('{{divisions}} d', 
+                                '$dc.div_id = $d.div_id AND $d.org_id = :org_id AND $d.enabled = 1')
                         ->order('dc.weight, d.weight, d.name')
-                        ->where('dc.user_id = :user_id', array('user_id' => $userId));
-            $this->choices = $command->queryColumn();
+                        ->where('$dc.user_id = :user_id');
+            $this->choices = $command->queryColumn(array('org_id' => $this->_org->id, 'user_id' => $userId));
         } else {
             //$this->choices = array();
         }
@@ -75,13 +76,24 @@ class DivisionChoiceForm extends CFormModel {
         $db = Yii::app()->getDb();
         $transaction = $db->beginTransaction();
         try {
-            $args = array_keys($this->_allDivisionsName);
-            $qMarks = str_repeat('?,', count($args) - 1) . '?';
-            $args['user_id'] = $userId;
-            $db->createCommand()->delete(TableNames::DIVISION_CHOICES, 'user_id = :user_id AND div_id');
+            $db->createCommand()->delete(TableNames::DIVISION_CHOICES, 
+                    array('AND', 'user_id=:user_id', array('IN', 'div_id', array_keys($this->_allDivisionsName))),
+                    array('user_id' => $userId));
+            
+            foreach ($this->choices as $weight => $div_id) {
+                $db->createCommand()->insert(TableNames::DIVISION_CHOICES, array(
+                    'user_id' => $userId,
+                    'div_id' => $div_id,
+                    'weight' => $weight
+                ));
+            }
+            $transaction->commit();            
+            UserState::invalidate($userId, $this->_org->id);
+            return true;
         }
         catch (CDbException $e) {
-            
+            $transaction->rollback();
+            return false;
         }
     }
 

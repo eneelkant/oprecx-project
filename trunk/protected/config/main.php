@@ -3,6 +3,10 @@
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 // This is the main Web application configuration. Any writable
+// 
+
+Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
+
 // CWebApplication properties can be configured here.
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
@@ -30,13 +34,19 @@ return array(
             )
         ),
          //*/
-        'admin', 'registration',
+        'admin' , 'registration',
     ),
     // application components
     'components' => array(
         'user' => array(
             // enable cookie-based authentication
             'allowAutoLogin' => true,
+            'loginUrl' => array('user/login'),
+        ),
+        
+        'bootstrap' => array(
+            'class' => 'ext.bootstrap.components.Bootstrap',
+            'responsiveCss' => true,
         ),
         
         // uncomment the following to enable URLs in path-format
@@ -48,14 +58,14 @@ return array(
                 '/about/<view:\w+>' => array('site/page', 'urlSuffix' => '.html'),
                 '/<controller:(user|site)>/<action:\w+>' => '<controller>/<action>',
                 
-                '/<module:(gii)>' => '<module>/default/index',
-                '/<module:(gii)>/<controller:\w+>' => '<module>/<controller>/index',
-                '/<module:(gii)>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+                '/<module:(gii|admin)>' => '<module>/default/index',
+                '/<module:(gii|admin)>/<controller:\w+>' => '<module>/<controller>/index',
+                '/<module:(gii|admin)>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
                 
                 '/<org_name:\w+>/' => array('registration/default/index', 'caseSensitive'=>false),
                 '/<org_name:\w+>/<action:\w+>' => 'registration/default/<action>',
 
-                '/<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                //'/<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ),
         ),
 

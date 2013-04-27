@@ -129,15 +129,15 @@ class UserState extends CComponent
     {
         if (! isset($this->_data['division'])) {
             $this->_data['division'] = self::arrayToObject(
-                    Yii::app()->db->createCommand()
+                    CDbCommandEx::create()
                         ->select('d.div_id, d.name AS div_name')
                         ->from(TableNames::DIVISION_CHOICES . ' dc')
                         ->join(TableNames::DIVISIONS . ' d', 
-                                'dc.div_id = d.div_id AND d.org_id = :org_id AND d.enabled = 1')
+                                '$dc.div_id = $d.div_id AND $d.org_id = :org_id AND $d.enabled = 1')
                         ->order('dc.weight, d.weight, d.name')
-                        ->where('dc.user_id = :user_id')
+                        ->where('$dc.user_id = :user_id')
                         ->queryAll(true, array('org_id' => $this->_orgId, 'user_id' => $this->_userId))
-                    );
+                    );                    
             $this->setModified();
         }
         
@@ -151,21 +151,21 @@ class UserState extends CComponent
     public function getFormStatus() 
     {
         if (! isset($this->_data['form'])) {
-            $command = Yii::app()->db->createCommand()
+            $command = CDbCommandEx::create()
                     ->select('f.elm_id AS form_id, oe.name as form_name,  (COUNT(ff2.*) - COUNT(fv.value)) = 0 AS filled')
                     ->from(TableNames::FORMS . ' f')
                     ->join(TableNames::ORG_ELMS . ' oe',
-                            'oe.elm_id = f.elm_id AND oe.org_id = :org_id')
+                            '$oe.elm_id = $f.elm_id AND $oe.org_id = :org_id')
                     ->join(TableNames::DIVISION_ELMS . ' de',
-                            'de.elm_id = oe.elm_id')
+                            '$de.elm_id = $oe.elm_id')
                     ->join(TableNames::DIVISION_CHOICES . ' dc',
-                            'dc.div_id = de.div_id AND dc.user_id = :user_id')
+                            '$dc.div_id = $de.div_id AND $dc.user_id = :user_id')
                     ->leftJoin(TableNames::FORM_FIELDS . ' ff', 
-                            'ff.form_id = f.elm_id AND ff.required = 1')
+                            '$ff.form_id = $f.elm_id AND $ff.required = 1')
                     ->leftJoin(TableNames::FORM_FIELDS . ' ff2', 
-                            'ff2.form_id = f.elm_id AND ff2.required = 1')
+                            '$ff2.form_id = $f.elm_id AND $ff2.required = 1')
                     ->leftJoin(TableNames::FORM_VALUES . ' fv', 
-                            'fv.field_id = ff.field_id AND fv.user_id = :user_id')
+                            '$fv.field_id = $ff.field_id AND $fv.user_id = :user_id')
                     ->order('oe.weight, oe.name')
                     ->group('f.elm_id, oe.weight, oe.name');
             $this->_data['form'] = self::arrayToObject(
@@ -179,17 +179,17 @@ class UserState extends CComponent
     
     public function getSelectedInterviewSlot() {
         if (!isset($this->_data['slots'])) {
-            $this->_data['slots'] = Yii::app()->db->createCommand()
-                    ->selectDistinct('iss.elm_id as slot_id, oe.name AS slot_name, ius.time, oe.weight')
-                    ->from(TableNames::INTERVIEW_SLOTS . ' iss')
+            $this->_data['slots'] = CDbCommandEx::create()
+                    ->selectDistinct('is.elm_id as slot_id, oe.name AS slot_name, ius.time, oe.weight')
+                    ->from(TableNames::INTERVIEW_SLOTS . ' is')
                     ->join(TableNames::ORG_ELMS . ' oe',
-                            'oe.elm_id = iss.elm_id AND oe.org_id = :org_id')
+                            '$oe.elm_id = $is.elm_id AND $oe.org_id = :org_id')
                     ->join(TableNames::DIVISION_ELMS . ' de',
-                            'de.elm_id = oe.elm_id')
+                            '$de.elm_id = $oe.elm_id')
                     ->join(TableNames::DIVISION_CHOICES . ' dc',
-                            'dc.div_id = de.div_id AND dc.user_id = :user_id')
+                            '$dc.div_id = $de.div_id AND $dc.user_id = :user_id')
                     ->leftJoin(TableNames::INTERVIEW_USER_SLOTS . ' ius', 
-                            'ius.slot_id = iss.elm_id AND ius.user_id = :user_id')
+                            '$ius.slot_id = $is.elm_id AND $ius.user_id = :user_id')
                     ->order('oe.weight, oe.name')
                     //->where('dc.user_id = :user_id')
                     ->queryAll(true, array('org_id' => $this->_orgId, 'user_id' => $this->_userId));
