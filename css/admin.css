@@ -13,6 +13,27 @@ body {
   padding: 10px;
   text-align: right; }
 
+#shareOrgLink .share-link {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+  background: #888888 url("../images/share-button.png") no-repeat;
+  transition: background-color .3s;
+  font-size: 0; }
+  #shareOrgLink .share-link.facebook {
+    background-position: 0 50%; }
+    #shareOrgLink .share-link.facebook:hover, #shareOrgLink .share-link.facebook:active {
+      background-color: #3b5998; }
+  #shareOrgLink .share-link.twitter {
+    background-position: -40px 50%; }
+    #shareOrgLink .share-link.twitter:hover, #shareOrgLink .share-link.twitter:active {
+      background-color: #16c5ff; }
+  #shareOrgLink .share-link.gplus {
+    background-position: -80px 50%; }
+    #shareOrgLink .share-link.gplus:hover, #shareOrgLink .share-link.gplus:active {
+      background-color: #dd4b38; }
+
 .component-list {
   list-style: none; }
   .component-list li {
@@ -23,124 +44,30 @@ body {
       margin-left: 20px; }
     .component-list li .actions {
       float: right; }
-      .component-list li .actions a {
-        -moz-transition: opacity .3s;
-        -webkit-transition: opacity .3s;
-        transition: opacity .3s;
-        opacity: .2; }
-        .component-list li .actions a:hover, .component-list li .actions a:active {
-          opacity: 1 !important; }
-  .component-list li:hover .actions a {
+    .component-list li .actions a, .component-list li .handler {
+      -moz-transition: opacity .3s;
+      -webkit-transition: opacity .3s;
+      transition: opacity .3s;
+      opacity: .2; }
+      .component-list li .actions a:hover, .component-list li .actions a:active, .component-list li .handler:hover, .component-list li .handler:active {
+        opacity: 1 !important; }
+    .component-list li .handler {
+      margin-right: 5px;
+      margin-top: 5px;
+      cursor: move; }
+  .component-list li:hover .actions a, .component-list li:hover .handler {
     opacity: .6; }
 
 .sortable .handler {
   cursor: move; }
 
-/*
-a:link, a:visited {color: #3355cc; text-decoration: none;}
-a:hover, a:active {color: #2244aa; text-decoration: underline;}
+.ui-dropdownchecklist-selector {
+  padding: 2px 5px; }
 
-
-input:not([type]), input[type="text"], input[type="password"], input[type="email"], input[type="number"], textarea, select {
-    padding: 2px 3px;
-    color: #444;
-    background-color: #fff;
-    border: 1px solid #c0c4c6;
-    -webkit-appearance: none;
-    -moz-appearance: border;
-    appearance: none;
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
-    border-radius: 2px;
-    -moz-transition: box-shadow .3s;
-    -webkit-transition: box-shadow .3s;
-    transition: box-shadow .3s;
-    
-    &:focus, &:active {
-        box-shadow: 0 0 3px rgba(0, 0, 0, .15) inset, 0 0 5px rgba(70, 100, 250, .25);
-        background-color: #fff;
-        border-color: #77b0f0;
-    }
-}
-
-select {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAICAYAAAAbQcSUAAAAaUlEQVQoz2P4//8/A7UwdkEGhiggTsODo4g2LBEImJmZvwE1/UfHIHGQPNGGAbHCggULFrKxsf1ENgjEB4mD5EnxJoaByAZB5Yk3DNlAPj6+L8gGkWUYzMC3b982IRtEtmFQjaxYxDAwAGi4TwMYKNLfAAAAAElFTkSuQmCC');
-    background-position: 100% 50%;
-    background-repeat: no-repeat;
-}
-
-input[type="submit"], input[type="button"], button {
-    color: #444;
-    background-color: #e0e4e6;
-    //background-repeat: repeat-x;
-    border: 1px solid #c0c4c6;
-    
-    -moz-border-radius: 0px 0px 0px 0px;
-    -webkit-border-radius: 0px 0px 0px 0px;
-    border-radius: 0px 0px 0px 0px;
-    padding: 5px 10px;
-    cursor: pointer;
-    
-    &:hover {
-        background: #dadbdc;
-        color: #333;
-    }
-}
-
-.panel, input, textarea, select, button {
-    font-size: 11pt;
-}
-
-form .row {
-    display: block;
-    margin-bottom: 10px;
-    
-    
-    label {
-        display: inline-block;
-        //text-align: right;
-        width: 180px;
-        margin-right: 10px;
-        vertical-align: top;
-    }
-    input, select, textarea {
-        width: 350px;
-        display: inline-block;
-        vertical-align: top;
-    }
-    
-    textarea {
-        resize: vertical;
-    }
-    
-    .required {
-        color: #884422;
-    }
-}
-
-
-
-.oprecx-admin-menu {
-    ul, li {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-    
-    li a {
-        display: block;
-        margin: 1px;
-        padding: 3px 4px;
-        background-color: #eee;
-        color: #222;
-        border: 1px solid #ccc;
-        font-size: 12pt;
-        
-        &:hover {
-            text-decoration: none;
-            background-color: #ccc;
-        }
-    }    
-}
-*/
+.ui-dropdownchecklist-item {
+  padding: 1px 3px; }
+  .ui-dropdownchecklist-item input {
+    vertical-align: -2px;
+    margin-right: 3px; }
+  .ui-dropdownchecklist-item label {
+    display: inline; }

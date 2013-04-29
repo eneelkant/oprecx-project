@@ -6,12 +6,13 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="language" content="en" />
-
-    <link rel="stylesheet" href="<?php echo O::app()->baseUrl ?>/css/admin.css" />
-
+    <script>
+        var msg = <?php echo CJSON::encode($this->_msg) ?>;
+    </script>
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
-
-	<?php O::app()->getComponent('bootstrap', true); // initialize bootstrap ?>
+    <?php O::app()->getComponent('bootstrap', true); // initialize bootstrap ?>
+    <?php O::app()->getClientScript()->registerCssFile(O::app()->request->baseUrl . '/css/admin.css'); ?>
+    <?php O::app()->getClientScript()->registerScriptFile(O::app()->request->baseUrl . '/js/admin.js'); ?>
 </head>
 
 <body>
@@ -32,22 +33,26 @@ foreach ($my_orgs as $org) {
 }
 if (count($org_menus) > 0) $org_menus[] = '---';
 
-$this->widget('bootstrap.widgets.TbNavbar', array(
+$this->widget('ext.bootstrap.widgets.TbNavbar', array(
     'type'=>'inverse',
+    'brandUrl' => array('/admin'),
     'items'=>array(
         array(
             'class'=>'bootstrap.widgets.TbMenu',
             'items'=>array(
                 array('label'=>$cur_org_name, 'url'=>'#', 'items'=> array_merge($org_menus, array(
-                    array('label'=>'My Organizations'),
-                    array('label'=>'Manage', 'url'=>'#', 'icon' => 'icon-pencil'),
-                    array('label'=>'Add', 'url'=>'#', 'icon' => 'icon-plus'),
+                    array('label'=> O::t('oprecx', 'MY ORGANIZATIONS')),
+                    array('label'=> O::t('oprecx', 'View'), 'url'=>array('/admin'), 'icon' => 'book'),
+                    array('label'=> O::t('oprecx', 'Add'), 'url'=>array('/admin/wizard/index'), 'icon' => 'plus'),
                 ))),
-                array('label'=>'Results', 'url'=>array('result/index'), 'icon' => 'icon-list-alt', 
+                array('label'=> O::t('oprecx', 'Results'), 'url'=>array('result/index'), 'icon' => 'icon-list-alt', 
                     'visible' => $cur_org_id != 0, 'active' => $this->layout == 'result'),
-                array('label'=>'Settings', 'url'=>array('setting/info'), 'icon' => 'icon-wrench', 
+                array('label'=> O::t('oprecx', 'Settings'), 'url'=>array('setting/info'), 'icon' => 'icon-wrench', 
                     'visible' => $cur_org_id != 0, 'active' => $this->layout == 'setting'),
-            ),
+                array('label'=> O::t('oprecx', 'Share Registration Link'), 'url'=>'#shareOrgLink', 'icon' => 'globe', 
+                    'visible' => $cur_org_id != 0, 'linkOptions' => array('data-toggle' => 'modal')),
+                
+            ), // data-toggle="modal"
         ),
         //'<form class="navbar-search pull-left" action=""><input type="text" class="search-query span2" placeholder="Search"></form>',
         array(
@@ -55,8 +60,8 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
             'htmlOptions'=>array('class'=>'pull-right'),
             'items'=>array(
                 array('label'=>O::app()->getUser()->getState('fullname'), 'url'=>'#', 'items'=>array(
-                    array('label'=>'Profile', 'url'=>'#', 'icon' => 'icon-user'),
-                    array('label'=>'Log Off', 'url'=>array('/user/logout'), 'icon' => 'icon-lock'),
+                    array('label'=> O::t('oprecx', 'Profile'), 'url'=>'#', 'icon' => 'icon-user'),
+                    array('label'=> O::t('oprecx', 'Log Off'), 'url'=>array('/user/logout'), 'icon' => 'icon-lock'),
                 )),
             ),
         ),
@@ -65,24 +70,36 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
 ?>
     
 <div class="container" id="page">
-
-	<?php if(isset($this->breadcrumbs)):?>
-		<?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
-			'links'=>$this->breadcrumbs,
-		)); ?><!-- breadcrumbs -->
-	<?php endif?>
-
 	<?php echo $content; ?>
-
 	<div class="clear"></div>
-
-
 </div><!-- page -->
 
 <div id="footer">
     Thank you for recruiting with us. <i>oprecx</i>
-
 </div><!-- footer -->
 
+<?php if ($this->getOrg() != NULL) : ?>
+<div id="shareOrgLink" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="shareOrgLink" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3>Share Link</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <input class="span12" type="text" readonly="readonly" id="share-link-url" value="<?php 
+                echo O::app()->request->hostInfo . CHtml::normalizeUrl(array('/registration/default/index', 'org_name' => $this->org->name)) ?>">
+            
+        </div>
+        <div>
+            <a href="#" class="share-link facebook">Facebook</a>
+            <a href="#" class="share-link twitter">Twitter</a>
+            <a href="#" class="share-link gplus">Google Plus</a>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+</div>
+<?php endif; ?>
 </body>
 </html>

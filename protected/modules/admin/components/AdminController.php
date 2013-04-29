@@ -9,12 +9,16 @@
  * Description of AdminController
  *
  * @property Organizations $org Description
+ * @property Divisions[] $divList Description
  * 
  * @author abie
  */
 class AdminController extends CController
 {
     protected $_org = FALSE;
+    protected $_divList = FALSE;
+    protected $_msg = array();
+    
     public $helpView = NULL;
 
 
@@ -41,6 +45,22 @@ class AdminController extends CController
         return $this->_org;
     }
     
+    /**
+     * 
+     * @return Divisions[]
+     */
+    public function &getDivList() {
+        if ($this->_divList === FALSE) {
+            if (($org = $this->getOrg()) != NULL) {
+                $this->_divList = Divisions::model()->findAllByOrg($org->id);
+            } else {
+                // FIXME null ??
+                $this->_divList = array();
+            }
+        }
+        return $this->_divList;
+    }
+    
     
     /**
      * 
@@ -57,6 +77,12 @@ class AdminController extends CController
                     ->queryAll()
                 );
         
+    }
+    
+    
+    public function addMsg($msg, $text)
+    {
+        $this->_msg[$msg] = $text;
     }
 }
 

@@ -23,11 +23,12 @@ class SettingController extends AdminController
     
     public function actionInfo()
     {
-        $model = new OrganizationsForm();
+        $model = new OrganizationsEx();
         
         $model->attributes = $this->org->attributes;
-        if (isset($_POST['OrganizationsForm'])) {
-            $model->setAttributes($_POST['OrganizationsForm'], false);
+        if (isset($_POST['OrganizationsEx'])) {
+            $model->setAttributes($_POST['OrganizationsEx'], false);
+            
             
             $model->setIsNewRecord(false);
             if ($model->save()) {
@@ -51,31 +52,39 @@ class SettingController extends AdminController
             // TODO check before save
             $db = O::app()->getDb();
             $transaction = $db->beginTransaction();
+            $error = NULL;
             try {
                 foreach ($items as $weight => $div_id) {
                     $db->createCommand()->update(TableNames::DIVISIONS, array(
-                       'weight' => $weight,
-                        //'updated' => new CDbExpression('CURRENT_TIMESTAMP'),
-                    ), 'div_id = :div_id', array('div_id' => $div_id));
+                            'weight' => $weight,
+                             //'updated' => new CDbExpression('CURRENT_TIMESTAMP'),
+                            ), 
+                            'div_id = :div_id AND org_id = :org_id', // security check
+                            array('div_id' => $div_id, 'org_id' => $this->org->id)
+                        );
                 }
                 
                 $db->createCommand()->delete(TableNames::DIVISIONS, 
                         array('AND', 'org_id = :org_id', array('NOT IN', 'div_id', array_values($items))), 
                         array('org_id' => $this->org->id));
+                
                 $transaction->commit();
             }
             catch (Exception $e) {
-                echo 'SQL ERROR', $e->getMessage();
+                $error = 'SQL ERROR: ' . $e->getMessage();
                 $transaction->rollback();
             }
             
             if (O::app()->getRequest()->isAjaxRequest) {
                 echo CJSON::encode(array(
-                   'status' => 'OK',
+                   'status' => ($error == NULL ? 'OK' : 'ERROR'),
                    'data' => $items,
+                   'error' => $error,
                 ));
             } else {
-                $this->redirect(array('division'));
+                $url = array('division');
+                if ($error) $url['error'] = $error;
+                $this->redirect($url);
             }
         }
         else {
@@ -85,44 +94,43 @@ class SettingController extends AdminController
     
     public function actionSaveDivision() {
         if (isset($_POST['Division'])) {
-            //sleep(3);
-            if (O::app()->getRequest()->isAjaxRequest) {
-                $db = O::app()->getDb();
+            $db = O::app()->getDb();
                 
-                if ($_POST['Division']['div_id'] == 0) {
-                    $row = CDbCommandEx::create($db)
-                            ->select('MAX(t1.div_id) as i, MAX(t2.weight) as m, COUNT(t2.weight) c ')
-                            ->from(TableNames::DIVISIONS . ' t1')
-                            ->leftJoin(TableNames::DIVISIONS . ' t2', '$t2.org_id = :org_id', array('org_id' => $this->org->id))
-                            ->queryRow();
-                    $div_id = $row['i'] + 1;
-                    
-                    $db->createCommand()->insert(TableNames::DIVISIONS, array(
-                        'div_id' => $div_id,
-                        'org_id' => $this->org->id,
-                        'name' => $_POST['Division']['name'],
-                        'description' => $_POST['Division']['description'],
-                        'weight' => max($row['m'], $row['c']) + 1,
-                    ));
-                    
-                    
-                }
-                else {
-                    $div_id = $_POST['Division']['div_id'];
-                    
-                    $db->createCommand()->update(TableNames::DIVISIONS, array(
-                        'name' => $_POST['Division']['name'],
-                        'description' => $_POST['Division']['description'],
-                        //'updated' => new CDbExpression('CURRENT_TIMESTAMP'),
-                    ), 'div_id = :div_id', array('div_id' => $div_id));
-                }
+            if ($_POST['Division']['div_id'] == 0) {
+                $row = CDbCommandEx::create($db)
+                        ->select('MAX(t1.div_id) as i, MAX(t2.weight) as m, COUNT(t2.weight) c ')
+                        ->from(TableNames::DIVISIONS . ' t1')
+                        ->leftJoin(TableNames::DIVISIONS . ' t2', '$t2.org_id = :org_id', array('org_id' => $this->org->id))
+                        ->queryRow();
+                $div_id = $row['i'] + 1;
+
+                $db->createCommand()->insert(TableNames::DIVISIONS, array(
+                    'div_id' => $div_id,
+                    'org_id' => $this->org->id,
+                    'name' => $_POST['Division']['name'],
+                    'description' => $_POST['Division']['description'],
+                    'weight' => max($row['m'], $row['c']) + 1,
+                ));
+
+            }
+            else {
+                $div_id = $_POST['Division']['div_id'];
+
+                $db->createCommand()->update(TableNames::DIVISIONS, array(
+                    'name' => $_POST['Division']['name'],
+                    'description' => $_POST['Division']['description'],
+                    //'updated' => new CDbExpression('CURRENT_TIMESTAMP'),
+                ), 'div_id = :div_id', array('div_id' => $div_id));
+            }
+                
+                
+            if (O::app()->getRequest()->isAjaxRequest) {                
                 $division = Divisions::model()->findByPk($div_id);
-                
                 echo CJSON::encode(array(
                    'status' => 'OK',
-                   'div_id' => $division->div_id,
+                   'div_id' => $div_id,
                    //'data' => $item,
-                   'html' => $this->renderPartial('_division_item', array('division' => $division), true),
+                   'html' => $this->renderPartial('_division_item', array('item' => $division), true),
                 ));
             } else {
                 $this->redirect(array('division'));

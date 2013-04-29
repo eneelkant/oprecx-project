@@ -1,11 +1,10 @@
-<?php /** @var Division $division */ ?>
-<?php $div_id = $division->div_id; ?>
+<?php /** @var Division $item */ ?>
+<?php $div_id = $item->div_id; ?>
 <li id="division-item-<?php echo $div_id; ?>">
+    <i class="icon-move handler pull-left"></i> 
     <h4>
-        <i class="icon-move handler"></i> 
-        
         <span id="division-name-<?php echo $div_id; ?>">
-            <?php echo CHtml::encode($division->name) ?>
+            <?php echo CHtml::encode($item->name) ?>
         </span>
         
         <span class="actions">
@@ -15,7 +14,7 @@
        
     </h4>
     <div class="description" id="division-description-<?php echo $div_id; ?>">
-        <?php echo CHtml::encode($division->description) ?>
+        <?php echo CHtml::encode($item->description) ?>
         
         
     </div>

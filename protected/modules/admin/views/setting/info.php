@@ -16,38 +16,53 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array (
 <fieldset>
 
     <legend>General Information</legend>
-    <div class="control-group ">
-        <label class="control-label required" for="OrganizationsForm_full_name">URL</label>
-        <div class="controls"><div class="input-prepend"><span class="add-on">oprecx.com/</span>
-            <input id="OrganizationsForm_full_name" type="text" value="<?php echo $model->name ?>" disabled="disabled" />
-        </div></div>
-    </div>
+    <?php echo $form->uneditableRow($model, 'name'); ?>
+    
     <?php echo $form->textFieldRow($model, 'full_name'); ?>
     
     <?php echo $form->html5EditorRow($model, 'description', 
             array('rows'=>5, 'height'=>'200', 'options'=>array('image' => false,'font-styles'=>false))); ?>
     
-    <?php echo $form->dateRangeRow($model, 'regTime',
-        array('hint'=>'Click inside! An even a date range field!.',
+    <?php echo $form->dateRangeRow($model, 'regTime', array(
             'prepend'=>'<i class="icon-calendar"></i>',
-            
             'options' => array(
                 //'callback'=>'js:function(start, end){console.log(start.toString("MMMM d, yyyy") + " - " + end.toString("MMMM d, yyyy"));}',
                 'format'=> 'yyyy-MM-dd',
                 )
         )); ?>
     
+    <div class="control-group ">
+        <label class="control-label required">Number of division choices</label>
+        <div class="controls">
+            <div>
+                <input type="text" class="span3" id="OrganizationsEx_min_div" value="1" readonly="" />
+                <input type="text" class="span3" id="OrganizationsEx_max_div" value="3" readonly="" />
+            </div>
+            <p class="help-block"><div class="span6" style="margin-top: 10px;">
+            <?php /*$this->widget('zii.widgets.jui.CJuiSlider', array(
+                'options'=>array(
+                    'min'=>1,
+                    'max'=>10,
+                    'range'=>true,
+                    'values'=>array(1, 3),
+                    'slide' => 'js:function(e, ui){$("#OrganizationsEx_min_div").val(ui.values[0]);'.
+                    '$("#OrganizationsEx_max_div").val(ui.values[1]);}',
+                ),
+                )); */?></div></p>
+        </div>
+    </div>
+    
     <?php echo $form->dropDownListRow($model, 'type', array(
-        'ngo' => Yii::t('admin', 'Non-Goverment Organization'),
-        'go' => Yii::t('admin', 'Goverment Organization'),
-        'committee' => Yii::t('admin', 'Committee'),
+        'ngo' => Yii::t('oprecx', 'Non-Goverment Organization'),
+        'go' => Yii::t('oprecx', 'Goverment Organization'),
+        'committee' => Yii::t('oprecx', 'Committee'),
     )) ?>
     
     <?php echo $form->dropDownListRow($model, 'scope', array(
-        'school' => Yii::t('admin', 'School'),
-        'university' => Yii::t('admin', 'University'),
-        'faculty' => Yii::t('admin', 'Faculty'),
-        'other' => Yii::t('admin', 'Other'),
+        'school' => Yii::t('oprecx', 'School'),
+        'university' => Yii::t('oprecx', 'University'),
+        'faculty' => Yii::t('oprecx', 'Faculty'),
+        'other' => Yii::t('oprecx', 'Other'),
     )) ?>
     
     <?php echo $form->textFieldRow($model, 'location'); ?>
