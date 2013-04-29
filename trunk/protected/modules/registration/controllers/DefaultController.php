@@ -78,27 +78,8 @@ class DefaultController extends RegisterController
 
             if (isset($_POST['DivisionChoiceForm'])) {
                 $model->attributes = $_POST['DivisionChoiceForm'];
-                if ($model->validate()) {
-                    foreach ($model->choices as $weight => $div_id) {
-                        try {
-                            Yii::app()->db->createCommand()->update('{{division_choices}}',
-                                    array ('weight'  => $weight, 'choosed' => new CDbExpression('CURRENT_TIMESTAMP')),
-                                    'div_id = :div_id AND user_id = :user_id',
-                                    array ('div_id'  => $div_id, 'user_id' => $userId)
-                            );
-                        }
-                        catch (Exception $e) {
-                             Yii::log($e);
-                        }
-
-                        try {
-                            Yii::app()->db->createCommand()->insert('{{division_choices}}',
-                                    array ('div_id'  => $div_id, 'user_id' => $userId, 'weight'  => $weight));
-                        }
-                        catch (Exception $e) {
-                            Yii::log($e);
-                        }
-                    }
+                if ($model->validate() && $model->save($userId)) {
+                    
                     //if ($this->isWizard) $this->redirect($this->getURL('form', array('wiz' => 1)));
                     if ($this->afterSave('form')) return;
                     //return;

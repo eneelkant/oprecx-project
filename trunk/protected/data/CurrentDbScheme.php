@@ -6,7 +6,7 @@ class CurrentDbScheme extends CDbMigration
 
     public function up()
     {
-        $this->foreign = true;
+        $this->foreign = false;
 
         $tmp = explode(':', $this->getDbConnection()->connectionString, 2);
         $this->driver = strtolower($tmp[0]);
@@ -144,7 +144,7 @@ class CurrentDbScheme extends CDbMigration
 
             'PRIMARY KEY (user_id, meta_name)',
             //"FOREIGN KEY(user_id) REFERENCES {{users}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
-        ));        
+        ));     
         //$this->createIndex('oprecx_user_metas_user_id', '{{user_metas}}', 'user_id');
 
         if ($this->foreign) {

@@ -2,15 +2,16 @@
 /* @var $this AdminController */
 
 $menu_items = array(
-    array('label'=>'GENERAL'),
-    array('label'=>'Information', 'url'=>array('setting/info'), 'icon' => 'home'),
-    array('label'=>'Divisions', 'url'=>array('setting/division'), 'icon' => 'th-list'),
+    array('label'=> O::t('oprecx', 'GENERAL')),
+    array('label'=> O::t('oprecx', 'Information'), 'url'=>array('setting/info'), 'icon' => 'home'),
+    array('label'=> O::t('oprecx', 'Divisions'), 'url'=>array('setting/division'), 'icon' => 'th-list'),
     
-    array('label'=>'COMPONENTS'),
-    array('label'=>'Forms', 'icon'=>'file', 'url'=>array('form/index')),
-    array('label'=>'Interview Slots', 'icon'=>'calendar', 'url'=>array('slot/index')),
-    array('label'=>'Tasks', 'icon'=>'tasks', 'url'=>array('task/index')),
+    array('label'=> O::t('oprecx', 'COMPONENTS')),
+    array('label'=> O::t('oprecx', 'Forms'), 'icon'=>'file', 'url'=>array('form/index')),
+    array('label'=> O::t('oprecx', 'Interview Slots'), 'icon'=>'calendar', 'url'=>array('slot/index')),
+    array('label'=> O::t('oprecx', 'Tasks'), 'icon'=>'tasks', 'url'=>array('task/index')),
 );
+
 //O::app()->request->
 $curPath = $this->id . '/' . $this->action->id;
 foreach ($menu_items as &$menu_item) {

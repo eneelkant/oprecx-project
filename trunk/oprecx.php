@@ -40,16 +40,24 @@ class O extends YiiBase
  */
 class OprecxWebApplication extends CWebApplication
 {
+    
+     static $SCRIPT_MAP = array(
+        'jquery.min.js' => '//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+        'jquery-ui.min.js' => '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+         
+        'bootstrap.min.js' => '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js',
+        'bootstrap.min.css' => '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css',
+        'bootstrap-responsive.min.css' => '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css',
+        'jquery.form.min.js' => '//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.24/jquery.form.min.js',
+         
+    );
 
     public function changeLanguage($new_lang)
     {
         setcookie('lang', $new_lang, time() + 3600 * 24 * 356, $this->getHomeUrl());
     }
     
-    protected function init()
-    {
-        parent::init();
-
+    private function initLanguage() {
         $params = $this->getParams();
         $supportedLang = $params['supportedLang'];
         $curLang       = $params['defaultLang'];
@@ -73,7 +81,15 @@ class OprecxWebApplication extends CWebApplication
             }
         }
         $this->setLanguage($curLang);
+    }
 
+
+    protected function init()
+    {
+        parent::init();
+        $this->initLanguage();
+        $this->getClientScript()->scriptMap = self::$SCRIPT_MAP;
+        
         // TODO: remove debug specific options and add that to plugins
         if (YII_DEBUG) {
             $this->messages->onMissingTranslation = array ('CPhpMessageTranslator', 'appendMessage');

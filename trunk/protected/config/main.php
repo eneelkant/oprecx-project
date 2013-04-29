@@ -23,17 +23,6 @@ return array(
     
     'modules' => array(
         // uncomment the following to enable the Gii tool
-        /*
-        'gii' => array(
-            'class' => 'system.gii.GiiModule',
-            'password' => 'gii',
-            // If removed, Gii defaults to localhost only. Edit carefully to taste.
-            'ipFilters' => array('127.0.0.1', '::1'),
-            'generatorPaths' => array(
-                //'ext.giix-core', // giix generators
-            )
-        ),
-         //*/
         'admin' , 'registration',
     ),
     // application components
@@ -47,6 +36,8 @@ return array(
         'bootstrap' => array(
             'class' => 'ext.bootstrap.components.Bootstrap',
             'responsiveCss' => true,
+            'enableBootboxJS' => false,
+            'enableNotifierJS' => false,
         ),
         
         // uncomment the following to enable URLs in path-format
@@ -58,6 +49,10 @@ return array(
                 '/about/<view:\w+>' => array('site/page', 'urlSuffix' => '.html'),
                 '/<controller:(user|site)>/<action:\w+>' => '<controller>/<action>',
                 
+                '/<org:\w+>-admin/' => array('admin/default/index', 'caseSensitive'=>false),
+                '/<org:\w+>-admin/<controller:\w+>' => 'admin/<controller>/index',
+                '/<org:\w+>-admin/<controller:\w+>-<action:\w+>' => 'admin/<controller>/<action>',
+
                 '/<module:(gii|admin)>' => '<module>/default/index',
                 '/<module:(gii|admin)>/<controller:\w+>' => '<module>/<controller>/index',
                 '/<module:(gii|admin)>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',

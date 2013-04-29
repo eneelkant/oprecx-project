@@ -54,7 +54,7 @@ class SiteController extends Controller
     public function actionError()
     {
         if ($error = Yii::app()->errorHandler->error) {
-            if (Yii::app()->request->isAjaxRequest) echo $error['message'];
+            if (O::app()->request->isAjaxRequest) echo $error['message'];
             else $this->render('error', $error);
         }
     }
@@ -66,7 +66,7 @@ class SiteController extends Controller
         //$cookies->expire = time() + 31104000;
         //Yii::app()->request->cookies['lang'] = $cookies;
         
-        OprecxHelper::changeLanguage($locale);
+        O::app()->changeLanguage($locale);
         $this->redirect($return);
     }
     
