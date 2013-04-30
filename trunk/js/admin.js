@@ -3,27 +3,28 @@
  * and open the template in the editor.
  */
 jQuery(function($){
+    var win = window;
     $("#share-link-url").on('mouseenter', function() {
         $(this).select();
-        $(this).find('.share-link').click(function(){
-            var
-				w = 600, h = 350,
-				winW = win.outerWidth || win.innerWidth || win.screen.availWidth || w + 50,
-				winH = win.outerHeight || win.innerHeight || win.screen.availHeight || h + 20,
-				winX = win.screenX || win.screenLeft || win.screen.availLeft || 0,
-				winY = win.screenY || win.screenTop || win.screen.availLeft || 0,
-
-				x = ((winW - w) >> 1) + winX, y = ((winH - h) >> 1) + winY,
-				arg = 'menubar=0,location=0,toolbar=0,fullscreen=0,left=' + x + ',top=' + y + ',width=' + w + ',height=' + h,
-				newwin = win.open('about:blank', null, arg);
-
-			if (newwin){
-				newwin.location.replace(this.href);
-				return true;
-			}
-			else return false;
-        })
     }); 
+    $('#shareOrgLink .share-link').click(function(){
+        var
+            w = 600, h = 350,
+            winW = win.outerWidth || win.innerWidth || win.screen.availWidth || w + 50,
+            winH = win.outerHeight || win.innerHeight || win.screen.availHeight || h + 20,
+            winX = win.screenX || win.screenLeft || win.screen.availLeft || 0,
+            winY = win.screenY || win.screenTop || win.screen.availLeft || 0,
+
+            x = ((winW - w) >> 1) + winX, y = ((winH - h) >> 1) + winY,
+            arg = 'menubar=0,location=0,toolbar=0,fullscreen=0,left=' + x + ',top=' + y + ',width=' + w + ',height=' + h,
+            newwin = win.open('about:blank', null, arg);
+
+        if (newwin){
+            newwin.location.replace(this.href);
+            return false;
+        }
+        else return true;
+    });
 });
 
 jQuery(function($){

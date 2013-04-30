@@ -37,6 +37,18 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array (
             <div>
                 <input type="text" class="span3" id="OrganizationsEx_min_div" value="1" readonly="" />
                 <input type="text" class="span3" id="OrganizationsEx_max_div" value="3" readonly="" />
+                
+                <?php $this->widget('zii.widgets.jui.CJuiSliderInput',array(
+                    'model'=>$model,
+                    'attribute'=>'div_min',
+                    'maxAttribute'=>'div_max',
+                    // additional javascript options for the slider plugin
+                    'options'=>array(
+                        'range'=>true,
+                        'min'=>0,
+                        'max'=>10,
+                    ),
+                ));?>
             </div>
             <p class="help-block"><div class="span6" style="margin-top: 10px;">
             <?php /*$this->widget('zii.widgets.jui.CJuiSlider', array(

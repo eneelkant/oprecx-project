@@ -18,6 +18,12 @@ class CDbCommandEx extends CDbCommand
     protected $_conditionRE;
     
     
+    /**
+     * 
+     * @param type $connection
+     * @param type $escapeMark
+     * @return CDbCommandEx
+     */
     public static function create($connection = NULL, $escapeMark = '$') {
         if ($connection === NULL) {
             $connection = Yii::app()->getDb();
@@ -39,6 +45,31 @@ class CDbCommandEx extends CDbCommand
         $this->_escapeMark = $escapeMark;
         $this->_conditionRE = "/(^|[^\\{$escapeMark}\\w\\d\\._])\\{$escapeMark}([\\w\\d\\._]+)/";
         //$this->_conditionRE = "/(^|[^\\w\\d\\._])\\{$escapeMark}([\\w\\d\\._]+)/";
+    }
+    
+    /**
+     * 
+     * @param type $table
+     * @param type $conditions
+     * @param type $params
+     * @return integer Description
+     */
+    public function delete($table, $conditions = '', $params = array ())
+    {
+        return parent::delete($table, $this->processConditionsEx($conditions), $params);
+    }
+    
+    /**
+     * 
+     * @param type $table
+     * @param type $columns
+     * @param type $conditions
+     * @param type $params
+     * @return integer
+     */
+    public function update($table, $columns, $conditions = '', $params = array ())
+    {
+        return parent::update($table, $columns, $this->processConditionsEx($conditions), $params);
     }
     
     /**
