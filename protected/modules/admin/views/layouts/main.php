@@ -79,21 +79,26 @@ $this->widget('ext.bootstrap.widgets.TbNavbar', array(
 </div><!-- footer -->
 
 <?php if ($this->getOrg() != NULL) : ?>
+<?php 
+$url = O::app()->getRequest()->getHostInfo() . CHtml::normalizeUrl(array('/registration/default/index', 'org_name' => $this->org->name)); 
+$url_encoded = urlencode($url);
+?>
 <div id="shareOrgLink" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="shareOrgLink" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3>Share Link</h3>
     </div>
     <div class="modal-body">
+        <p><?php echo O::t('oprecx', 'Copy this url,') ?></p>
         <div class="row-fluid">
-            <input class="span12" type="text" readonly="readonly" id="share-link-url" value="<?php 
-                echo O::app()->request->hostInfo . CHtml::normalizeUrl(array('/registration/default/index', 'org_name' => $this->org->name)) ?>">
-            
+            <input class="span12" type="text" readonly="readonly" id="share-link-url" value="<?php echo $url  ?>">
         </div>
+        
+        <p><?php echo O::t('oprecx', 'or just click these buttons') ?></p>
         <div>
-            <a href="#" class="share-link facebook">Facebook</a>
-            <a href="#" class="share-link twitter">Twitter</a>
-            <a href="#" class="share-link gplus">Google Plus</a>
+            <a href="http://www.facebook.com/sharer.php?<?php echo $url_encoded ?>" class="share-link facebook">Facebook</a>
+            <a href="http://twitter.com/share?url=<?php echo $url_encoded ?>&via=oprecx" class="share-link twitter">Twitter</a>
+            <a href="https://plus.google.com/share?url=<?php echo $url_encoded ?>" class="share-link gplus">Google Plus</a>
         </div>
     </div>
     <div class="modal-footer">

@@ -175,6 +175,8 @@ class CurrentDbScheme extends CDbMigration
             'img_id'         => 'integer DEFAULT NULL',
             'reg_time_begin' => 'datetime NOT NULL',
             'reg_time_end'   => 'datetime NOT NULL',
+            'div_min' => 'integer DEFAULT 1',
+            'div_max'   => 'integer DEFAULT 2',
             'visibility'     => 'string NOT NULL DEFAULT \'public\'',
             //"FOREIGN KEY(img_id) REFERENCES {{images}} (img_id) ON DELETE SET NULL",
         ));

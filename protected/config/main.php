@@ -113,6 +113,11 @@ return array(
         ),
         // */
         
+        'session' => array(
+            'sessionName' => 's',
+            'timeout' => 7200,
+        ),
+        
         'request'=>array(
             'enableCookieValidation'=>true,
             'enableCsrfValidation'=>true,

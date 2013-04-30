@@ -1,16 +1,18 @@
 <?php return array(
 
 ///////////   UNTRANSLATED //////////// 
+  'Copy this url,'=> '',
+  'or just click these buttons'=> '',
+
+
+
+//Translated
   'Email'=> 'Surel',
   'Link'=> 'Tautan',
   'Location'=> 'Lokasi',
   'Scope'=> 'Tingkat',
   'Type'=> 'Tipe',
   'Visibility'=> 'Visibilitas',
-
-
-
-//Translated
   'Non-Goverment Organization'=> 'Organisasi',
   'Committee'=> 'Kepanitiaan',
   'Faculty'=> 'Fakultas',
