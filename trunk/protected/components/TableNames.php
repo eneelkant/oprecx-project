@@ -12,24 +12,26 @@
  */
 abstract class TableNames
 {
-    const USERS = '{{users}}';
-    const USER_METAS = '{{user_metas}}';
+    const USER = '{{user}}';
+    const USER_META = '{{user_meta}}';
     
-    const ORGANIZATIONS = '{{organizations}}';
-    const ORGANIZATION_METAS = '{{organization_metas}}';
-    const ORG_ADMINS = '{{org_admins}}';
-    const ORG_ELMS = '{{org_elms}}';
+    const RECRUITMENT = '{{recruitment}}';
+    const RECRUITMENT_META = '{{recruitment_meta}}';
+    const REC_ADMIN = '{{rec_admin}}';
+    const REC_ELM = '{{rec_elm}}';
     
-    const DIVISIONS = '{{divisions}}';
-    const DIVISION_CHOICES = '{{division_choices}}';
-    const DIVISION_ELMS = '{{division_elms}}';
+    const DIVISION = '{{division}}';
+    const DIVISION_CHOICE = '{{division_choice}}';
+    const DIVISION_ELM = '{{division_elm}}';
     
-    const FORMS = '{{forms}}';
-    const FORM_FIELDS = '{{form_fields}}';
-    const FORM_VALUES = '{{form_values}}';
+    const FORM = '{{form}}';
+    const FORM_FIELD = '{{form_field}}';
+    const FORM_VALUE = '{{form_value}}';
     
-    const INTERVIEW_SLOTS = '{{interview_slots}}';
-    const INTERVIEW_USER_SLOTS = '{{interview_user_slots}}';
+    const INTERVIEW_SLOT = '{{interview_slot}}';
+    const INTERVIEW_USER_SLOT = '{{interview_user_slot}}';
+    
+    const IMAGE = '{{image}}';
 }
 
 ?>

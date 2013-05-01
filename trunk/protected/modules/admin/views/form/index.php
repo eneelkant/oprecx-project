@@ -1,12 +1,11 @@
 <?php
 /* @var $this FormController */
-/* @var $forms OrgForm[] */
+/* @var $forms RecruitmentForm[] */
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 ?>
-
 <?php
     $this->widget('SortForm', array(
         'title' => O::t('oprecx', 'Registration Form'),
@@ -15,7 +14,6 @@
         'action' => array('sort'),
     ))
 ?>
-
 
 <?php $this->renderPartial('../division_select', array('id' => 'divlist')); ?>
 <!-- Modal -->
@@ -55,7 +53,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array (
         <h3>Delete Division</h3>
     </div>
     <div class="modal-body">
-        <?php echo Yii::t('admin', 'Are you sure you want to remove "{division}"? All data about this division will be removed.', 
+        <?php echo O::t('admin', 'Are you sure you want to remove "{division}"? All data about this division will be removed.', 
                 array('{division}' => '<strong id="divisionRemoveName"></strong>')); ?>
     </div>
     <div class="modal-footer">
@@ -75,7 +73,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array (
         }
         
         window.setModified = function setModified() {
-            closeMessage = "<?php echo addslashes(Yii::t('admin', 'There are changes that have not been saved. Click save button to save it')); ?>";
+            closeMessage = "<?php echo addslashes(O::t('admin', 'There are changes that have not been saved. Click save button to save it')); ?>";
             $('#btn-sort-save').attr('disabled', false);
         }
         

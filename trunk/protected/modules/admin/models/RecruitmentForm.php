@@ -10,14 +10,14 @@
  * @property string $name Description
  * @property int[] $divList Description
  */
-class OrgForm extends OrgElms
+class RecruitmentForm extends RecruitmentElement
 {
     protected $_attributeNames = array('id', 'name', 'divList');
     
     /**
      * 
      * @param string $class
-     * @return OrgForm
+     * @return RecruitmentForm
      */
     public static function model($class = __CLASS__)
     {
@@ -26,19 +26,18 @@ class OrgForm extends OrgElms
     
     /**
      * 
-     * @param type $orgId
-     * @return OrgForm[]
+     * @param type $recId
+     * @return RecruitmentForm[]
      */
-    function findAllByOrg($orgId)
+    function findAllByRecId($recId)
     {
         $reader = CDbCommandEx::create()
                 ->select('f.elm_id as id, oe.name')
-                ->from(TableNames::FORMS . ' f')
-                ->join(TableNames::ORG_ELMS . ' oe', '$oe.elm_id = $f.elm_id')
-                ->where('$oe.org_id = :org_id', array('org_id' => $orgId))
+                ->from(TableNames::FORM . ' f')
+                ->join(TableNames::REC_ELM . ' oe', '$oe.elm_id = $f.elm_id')
+                ->where('$oe.rec_id = :rec_id', array('rec_id' => $recId))
                 ->order('oe.weight, oe.created DESC')
                 ->query();
-        $results = array();
         
         return $this->populate($reader);        
     }

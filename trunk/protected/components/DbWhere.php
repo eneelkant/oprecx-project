@@ -18,7 +18,7 @@ class DbWhere
 
     public static function &create($dbScheme = null) {
         if ($dbScheme == null) {
-            $dbScheme = Yii::app()->getDb()->getSchema();
+            $dbScheme = O::app()->getDb()->getSchema();
         }
         
         $where = new DbWhere();

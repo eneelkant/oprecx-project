@@ -22,12 +22,12 @@
  * @property string $visibility
  *
  * The followings are the available model relations:
- * @property Divisions[] $divisions
+ * @property Division[] $divisions
  * @property Forms[] $forms
  * @property OrganizationMetas[] $organizationMetases
  * @property Images $img
  */
-class Organizations extends CActiveRecord
+class Recruitment extends CActiveRecord
 {
 
     private $_metas;
@@ -35,7 +35,7 @@ class Organizations extends CActiveRecord
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return Organizations the static model class
+     * @return Recruitment the static model class
      */
     public static function model($className = __CLASS__)
     {
@@ -80,7 +80,7 @@ class Organizations extends CActiveRecord
      */
     public function tableName()
     {
-        return TableNames::ORGANIZATIONS;
+        return TableNames::RECRUITMENT;
     }
 
     /**

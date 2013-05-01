@@ -5,10 +5,10 @@ class AdminModule extends CWebModule {
     private $_assetsUrl;
 
     public function init() {
-        if (Yii::app()->user->isGuest) {
-            $url = Yii::app()->getUser()->loginUrl;
-            $url['nexturl'] = Yii::app()->getRequest()->requestUri;
-            Yii::app()->getRequest()->redirect(CHtml::normalizeUrl($url));
+        if (O::app()->user->isGuest) {
+            $url = O::app()->getUser()->loginUrl;
+            $url['nexturl'] = O::app()->getRequest()->requestUri;
+            O::app()->getRequest()->redirect(CHtml::normalizeUrl($url));
         }
         
         // this method is called when the module is being created
@@ -48,7 +48,7 @@ class AdminModule extends CWebModule {
 	public function getAssetsUrl()
 	{
 		if($this->_assetsUrl===null)
-			$this->_assetsUrl=Yii::app()->getAssetManager()->publish(dirname(__FILE__) . '/assets');
+			$this->_assetsUrl=O::app()->getAssetManager()->publish(dirname(__FILE__) . '/assets');
 		return $this->_assetsUrl;
 	}
 

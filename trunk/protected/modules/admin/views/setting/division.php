@@ -51,7 +51,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array (
         <h3><?php echo O::t('oprecx', 'Delete Division'); ?></h3>
     </div>
     <div class="modal-body">
-        <?php echo Yii::t('oprecx', 'Are you sure you want to remove "{division}"? All data about this division will be removed.', 
+        <?php echo O::t('oprecx', 'Are you sure you want to remove "{division}"? All data about this division will be removed.', 
                 array('{division}' => '<strong id="divisionRemoveName"></strong>')); ?>
     </div>
     <div class="modal-footer">

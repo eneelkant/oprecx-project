@@ -13,24 +13,24 @@
 class ModuleUrlManager {
 
     static function collectRules() {
-        if (!empty(Yii::app()->modules)) {
-            $cache = Yii::app()->getCache();
+        if (!empty(O::app()->modules)) {
+            $cache = O::app()->getCache();
             
-            foreach (Yii::app()->modules as $moduleName => $config) {
+            foreach (O::app()->modules as $moduleName => $config) {
                 $urlRules = false;
                 
                 if($cache)
                     $urlRules = $cache->get('module.urls.'.$moduleName);
                 
                 if (false == $urlRules){
-                    $module = Yii::app()->getModule($moduleName);
+                    $module = O::app()->getModule($moduleName);
                     if (!empty($module->urlRules)) {
                         $urlRules = $module->urlRules;
                     }
                 }
                 
                 if (false == $urlRules) {
-                    Yii::app()->getUrlManager()->addRules($urlRules);
+                    O::app()->getUrlManager()->addRules($urlRules);
                 }
             }
         }

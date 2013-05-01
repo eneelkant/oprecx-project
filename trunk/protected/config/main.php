@@ -1,11 +1,11 @@
 <?php
 
 // uncomment the following to define a path alias
-// Yii::setPathOfAlias('local','path/to/local-folder');
+// O::setPathOfAlias('local','path/to/local-folder');
 // This is the main Web application configuration. Any writable
 // 
 
-Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
+O::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
 
 // CWebApplication properties can be configured here.
 return array(
@@ -49,16 +49,16 @@ return array(
                 '/about/<view:\w+>' => array('site/page', 'urlSuffix' => '.html'),
                 '/<controller:(user|site)>/<action:\w+>' => '<controller>/<action>',
                 
-                '/<org:\w+>-admin/' => array('admin/default/index', 'caseSensitive'=>false),
-                '/<org:\w+>-admin/<controller:\w+>' => 'admin/<controller>/index',
-                '/<org:\w+>-admin/<controller:\w+>-<action:\w+>' => 'admin/<controller>/<action>',
+                '/<rec:\w+>-admin/' => array('admin/default/index', 'caseSensitive'=>false),
+                '/<rec:\w+>-admin/<controller:\w+>' => 'admin/<controller>/index',
+                '/<rec:\w+>-admin/<controller:\w+>-<action:\w+>' => 'admin/<controller>/<action>',
 
                 '/<module:(gii|admin)>' => '<module>/default/index',
                 '/<module:(gii|admin)>/<controller:\w+>' => '<module>/<controller>/index',
                 '/<module:(gii|admin)>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
                 
-                '/<org_name:\w+>/' => array('registration/default/index', 'caseSensitive'=>false),
-                '/<org_name:\w+>/<action:\w+>' => 'registration/default/<action>',
+                '/<rec_name:\w+>/' => array('registration/default/index', 'caseSensitive'=>false),
+                '/<rec_name:\w+>/<action:\w+>' => 'registration/default/<action>',
 
                 //'/<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ),
@@ -125,7 +125,7 @@ return array(
         ),
     ),
     // application-level parameters that can be accessed
-    // using Yii::app()->params['paramName']
+    // using O::app()->params['paramName']
     
     
     'params' => array(

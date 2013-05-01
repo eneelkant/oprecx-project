@@ -21,9 +21,9 @@ class UserIdentity extends CUserIdentity {
      */
     public function authenticate() {
         /** @var Users $record Description */
-        $row = Yii::app()->db->createCommand()
+        $row = O::app()->db->createCommand()
                 ->select('id, password, full_name')
-                ->from(TableNames::USERS)
+                ->from(TableNames::USER)
                 ->where('email = :email', array('email' => $this->username))
                 ->limit(1)
                 ->queryRow();
@@ -48,8 +48,8 @@ class UserIdentity extends CUserIdentity {
     
     public function login() {
         if ($this->errorCode === self::ERROR_NONE) {
-            Yii::app()->user->login($this);
-            Users::model()->updateByPk($this->id, array('last_login' => new CDbExpression('CURRENT_TIMESTAMP')));
+            O::app()->user->login($this);
+            User::model()->updateByPk($this->id, array('last_login' => new CDbExpression('CURRENT_TIMESTAMP')));
             return true;
         }
         
@@ -58,14 +58,14 @@ class UserIdentity extends CUserIdentity {
     
     
     public function register ($fullname) {
-        $user = new Users();
+        $user = new User();
         $user->full_name = $fullname;
         $user->email = $this->username;
         $user->password = crypt($this->password);
         if ($user->save(false)) {
             $this->_id = $user->getPrimaryKey();
             $this->authenticated = true;
-            Yii::app()->user->login($this);
+            O::app()->user->login($this);
             return true;
         }
         return false;
@@ -73,7 +73,7 @@ class UserIdentity extends CUserIdentity {
 
     public static function getFullName ($id) {
         //return $user->getState('fullname');
-        return Users::model()->findByPk($id)->full_name;
+        return User::model()->findByPk($id)->full_name;
         
     }
 }

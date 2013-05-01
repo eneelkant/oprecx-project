@@ -19,19 +19,19 @@
 
 <?php 
 
-$cur_org_id = $this->org ? $this->org->id : 0;
-$cur_org_name = $this->org ? $this->org->full_name : '-- Select Organization --';
+$cur_rec_id = $this->rec ? $this->rec->id : 0;
+$cur_rec_name = $this->rec ? $this->rec->full_name : '-- Select Recruitment --';
 
-$my_orgs = $this->getMyOrgs();
-$org_menus = array();
-$htmlOptions = array('data-org' => '123');
-foreach ($my_orgs as $org) {
-    if ($cur_org_id != 0) $htmlOptions['target'] = 'org_' . $org->id;
-    if ($org->id != $cur_org_id)
-        $org_menus[] = array('label' => $org->full_name, 'url' => array('setting/info', 'org' => $org->name),
-            'linkOptions' => $htmlOptions, 'data-org' => 'tes');
+$my_recs = $this->getMyRecruitments();
+$rec_menus = array();
+$htmlOptions = array();
+foreach ($my_recs as $rec) {
+    if ($cur_rec_id != 0) $htmlOptions['target'] = 'rec_' . $rec->id;
+    if ($rec->id != $cur_rec_id)
+        $rec_menus[] = array('label' => $rec->full_name, 'url' => array('setting/info', 'rec' => $rec->name),
+            'linkOptions' => $htmlOptions, 'data-rec' => 'tes');
 }
-if (count($org_menus) > 0) $org_menus[] = '---';
+if (count($rec_menus) > 0) $rec_menus[] = '---';
 
 $this->widget('ext.bootstrap.widgets.TbNavbar', array(
     'type'=>'inverse',
@@ -40,17 +40,17 @@ $this->widget('ext.bootstrap.widgets.TbNavbar', array(
         array(
             'class'=>'bootstrap.widgets.TbMenu',
             'items'=>array(
-                array('label'=>$cur_org_name, 'url'=>'#', 'items'=> array_merge($org_menus, array(
+                array('label'=>$cur_rec_name, 'url'=>'#', 'items'=> array_merge($rec_menus, array(
                     array('label'=> O::t('oprecx', 'MY ORGANIZATIONS')),
                     array('label'=> O::t('oprecx', 'View'), 'url'=>array('/admin'), 'icon' => 'book'),
                     array('label'=> O::t('oprecx', 'Add'), 'url'=>array('/admin/wizard/index'), 'icon' => 'plus'),
                 ))),
                 array('label'=> O::t('oprecx', 'Results'), 'url'=>array('result/index'), 'icon' => 'icon-list-alt', 
-                    'visible' => $cur_org_id != 0, 'active' => $this->layout == 'result'),
+                    'visible' => $cur_rec_id != 0, 'active' => $this->layout == 'result'),
                 array('label'=> O::t('oprecx', 'Settings'), 'url'=>array('setting/info'), 'icon' => 'icon-wrench', 
-                    'visible' => $cur_org_id != 0, 'active' => $this->layout == 'setting'),
+                    'visible' => $cur_rec_id != 0, 'active' => $this->layout == 'setting'),
                 array('label'=> O::t('oprecx', 'Share Registration Link'), 'url'=>'#shareOrgLink', 'icon' => 'globe', 
-                    'visible' => $cur_org_id != 0, 'linkOptions' => array('data-toggle' => 'modal')),
+                    'visible' => $cur_rec_id != 0, 'linkOptions' => array('data-toggle' => 'modal')),
                 
             ), // data-toggle="modal"
         ),
@@ -78,9 +78,9 @@ $this->widget('ext.bootstrap.widgets.TbNavbar', array(
     Thank you for recruiting with us. <i>oprecx</i>
 </div><!-- footer -->
 
-<?php if ($this->getOrg() != NULL) : ?>
+<?php if ($this->getRec() != NULL) : ?>
 <?php 
-$url = O::app()->getRequest()->getHostInfo() . CHtml::normalizeUrl(array('/registration/default/index', 'org_name' => $this->org->name)); 
+$url = O::app()->getRequest()->getHostInfo() . CHtml::normalizeUrl(array('/registration/default/index', 'rec_name' => $this->rec->name)); 
 $url_encoded = urlencode($url);
 ?>
 <div id="shareOrgLink" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="shareOrgLink" aria-hidden="true">
@@ -90,8 +90,9 @@ $url_encoded = urlencode($url);
     </div>
     <div class="modal-body">
         <p><?php echo O::t('oprecx', 'Copy this url,') ?></p>
-        <div class="row-fluid">
+        <div class="row-fluid share-org-input">
             <input class="span12" type="text" readonly="readonly" id="share-link-url" value="<?php echo $url  ?>">
+                <a href="<?php echo $url ?>" target="_blank">Go</a>
         </div>
         
         <p><?php echo O::t('oprecx', 'or just click these buttons') ?></p>
@@ -99,6 +100,7 @@ $url_encoded = urlencode($url);
             <a href="http://www.facebook.com/sharer.php?<?php echo $url_encoded ?>" class="share-link facebook">Facebook</a>
             <a href="http://twitter.com/share?url=<?php echo $url_encoded ?>&via=oprecx" class="share-link twitter">Twitter</a>
             <a href="https://plus.google.com/share?url=<?php echo $url_encoded ?>" class="share-link gplus">Google Plus</a>
+            
         </div>
     </div>
     <div class="modal-footer">

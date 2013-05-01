@@ -13,7 +13,7 @@
  * @property string $name Description
  * @property string[] $divList Description
  */
-class OrgElms extends CModel
+class RecruitmentElement extends CModel
 {
     public $data;
     protected $_attributeNames = NULL;
@@ -59,7 +59,7 @@ class OrgElms extends CModel
             
             if ($retriveDivList) {
                 $row['divList'] = CDbCommandEx::create()
-                        ->select('div_id')->from(TableNames::DIVISION_ELMS)
+                        ->select('div_id')->from(TableNames::DIVISION_ELM)
                         ->where('$elm_id = :elm_id', array('elm_id' => $row['id']))
                         ->queryColumn();
             }

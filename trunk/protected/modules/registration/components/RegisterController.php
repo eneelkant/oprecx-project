@@ -9,37 +9,36 @@
  * Description of RegisterController
  *
  * @author abie
- * @property Organizations $org Current org elements
+ * @property Recruitment $rec Current rec elements
  */
 abstract class RegisterController extends Controller {
     
-    /** @var Organizations $org current organization */
-    private $_org;
+    private $_rec;
     public $page_class;
     public $isWizard = false;
     
     public function getURL($actions, $args = array(), $relative = true) {
-        $theArg = array($actions, 'org_name' => $this->actionParams['org_name']);
+        $theArg = array($actions, 'rec_name' => $this->actionParams['rec_name']);
         //if ($this->isWizard) $theArg['wiz'] = 1;
         
         $url = CHtml::normalizeUrl(array_merge($theArg, $args));
-        return $relative ? $url : Yii::app()->getRequest()->getHostInfo() . $url;
+        return $relative ? $url : O::app()->getRequest()->getHostInfo() . $url;
     }
 
-    public function getOrg() {
-        return $this->_org;
+    public function getRec() {
+        return $this->_rec;
     }
 
     public function init (){
         $params = $this->actionParams;
-        if (isset($params['org_name'])) {
-            $this->_org = Organizations::model()->findByName($params['org_name']); // Organizations::model()->findByAttributes(array('name' => $params['org']));
-            if (null == $this->_org) {
-                throw new CHttpException(404,Yii::t('oprecx','Organization {org} Not Found.', array('{org}' => $params['org_name'])));
+        if (isset($params['rec_name'])) {
+            $this->_rec = Recruitment::model()->findByName($params['rec_name']); // Organizations::model()->findByAttributes(array('name' => $params['org']));
+            if (null == $this->_rec) {
+                throw new CHttpException(404,O::t('oprecx','Recruitment {rec} Not Found.', array('{rec}' => $params['rec_name'])));
             }
             
         } else {
-            throw new CHttpException(404,Yii::t('oprecx','Page Not Found "{action}".'));
+            throw new CHttpException(404,O::t('oprecx','Page Not Found "{action}".'));
         }
         
         //$this->isWizard = isset($params['wiz']) && $params['wiz'] == 1;

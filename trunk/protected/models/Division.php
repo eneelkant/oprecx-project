@@ -5,7 +5,7 @@
  *
  * The followings are the available columns in table '{{divisions}}':
  * @property string $div_id
- * @property string $org_id
+ * @property string $rec_id
  * @property string $name
  * @property string $description
  * @property string $leader
@@ -16,16 +16,16 @@
  * @property string $created
  *
  * The followings are the available model relations:
- * @property Users[] $oprecxUsers
+ * @property User[] $oprecxUsers
  * @property Forms[] $oprecxForms
- * @property Organizations $org
+ * @property Recruitment $rec
  */
-class Divisions extends CActiveRecord
+class Division extends CActiveRecord
 {
         /**
          * Returns the static model of the specified AR class.
          * @param string $className active record class name.
-         * @return Divisions the static model class
+         * @return Division the static model class
          */
         public static function model($className=__CLASS__)
         {
@@ -37,7 +37,7 @@ class Divisions extends CActiveRecord
          */
         public function tableName()
         {
-                return TableNames::DIVISIONS;
+                return TableNames::DIVISION;
         }
 
         /**
@@ -48,32 +48,32 @@ class Divisions extends CActiveRecord
                 // NOTE: you should only define rules for those attributes that
                 // will receive user inputs.
                 return array(
-                        array('org_id, name, created', 'required'),
+                        array('rec_id, name, created', 'required'),
                         array('max_applicant, max_staff, min_staff, enabled', 'numerical', 'integerOnly'=>true),
-                        array('org_id', 'length', 'max'=>10),
+                        array('rec_id', 'length', 'max'=>10),
                         array('name', 'length', 'max'=>128),
                         array('leader', 'length', 'max'=>64),
                         array('description', 'safe'),
                         // The following rule is used by search().
                         // Please remove those attributes that should not be searched.
-                        array('div_id, org_id, name, description, leader, max_applicant, max_staff, min_staff, enabled, created', 'safe', 'on'=>'search'),
+                        array('div_id, rec_id, name, description, leader, max_applicant, max_staff, min_staff, enabled, created', 'safe', 'on'=>'search'),
                 );
         }
         
         /**
          * 
-         * @param int $orgId
+         * @param int $recId
          * @param string $conditions
          * @param array $params
-         * @return Divisions[]
+         * @return Division[]
          */
-        public function findAllByOrg($orgId, $conditions = '', $params = array()) {
+        public function findAllByRecId($recId, $conditions = '', $params = array()) {
             $depend = new CDbCacheDependency;
-            $depend->sql = 'SELECT updated FROM ' . TableNames::ORGANIZATIONS . ' WHERE id = :org_id LIMIT 1';
-            $depend->params = array('org_id' => $orgId);
+            $depend->sql = 'SELECT updated FROM ' . TableNames::RECRUITMENT . ' WHERE id = :rec_id LIMIT 1';
+            $depend->params = array('rec_id' => $recId);
             $criteria = new CDbCriteria();
             $criteria->select = '*';
-            $criteria->compare('org_id', $orgId);
+            $criteria->compare('rec_id', $recId);
             $criteria->order = 'weight, name';            
             return $this->query($criteria, TRUE);
         }
@@ -89,7 +89,7 @@ class Divisions extends CActiveRecord
                         //'oprecxUsers' => array(self::MANY_MANY, 'Users', '{{division_choices}}(div_id, user_id)'),
                         //'oprecxForms' => array(self::MANY_MANY, 'Forms', '{{division_forms}}(div_id, form_id)'),
                         //'choices' => array(self::HAS_MANY, 'DivisionChoices', 'div_id'),
-                        //'org' => array(self::BELONGS_TO, 'Organizations', 'org_id'),
+                        //'rec' => array(self::BELONGS_TO, 'Organizations', 'rec_id'),
                 );
         }
 
@@ -100,7 +100,7 @@ class Divisions extends CActiveRecord
         {
                 return array(
                         'div_id' => 'Div',
-                        'org_id' => 'Org',
+                        'rec_id' => 'Recruitment Id',
                         'name' => 'Name',
                         'description' => 'Description',
                         'leader' => 'Leader',
@@ -124,7 +124,7 @@ class Divisions extends CActiveRecord
                 $criteria=new CDbCriteria;
 
                 $criteria->compare('div_id',$this->div_id,true);
-                $criteria->compare('org_id',$this->org_id,true);
+                $criteria->compare('rec_id',$this->rec_id,true);
                 $criteria->compare('name',$this->name,true);
                 $criteria->compare('description',$this->description,true);
                 $criteria->compare('leader',$this->leader,true);

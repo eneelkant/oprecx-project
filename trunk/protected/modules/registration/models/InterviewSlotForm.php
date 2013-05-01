@@ -13,13 +13,13 @@
 class InterviewSlotForm extends CFormModel
 {
 
-    private $_orgId, $_userId, $_tables;
+    private $_recId, $_userId, $_tables;
     public $time;
     
-    public function __construct($scenario = '', $org_id = null, $user_id = null)
+    public function __construct($scenario = '', $rec_id = null, $user_id = null)
     {
         parent::__construct($scenario);
-        $this->_orgId = $org_id;
+        $this->_recId = $rec_id;
         $this->_userId = $user_id;
     }
     
@@ -27,13 +27,13 @@ class InterviewSlotForm extends CFormModel
         if (! isset($this->_tables)) {
             $reader = CDbCommandEx::create()
                     ->selectDistinct('i.*, oe.name, oe.weight')
-                    ->from('{{interview_slots}} i')
-                    ->join('{{org_elms}} oe', '$oe.elm_id = $i.elm_id AND $oe.org_id = :org_id')
-                    ->join('{{division_elms}} de', '$de.elm_id = $oe.elm_id')
-                    ->join('{{division_choices}} dc', '$dc.div_id = $de.div_id AND $dc.user_id = :user_id')
+                    ->from(TableNames::INTERVIEW_SLOT . ' i')
+                    ->join(TableNames::REC_ELM . ' oe', '$oe.elm_id = $i.elm_id AND $oe.rec_id = :rec_id')
+                    ->join(TableNames::DIVISION_ELM . ' de', '$de.elm_id = $oe.elm_id')
+                    ->join(TableNames::DIVISION_CHOICE . ' dc', '$dc.div_id = $de.div_id AND $dc.user_id = :user_id')
                     //->group('i.elm_id, oe.elm_id')
                     ->order('oe.weight, oe.name')
-                    ->query(array ('user_id' => $this->_userId, 'org_id'  => $this->_orgId));
+                    ->query(array ('user_id' => $this->_userId, 'rec_id'  => $this->_recId));
 
             $tables = array();
             foreach ($reader as $row) {
@@ -72,12 +72,12 @@ class InterviewSlotForm extends CFormModel
         // SELECT t1.time, count(t1.user_id), t2.user_id FROM `oprecx_interview_user_slots` t1 LEFT JOIN `oprecx_interview_user_slots` t2 ON t2.slot_id = t1.slot_id AND t2.time = t1.time AND t2.user_id = 6 group by t1.time
         $reader = CDbCommandEx::create()
                 ->select('t1.time, COUNT(t1.user_id) as cnt, t2.user_id')
-                ->from('{{interview_user_slots}} t1')
-                ->leftJoin('{{interview_user_slots}} t2', '$t2.slot_id = $t1.slot_id AND $t2.time = $t1.time AND $t2.user_id = :user_id')
+                ->from(TableNames::INTERVIEW_USER_SLOT . ' t1')
+                ->leftJoin(TableNames::INTERVIEW_USER_SLOT . ' t2', '$t2.slot_id = $t1.slot_id AND $t2.time = $t1.time AND $t2.user_id = :user_id')
                 ->where('$t1.slot_id = :slot_id')
                 ->group('t1.time, t2.user_id')
                 ->order('t1.time')
-                ->query(array('slot_id' => $id, 'user_id' => Yii::app()->user->id));
+                ->query(array('slot_id' => $id, 'user_id' => O::app()->user->id));
         $slot_count = array();
         foreach ($reader as $row) {
             $slot_count[$row['time']] = array($row['cnt'], $row['user_id'] != null);
@@ -124,14 +124,14 @@ class InterviewSlotForm extends CFormModel
     }
     
     public function save() {
-        $db = Yii::app()->getDb();
+        $db = O::app()->getDb();
         
         $slots = $db->createCommand()
                 ->select('us.slot_id')
-                ->from('{{interview_user_slots}} us')
-                ->join('{{org_elms}} oe', 'oe.elm_id = us.slot_id AND oe.org_id = :org_id')
+                ->from(TableNames::INTERVIEW_USER_SLOT . ' us')
+                ->join(TableNames::REC_ELM . ' oe', 'oe.elm_id = us.slot_id AND oe.rec_id = :rec_id')
                 ->where('us.user_id = :user_id')
-                ->queryColumn(array('org_id' => $this->_orgId, 'user_id' => $this->_userId));
+                ->queryColumn(array('rec_id' => $this->_recId, 'user_id' => $this->_userId));
         if ($slots)
             $slots = array_flip($slots);
         else
@@ -142,13 +142,13 @@ class InterviewSlotForm extends CFormModel
             foreach($this->time as $id => $time) {
                 if (isset($slots[$id])) {
                     $db->createCommand()->update(
-                            '{{interview_user_slots}}', 
+                            TableNames::INTERVIEW_USER_SLOT, 
                             array('time' => $time, 'updated' => new CDbExpression('CURRENT_TIMESTAMP')),
                             'slot_id = :slot_id AND user_id = :user_id',
                             array('slot_id' => $id, 'user_id' => $this->_userId)
                     );
                 } else {
-                    $db->createCommand()->insert('{{interview_user_slots}}', array(
+                    $db->createCommand()->insert(TableNames::INTERVIEW_USER_SLOT, array(
                         'slot_id' => $id,
                         'user_id' => $this->_userId,
                         'time' => $time,
@@ -157,7 +157,7 @@ class InterviewSlotForm extends CFormModel
                 
             }
             $transaction->commit();
-            UserState::invalidate($this->_userId, $this->_orgId, 'slots');
+            UserState::invalidate($this->_userId, $this->_recId, 'slots');
             return true;
         }        
         catch (Exception $e) {

@@ -10,7 +10,7 @@
  *
  * @author abie
  */
-class OrganizationsEx extends Organizations
+class RecruitmentEx extends Recruitment
 {
     var $options;
     private static function sql_datetime_to_normal_time($time) {
@@ -43,7 +43,7 @@ class OrganizationsEx extends Organizations
             'location'       => O::t('oprecx', 'Location'),
             'link'           => O::t('oprecx', 'Link'),
             'visibility'     => O::t('oprecx', 'Visibility'),
-            'regTime' => Yii::t('admin', 'Registration date range'),
+            'regTime' => O::t('admin', 'Registration date range'),
         );
     }
     

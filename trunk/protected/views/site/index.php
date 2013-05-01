@@ -1,19 +1,19 @@
 <?php
 /* @var $this SiteController */
-/* @var $orgs Organizations[] */
+/* @var $orgs Recruitment[] */
 
 $this->pageTitle = O::app()->name;
 ?>
 <div>
     <h2><?php echo O::t('oprecx', 'Welcome to Oprecx!') ?></h2>
-    <?php //echo Yii::t('oprecx', '<p>Oprecx is web based open recruitment system') ?>
+    <?php //echo O::t('oprecx', '<p>Oprecx is web based open recruitment system') ?>
     <p>Oprecx adalah sistem rekruitmen terbuka berbasis web.</p>
     <hr />
 
     <h2><?php echo O::t('oprecx', 'Active Open Recruitment') ?></h2>
     
     <?php
-    /* @var $org Organizations */
+    /* @var $org Recruitment */
     //JqmTag::listview()->render(TRUE);
     //*
     if ($orgs) {

@@ -9,17 +9,17 @@ class DefaultController extends RegisterController
     {
         parent::init();
         $params =& $this->getActionParams();
-        $this->pageTitle = $this->org->full_name . ' | ' . Yii::t('oprecx', 'Oprecx Registration');
+        $this->pageTitle = $this->rec->full_name . ' | ' . O::t('oprecx', 'Oprecx Registration');
         $this->isWizard = isset($params['wiz']) && $params['wiz'] == 1;
     }
     
     private function cekLogin($next)
     {
-        if (Yii::app()->user->isGuest) {
+        if (O::app()->user->isGuest) {
             $url = $this->getURL('index', array('next' => $next));
             $this->redirect($url);
             /*throw new CHttpException(403,
-            Yii::t('oprecx', 'You must login to access this page. goto {link} to login',
+            O::t('oprecx', 'You must login to access this page. goto {link} to login',
                     array ('{link}' => $url)));*/
         }
     }
@@ -37,7 +37,7 @@ class DefaultController extends RegisterController
 
     public function actionIndex()
     {
-        if (Yii::app()->user->isGuest) {
+        if (O::app()->user->isGuest) {
             if (isset($this->actionParams['next'])) $next = $this->getURL($this->actionParams['next']);
             else $next = $this->getURL('index', array('just_login' => 1));
             
@@ -49,13 +49,13 @@ class DefaultController extends RegisterController
             return;
         }
         elseif (isset($this->actionParams['just_login'])) {
-            $div_count = Yii::app()->db->createCommand()
+            $div_count = O::app()->db->createCommand()
                     ->select('COUNT(dc.*)')
-                    ->from(TableNames::DIVISION_CHOICES . ' dc')
-                    ->join(TableNames::DIVISIONS . ' d', 'd.div_id = dc.div_id AND d.org_id = :org_id')
+                    ->from(TableNames::DIVISION_CHOICE . ' dc')
+                    ->join(TableNames::DIVISION . ' d', 'd.div_id = dc.div_id AND d.rec_id = :rec_id')
                     ->where('dc.user_id = :user_id')
                     ->limit(1)
-                    ->queryScalar(array('org_id' => $this->org->id, 'user_id' => Yii::app()->user->id));
+                    ->queryScalar(array('rec_id' => $this->rec->id, 'user_id' => O::app()->user->id));
             
             if ($div_count == 0){
                 $this->redirect($this->getURL('division', array('wiz' => 1)));
@@ -70,11 +70,11 @@ class DefaultController extends RegisterController
 
     public function actionDivision()
     {
-        $divisions = Divisions::model()->findAllByOrg($this->org->id);
+        $divisions = Division::model()->findAllByRecId($this->rec->id);
         
-        if (! Yii::app()->user->isGuest) {
-            $userId    = Yii::app()->user->id;
-            $model     = new DivisionChoiceForm('', $this->org, $divisions);
+        if (! O::app()->user->isGuest) {
+            $userId    = O::app()->user->id;
+            $model     = new DivisionChoiceForm('', $this->rec, $divisions);
 
             if (isset($_POST['DivisionChoiceForm'])) {
                 $model->attributes = $_POST['DivisionChoiceForm'];
@@ -101,12 +101,12 @@ class DefaultController extends RegisterController
         if ($this->isWizard) $this->backAction = 'division';
         
         $model = new RegistrationForm();
-        $model->initComponent($this->org->id, Yii::app()->user->id);
+        $model->initComponent($this->rec->id, O::app()->user->id);
         $form  = new CForm(
                 array (
                     'elements' => $model->elements,
                     'buttons'  => array (
-                        'submit-form' => array ('type'  => 'submit', 'label' => Yii::t('oprecx', 'Save')),
+                        'submit-form' => array ('type'  => 'submit', 'label' => O::t('oprecx', 'Save')),
                     ),
                     'activeForm' => array(
                         'class' => 'CActiveForm', 
@@ -123,7 +123,7 @@ class DefaultController extends RegisterController
         );
         
 
-        if ($form->submitted('submit') && $form->validate() && $model->save()) {
+        if ($form->submitted('save') && $form->validate() && $model->save()) {
             //if ($this->isWizard) $this->redirect($this->getURL('interview', array('wiz' => 1)));
             if ($this->afterSave('interview')) return;
         }
@@ -134,7 +134,7 @@ class DefaultController extends RegisterController
     public function actionInterview()
     {
         $this->cekLogin('interview');
-        $model = new InterviewSlotForm('', $this->org->id, Yii::app()->user->id);
+        $model = new InterviewSlotForm('', $this->rec->id, O::app()->user->id);
         if ($this->isWizard) $this->backAction = 'form';
         
         if (isset($_POST['InterviewSlotForm'])) {

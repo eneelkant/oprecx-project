@@ -3,7 +3,7 @@
 /* @var $regModel LoginForm */
 /* @var $form CActiveForm  */
 
-$this->pageTitle = Yii::app()->name . ' - Login';
+$this->pageTitle = O::app()->name . ' - Login';
 $this->breadcrumbs = array(
     'Login',
 );

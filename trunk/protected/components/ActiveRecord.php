@@ -25,9 +25,9 @@ class ActiveRecord extends CActiveRecord {
         $cache_name = $this->tableName() . '_item_' . $pk;
         
         /** @var ActiveRecord */
-        $item =& Yii::app()->cache->get($cache_name);
+        $item =& O::app()->cache->get($cache_name);
         if (false === $item) {
-            Yii::app()->cache->set($cache_name, $item =& parent::findByPk($pk, $condition, $params));
+            O::app()->cache->set($cache_name, $item =& parent::findByPk($pk, $condition, $params));
         } 
         return $item;
         

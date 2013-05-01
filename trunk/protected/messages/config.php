@@ -8,14 +8,14 @@ return array(
 	'messagePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'messages',
 	'languages'=>array('id'),
 	'fileTypes'=>array('php'),
+	'translator' => 'O::t',
 	//'overwrite'=>true,
 	'exclude'=>array(
 		'.svn',
 		'.gitignore',
-		'yiilite.php',
-		'yiit.php',
+		'.git',
 		'/data',
 		'/messages',
-		'/web/js',
+		'assets',
 	),
 );

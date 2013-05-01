@@ -19,7 +19,7 @@ function generateInterviewTables($model) {
             list($year, $month, $day, $slot_list) = $slot_date;
             
             $date = sprintf('%04d-%02d-%02d', $year, $month, $day); // "{$date[0]}-{$date[1]}-{$date[2]}";
-            $date_str = Yii::app()->getLocale()->getDateFormatter()->formatDateTime(
+            $date_str = O::app()->getLocale()->getDateFormatter()->formatDateTime(
                     mktime(1, 0, 0, $month, $day, $year), 'full', NULL);
             echo '<div class="date"><h3>', $date_str, '</h3><div data-role="controlgroup" data-type="horizontal">', PHP_EOL;
             

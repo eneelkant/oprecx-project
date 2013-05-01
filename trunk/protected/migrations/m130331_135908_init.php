@@ -8,7 +8,7 @@ class m130331_135908_init extends CDbMigration
     {
         $this->foreign = true;
         
-        Yii::import('application.components.TableNames');
+        O::import('application.components.TableNames');
         $tmp = explode(':', $this->getDbConnection()->connectionString, 2);
         $this->driver = strtolower($tmp[0]);
         
@@ -118,7 +118,7 @@ class m130331_135908_init extends CDbMigration
 
     private function tableUser()
     {
-        $this->dropTableIfExists(TableNames::USERS);
+        $this->dropTableIfExists(TableNames::USER);
         $this->dropTableIfExists('{{user_metas}}');
         
         $this->createTable('{{users}}', array (

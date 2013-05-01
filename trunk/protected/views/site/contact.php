@@ -3,7 +3,7 @@
 /* @var $regModel ContactForm */
 /* @var $form CActiveForm */
 
-$this->pageTitle = Yii::app()->name . ' - Contact Us';
+$this->pageTitle = O::app()->name . ' - Contact Us';
 $this->breadcrumbs = array(
     'Contact',
 );
@@ -11,10 +11,10 @@ $this->breadcrumbs = array(
 
 <h1>Contact Us</h1>
 
-<?php if (Yii::app()->user->hasFlash('contact')): ?>
+<?php if (O::app()->user->hasFlash('contact')): ?>
 
     <div class="flash-success">
-        <?php echo Yii::app()->user->getFlash('contact'); ?>
+        <?php echo O::app()->user->getFlash('contact'); ?>
     </div>
 
 <?php else: ?>

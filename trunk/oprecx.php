@@ -49,6 +49,8 @@ class OprecxWebApplication extends CWebApplication
 
     private function initLanguage()
     {
+        $this->setLanguage('en');
+        return;
         $params        = $this->getParams();
         $supportedLang = $params['supportedLang'];
         $curLang       = $params['defaultLang'];
@@ -97,14 +99,14 @@ class OprecxWebApplication extends CWebApplication
         
         // TODO: remove debug specific options and add that to plugins
         if (YII_DEBUG) {
-            $this->messages->onMissingTranslation = array ('CPhpMessageTranslator', 'appendMessage');
+            //$this->messages->onMissingTranslation = array ('CPhpMessageTranslator', 'appendMessage');
             $this->setModules(
                     array ('gii' => array (
                             'class'    => 'system.gii.GiiModule',
                             'password' => 'gii',
                         ))
             );
-            $this->cache->hashKey                 = false;
+            $this->cache->hashKey = false;
         }
     }
 

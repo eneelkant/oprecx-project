@@ -13,7 +13,7 @@
 class OprecxHelper
 {
     public static function changeLanguage($lang) {
-        setcookie('lang', $lang, time() + 3600 * 24 * 356, Yii::app()->request->baseUrl . '/');
+        setcookie('lang', $lang, time() + 3600 * 24 * 356, O::app()->request->baseUrl . '/');
     }
     
     /**
