@@ -15,7 +15,7 @@ class FormController extends AdminController
     public  $layout = 'setting';
     
     public function actionIndex(){
-        $forms = OrgForm::model()->findAllByOrg($this->org->id);
+        $forms = RecruitmentForm::model()->findAllByRecId($this->rec->id);
         $this->render('index', array('forms' => $forms));
     }
     

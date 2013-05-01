@@ -36,7 +36,7 @@ class AdminRule extends CComponent
         if (!$this->_rule) {
             $this->_rule = CDbCommandEx::create()
                 ->select('rule')
-                ->from(TableNames::ORG_ADMINS)
+                ->from(TableNames::REC_ADMIN)
                 ->where('$org_id = :org_id AND $user_id = :user_id', 
                         array('org_id' => $this->_orgId, 'user_id' => $this->_userId))
                 ->limit(1)

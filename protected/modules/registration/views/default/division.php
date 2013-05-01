@@ -1,7 +1,7 @@
 <?php
 /* @var $this DefaultController */
 /* @var $model DivisionChoiceForm */
-/* @var $divisions Divisions[] */
+/* @var $divisions Division[] */
 
 $this->breadcrumbs = array(
     $this->module->id,
@@ -10,7 +10,7 @@ $this->page_class[] = 'page-division';
 ?>
 
 <?php
-if (! Yii::app()->user->getIsGuest()) {
+if (! O::app()->user->getIsGuest()) {
     /* @var $form CActiveForm */
     $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'division-choice-form',
@@ -21,7 +21,7 @@ if (! Yii::app()->user->getIsGuest()) {
             )
     );
 
-    $dropDownListAttr = array('prompt' => Yii::t('oprecx', '-- choose one --'));
+    $dropDownListAttr = array('prompt' => O::t('oprecx', '-- choose one --'));
     $fieldSet = JqmTag::jTag('fieldset', 'controlgroup')
             ->appendContent($form->errorSummary($model));
     for($i = 0; $i < $model->max_choice; ++$i) {
@@ -46,7 +46,7 @@ if (! Yii::app()->user->getIsGuest()) {
 <?php endforeach; ?>
 
 <?php 
-if (Yii::app()->user->getIsGuest())
-    JqmTag::buttonLink(Yii::t('oprecx', 'Register Now'), $this->getURL('index'))->theme('b')->render(true);
+if (O::app()->user->getIsGuest())
+    JqmTag::buttonLink(O::t('oprecx', 'Register Now'), $this->getURL('index'))->theme('b')->render(true);
 
 ?>

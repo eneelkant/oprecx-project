@@ -15,16 +15,16 @@
  * @property string $updated
  *
  * The followings are the available model relations:
- * @property Divisions[] $oprecxDivisions
+ * @property Division[] $oprecxDivisions
  * @property UserMetas[] $userMetases
  * @property Images $img
  */
-class Users extends CActiveRecord
+class User extends CActiveRecord
 {
         /**
          * Returns the static model of the specified AR class.
          * @param string $className active record class name.
-         * @return Users the static model class
+         * @return User the static model class
          */
         public static function model($className=__CLASS__)
         {
@@ -36,7 +36,7 @@ class Users extends CActiveRecord
          */
         public function tableName()
         {
-                return TableNames::USERS;
+                return TableNames::USER;
         }
 
         /**
@@ -47,7 +47,7 @@ class Users extends CActiveRecord
          * @return type
          */
         public function findByPk($pk, $condition = '', $params = array()) {
-            $cache = Yii::app()->cache;
+            $cache = O::app()->cache;
             $cacheId = 'oprecx:User:id=' . $pk;
             if (($obj = $cache->get($cacheId)) === false) {
                 $obj = $this->findByAttributes(array('id' => $pk), $condition, $params);

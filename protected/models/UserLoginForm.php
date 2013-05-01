@@ -34,14 +34,14 @@ class UserLoginForm extends CFormModel
     {
         return new $form_class(array_merge(
                 array (
-                    'title'    => Yii::t('oprecx', 'Login'),
+                    'title'    => O::t('oprecx', 'Login'),
                     'action'   => array ('/user/login'),
                     'elements' => array (
                         'email'    => array ('type' => 'email'),
                         'password' => array ('type' => 'password'),
                     ),
                     'buttons'  => array (
-                        'login' => array ('type'  => 'submit', 'label' => Yii::t('oprecx', 'Login')),
+                        'login' => array ('type'  => 'submit', 'label' => O::t('oprecx', 'Login')),
                     ),
                 ), 
                 $option), $this);

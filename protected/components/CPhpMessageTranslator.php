@@ -6,13 +6,13 @@ class CPhpMessageTranslator extends CApplicationComponent{
     public static function appendMessage(CMissingTranslationEvent $event){
     	self::$message[$event->language][$event->category][$event->message] = '';
     	if (! self::$init){
-    		Yii::app()->attachEventHandler('onEndRequest', array('CPhpMessageTranslator', 'writeMessage'));
+    		O::app()->attachEventHandler('onEndRequest', array('CPhpMessageTranslator', 'writeMessage'));
     		self::$init = TRUE;
     	}
     }
     public static function writeMessage(){
     	foreach (self::$message as $lang => $data){
-    		$dir = Yii::getPathOfAlias('application.messages') . DIRECTORY_SEPARATOR . $lang;
+    		$dir = O::getPathOfAlias('application.messages') . DIRECTORY_SEPARATOR . $lang;
     		if (! is_dir($dir)) mkdir($dir, 0777, TRUE);
     		foreach ($data as $category => $untranslated){
     			$fileName = $dir . DIRECTORY_SEPARATOR . $category . '.php';

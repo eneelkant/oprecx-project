@@ -18,14 +18,14 @@ class RegistrationForm extends CFormModel
     private $_rules    = array ();
     private $_values   = array ();
     
-    private $_orgId;
+    private $_recId;
     private $_userId;
 
-    public function initComponent($org_id, $user_id)
+    public function initComponent($rec_id, $user_id)
     {
-        $this->_orgId  = $org_id;
+        $this->_recId  = $rec_id;
         $this->_userId = $user_id;
-        //$this-> = array('id' => "reg-form-{$org_id}-{$user_id}");
+        //$this-> = array('id' => "reg-form-{$rec_id}-{$user_id}");
 
         $this->_elements = array ();
         $this->_labels   = array ();
@@ -37,16 +37,15 @@ class RegistrationForm extends CFormModel
         $reader = CDbCommandEx::create()
                 //->select('oe.elm_id AS form_id, oe.name AS form_name, fv.value, ff.*')
                 ->selectDistinct('oe.elm_id AS form_id, oe.name AS form_name, oe.weight AS oe_weight, fv.value, ff.*')
-                
-                ->from('{{form_fields}} ff')
-                ->join('{{org_elms}} oe', '$oe.elm_id = $ff.form_id AND $oe.org_id = :org_id')
-                ->join('{{division_elms}} de', '$de.elm_id = $oe.elm_id')
-                ->join('{{division_choices}} dc', '$dc.div_id = $de.div_id AND $dc.user_id = :user_id')
-                ->leftJoin('{{form_values}} fv', '$fv.field_id = $ff.field_id AND $fv.user_id = :user_id')
+                ->from(TableNames::FORM_FIELD . ' ff')
+                ->join(TableNames::REC_ELM . ' oe', '$oe.elm_id = $ff.form_id AND $oe.rec_id = :rec_id')
+                ->join(TableNames::DIVISION_ELM . ' de', '$de.elm_id = $oe.elm_id')
+                ->join(TableNames::DIVISION_CHOICE . ' dc', '$dc.div_id = $de.div_id AND $dc.user_id = :user_id')
+                ->leftJoin(TableNames::FORM_VALUE . ' fv', '$fv.field_id = $ff.field_id AND $fv.user_id = :user_id')
                 
                 //->group('ff.field_id') // takut dabel
                 ->order('oe.weight, oe.name, ff.weight, ff.created')
-                ->query(array (':user_id' => $user_id, ':org_id'  => $org_id));
+                ->query(array (':user_id' => $user_id, ':rec_id'  => $rec_id));
 
 
         /** @var array $row */
@@ -63,7 +62,7 @@ class RegistrationForm extends CFormModel
             $options['required'] = $row['required'];
             $options['visible']  = true;
             if ('dropdownlist' === $options['type'] && !isset($options['prompt'])) {
-                $options['prompt'] = '<<' . $options['label'] . '>>'; //Yii::t('oprecx', '- select -');
+                $options['prompt'] = '<<' . $options['label'] . '>>'; //O::t('oprecx', '- select -');
             }
             if (!isset($options['placeholder']))
                 $options['placeholder'] = $options['label'];
@@ -86,13 +85,13 @@ class RegistrationForm extends CFormModel
 
     public function save()
     {
-        $db          = Yii::app()->db;
+        $db          = O::app()->db;
         $transaction = $db->beginTransaction();
         try {
             foreach ($this->_values as $k => $v) {
-                $field_id = substr($k, 6);
+                $field_id = substr($k, 6); // field_{$id}
                 if ($v[0] && !$v[1]) {
-                    $db->createCommand()->insert('{{form_values}}', array (
+                    $db->createCommand()->insert(TableNames::FORM_VALUE, array (
                         'field_id' => $field_id,
                         'user_id'  => $this->_userId,
                         'value'    => $v[0],
@@ -100,7 +99,7 @@ class RegistrationForm extends CFormModel
                 }
                 elseif ($v[0] != $v[1]) {
                     $db->createCommand()->update(
-                            '{{form_values}}',
+                            TableNames::FORM_VALUE,
                             array (
                                 'value'   => $v[0], 
                                 'updated' => new CDbExpression('CURRENT_TIMESTAMP')
@@ -113,7 +112,7 @@ class RegistrationForm extends CFormModel
             }
 
             $transaction->commit();
-            UserState::invalidate($this->_userId, $this->_orgId, 'form');
+            UserState::invalidate($this->_userId, $this->_recId, 'form');
             return true;
         }
         catch (Exception $e) {

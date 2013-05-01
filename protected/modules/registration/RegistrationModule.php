@@ -33,7 +33,7 @@ class RegistrationModule extends CWebModule {
 
     public function getAssetsUrl() {
         if ($this->_assetsUrl === null)
-        //$this->_assetsUrl=Yii::app()->getAssetManager()->publish(dirname(__FILE__) . '/assets');
+        //$this->_assetsUrl=O::app()->getAssetManager()->publish(dirname(__FILE__) . '/assets');
             $this->_assetsUrl = '/assets/register';
         return $this->_assetsUrl;
     }

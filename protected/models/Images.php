@@ -1,6 +1,6 @@
 <?php
 
-Yii::import('application.models._base.BaseImages');
+O::import('application.models._base.BaseImages');
 
 class Images extends BaseImages
 {

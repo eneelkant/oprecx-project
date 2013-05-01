@@ -65,16 +65,16 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array (
     </div>
     
     <?php echo $form->dropDownListRow($model, 'type', array(
-        'ngo' => Yii::t('oprecx', 'Non-Goverment Organization'),
-        'go' => Yii::t('oprecx', 'Goverment Organization'),
-        'committee' => Yii::t('oprecx', 'Committee'),
+        'ngo' => O::t('oprecx', 'Non-Goverment Organization'),
+        'go' => O::t('oprecx', 'Goverment Organization'),
+        'committee' => O::t('oprecx', 'Committee'),
     )) ?>
     
     <?php echo $form->dropDownListRow($model, 'scope', array(
-        'school' => Yii::t('oprecx', 'School'),
-        'university' => Yii::t('oprecx', 'University'),
-        'faculty' => Yii::t('oprecx', 'Faculty'),
-        'other' => Yii::t('oprecx', 'Other'),
+        'school' => O::t('oprecx', 'School'),
+        'university' => O::t('oprecx', 'University'),
+        'faculty' => O::t('oprecx', 'Faculty'),
+        'other' => O::t('oprecx', 'Other'),
     )) ?>
     
     <?php echo $form->textFieldRow($model, 'location'); ?>

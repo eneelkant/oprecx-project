@@ -10,14 +10,14 @@ $this->page_class[] = 'page-home';
 ?>
 
 <div class ="org-description">
-<?php echo $this->org->description; ?>
+<?php echo $this->rec->description; ?>
     
 </div>
 
 
-<?php if (Yii::app()->user->isGuest) : ?>
+<?php if (O::app()->user->isGuest) : ?>
     <p class="view-division">
-        <?php echo CHtml::link(Yii::t('oprecx', 'View all divisions on {org}', array('{org}' => $this->org->full_name)), 
+        <?php echo CHtml::link(O::t('oprecx', 'View all divisions on {org}', array('{org}' => $this->rec->full_name)), 
                 $this->getURL('division')); ?>
     </p>
     <?php
@@ -26,7 +26,7 @@ $this->page_class[] = 'page-home';
     $loginForm->activeForm['htmlOptions']['data-ajax'] = 'false';
     $loginForm->buttons['login']->attributes['data-theme'] = 'b';
     $grid->addColumn($loginForm->render())->id('userregister')
-            ->appendContent(Yii::t('oprecx', 'Have Facebook or Twitter account? You can login via {facebook} or {twiiter}.'));
+            ->appendContent(O::t('oprecx', 'Have Facebook or Twitter account? You can login via {facebook} or {twiiter}.'));
 
     $regForm->activeForm['htmlOptions']['data-ajax'] = 'false';
     $regForm->buttons['register']->attributes['data-theme'] = 'b';

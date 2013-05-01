@@ -16,8 +16,8 @@ class CurrentDbScheme extends CDbMigration
         if ($this->driver == 'sqlite')
             $this->foreign = false;
 
-        $this->dropTableIfExists('{{images}}');
-        $this->createTable('{{images}}', array (
+        $this->dropTableIfExists(TableNames::IMAGE);
+        $this->createTable(TableNames::IMAGE, array (
             'img_id'    => 'pk',
             'file_path' => 'string NOT NULL',
             'file_url'  => 'string NOT NULL',
@@ -29,8 +29,8 @@ class CurrentDbScheme extends CDbMigration
         $this->tableUser();
         $this->dataUser();
 
-        $this->tableOrg();
-        $this->dataOrg();
+        $this->tableRec();
+        $this->dataRec();
 
         $this->tableDivision();
         $this->dataDiv();
@@ -45,10 +45,10 @@ class CurrentDbScheme extends CDbMigration
     }
 
     private function tableWawancara() {
-        $this->dropTableIfExists('{{interview_slots}}');
-        $this->dropTableIfExists('{{interview_user_slots}}');
+        $this->dropTableIfExists(TableNames::INTERVIEW_SLOT);
+        $this->dropTableIfExists(TableNames::INTERVIEW_USER_SLOT);
 
-        $this->createTable('{{interview_slots}}', array(
+        $this->createTable(TableNames::INTERVIEW_SLOT, array(
             'elm_id' => 'pk',
             'description' => 'text DEFAULT NULL',
             'duration' => 'integer NOT NULL DEFAULT 1800',
@@ -61,7 +61,7 @@ class CurrentDbScheme extends CDbMigration
             'options' => 'text DEFAULT NULL',
         ));
 
-        $this->createTable('{{interview_user_slots}}', array(
+        $this->createTable(TableNames::INTERVIEW_USER_SLOT, array(
             'slot_id' => 'integer NOT NULL',
             'user_id' => 'integer NOT NULL',
             'time' => 'datetime NOT NULL',
@@ -72,20 +72,20 @@ class CurrentDbScheme extends CDbMigration
         ));
 
         if ($this->foreign) {
-            $this->addForeignKey('oprecx_interview_slots_elm_id_fkey', '{{interview_slots}}', 'elm_id', '{{org_elms}}', 'elm_id');
-            $this->addForeignKey('oprecx_interview_user_slots_slot_id_fkey', '{{interview_user_slots}}', 'slot_id', '{{interview_slots}}', 'elm_id');
-            $this->addForeignKey('oprecx_interview_user_slots_user_id_fkey', '{{interview_user_slots}}', 'user_id', '{{users}}', 'id');
+            $this->addForeignKey('oprecx_interview_slots_elm_id_fkey', TableNames::INTERVIEW_SLOT, 'elm_id', TableNames::REC_ELM, 'elm_id');
+            $this->addForeignKey('oprecx_interview_user_slots_slot_id_fkey', TableNames::INTERVIEW_USER_SLOT, 'slot_id', TableNames::INTERVIEW_SLOT, 'elm_id');
+            $this->addForeignKey('oprecx_interview_user_slots_user_id_fkey', TableNames::INTERVIEW_USER_SLOT, 'user_id', TableNames::USER, 'id');
         }
     }
 
     private function dataWawancara() {
-        $this->insert('{{org_elms}}', array (
+        $this->insert(TableNames::REC_ELM, array (
             'elm_id' => 2,
-            'org_id' => 1,
+            'rec_id' => 1,
             'name' => 'Default Slot',
         ));
 
-        $this->insert('{{interview_slots}}', array(
+        $this->insert(TableNames::INTERVIEW_SLOT, array(
             'elm_id' => 2,
             'start_date' => date('Y-m-d', time() + (86400 * 1)),
             'end_date' => date('Y-m-d', time() + (86400 * 7)),
@@ -99,12 +99,12 @@ class CurrentDbScheme extends CDbMigration
             ))
         ));
 
-        $this->insert('{{division_elms}}', array (
+        $this->insert(TableNames::DIVISION_ELM, array (
             'div_id' => 1,
             'elm_id' => 2,
         ));
 
-        $this->insert('{{division_elms}}', array (
+        $this->insert(TableNames::DIVISION_ELM, array (
             'div_id' => 2,
             'elm_id' => 2,
         ));
@@ -117,10 +117,10 @@ class CurrentDbScheme extends CDbMigration
 
     private function tableUser()
     {
-        $this->dropTableIfExists(TableNames::USERS);
-        $this->dropTableIfExists('{{user_metas}}');
+        $this->dropTableIfExists(TableNames::USER);
+        $this->dropTableIfExists(TableNames::USER_META);
 
-        $this->createTable('{{users}}', array (
+        $this->createTable(TableNames::USER, array (
             'id'         => 'pk',
             'email'      => 'string NOT NULL UNIQUE',
             'password'   => 'string DEFAULT NULL',
@@ -133,9 +133,9 @@ class CurrentDbScheme extends CDbMigration
 
             //"FOREIGN KEY(img_id) REFERENCES {{images}} (img_id) ON DELETE SET NULL",
         ));
-        //$this->createIndex('oprecx_users_users_img_id', '{{users}}', 'img_id');
+        //$this->createIndex('oprecx_users_users_img_id', TableNames::USER, 'img_id');
 
-        $this->createTable('{{user_metas}}', array (
+        $this->createTable(TableNames::USER_META, array (
             'user_id'    => 'integer NOT NULL',
             'meta_name'  => 'string NOT NULL',
             'meta_value' => 'text NOT NULL',
@@ -145,22 +145,22 @@ class CurrentDbScheme extends CDbMigration
             'PRIMARY KEY (user_id, meta_name)',
             //"FOREIGN KEY(user_id) REFERENCES {{users}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));     
-        //$this->createIndex('oprecx_user_metas_user_id', '{{user_metas}}', 'user_id');
+        //$this->createIndex('oprecx_user_metas_user_id', TableNames::USER_META, 'user_id');
 
         if ($this->foreign) {
-            $this->addForeignKey('oprecx_users_img_id_fkey', '{{users}}', 'img_id', '{{images}}', 'img_id');
-            $this->addForeignKey('oprecx_user_metas_user_id_fkey', '{{user_metas}}', 'user_id', '{{users}}', 'id');
+            $this->addForeignKey('oprecx_users_img_id_fkey', TableNames::USER, 'img_id', TableNames::IMAGE, 'img_id');
+            $this->addForeignKey('oprecx_user_metas_user_id_fkey', TableNames::USER_META, 'user_id', TableNames::USER, 'id');
         }
     }
 
-    private function tableOrg()
+    private function tableRec()
     {
-        $this->dropTableIfExists('{{organizations}}');
-        $this->dropTableIfExists('{{org_admins}}');
-        $this->dropTableIfExists('{{organization_metas}}');
-        $this->dropTableIfExists('{{org_elms}}');
+        $this->dropTableIfExists(TableNames::RECRUITMENT);
+        $this->dropTableIfExists(TableNames::REC_ADMIN);
+        $this->dropTableIfExists(TableNames::RECRUITMENT_META);
+        $this->dropTableIfExists(TableNames::REC_ELM);
 
-        $this->createTable('{{organizations}}', array (
+        $this->createTable(TableNames::RECRUITMENT, array (
             'id'             => 'pk',
             'name'           => 'string NOT NULL UNIQUE',
             'full_name'      => 'string NOT NULL',
@@ -181,64 +181,64 @@ class CurrentDbScheme extends CDbMigration
             //"FOREIGN KEY(img_id) REFERENCES {{images}} (img_id) ON DELETE SET NULL",
         ));
 
-        $this->createTable('{{org_admins}}', array (
-            'org_id'  => 'int NOT NULL',
+        $this->createTable(TableNames::REC_ADMIN, array (
+            'rec_id'  => 'int NOT NULL',
             'user_id' => 'int NOT NULL',
             'rule'    => 'string NOT NULL',
             'last_access' => 'datetime DEFAULT NULL',
             
-            "PRIMARY KEY (org_id,user_id)",
-            //"FOREIGN KEY(org_id) REFERENCES {{organizations}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
+            "PRIMARY KEY (rec_id,user_id)",
+            //"FOREIGN KEY(rec_id) REFERENCES {{recruitment}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
             //"FOREIGN KEY(user_id) REFERENCES {{users}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
 
-        $this->createTable('{{organization_metas}}', array (
+        $this->createTable(TableNames::RECRUITMENT_META, array (
             
-            'org_id'     => 'integer NOT NULL',
+            'rec_id'     => 'integer NOT NULL',
             'meta_name'  => 'string NOT NULL',
             'meta_value' => 'text NOT NULL',
             'created'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
             'updated'    => 'datetime NOT NULL',
             
-            'PRIMARY KEY (org_id, meta_name)',
-            //"FOREIGN KEY(org_id) REFERENCES {{organizations}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
+            'PRIMARY KEY (rec_id, meta_name)',
+            //"FOREIGN KEY(rec_id) REFERENCES {{recruitment}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
-        //$this->createIndex('oprecx_organization_metas_org_id', '{{organization_metas}}', 'org_id');
+        //$this->createIndex('oprecx_recruitment_metas_rec_id', TableNames::RECRUITMENT_META, 'rec_id');
 
-        $this->createTable('{{org_elms}}', array (
+        $this->createTable(TableNames::REC_ELM, array (
             'elm_id'  => 'pk',
-            'org_id'  => 'integer NOT NULL',
+            'rec_id'  => 'integer NOT NULL',
             'name'    => 'string NOT NULL',
             'weight'  => 'integer DEFAULT NULL',
             'created' => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
             'updated' => 'datetime DEFAULT NULL',
 
-            //"FOREIGN KEY(org_id) REFERENCES {{organizations}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
+            //"FOREIGN KEY(rec_id) REFERENCES {{recruitment}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
-        $this->createIndex('oprecx_org_elms_org_id', '{{org_elms}}', 'org_id');
+        $this->createIndex('oprecx_rec_elm_rec_id', TableNames::REC_ELM, 'rec_id');
 
         if ($this->foreign) {
-            $this->addForeignKey('oprecx_organizations_img_id_fkey', '{{organizations}}', 'img_id', '{{images}}', 'img_id');
+            $this->addForeignKey('oprecx_recruitment_img_id_fkey', TableNames::RECRUITMENT, 'img_id', TableNames::IMAGE, 'img_id');
 
-            $this->addForeignKey('oprecx_organization_metas_org_id_fkey', '{{organization_metas}}', 'org_id', '{{organizations}}', 'id');
+            $this->addForeignKey('oprecx_recruitment_metas_rec_id_fkey', TableNames::RECRUITMENT_META, 'rec_id', TableNames::RECRUITMENT, 'id');
 
-            $this->addForeignKey('oprecx_org_admins_org_id_fkey', '{{org_admins}}', 'org_id', '{{organizations}}', 'id');
-            $this->addForeignKey('oprecx_org_admins_user_id_fkey', '{{org_admins}}', 'user_id', '{{users}}', 'id');
+            $this->addForeignKey('oprecx_rec_admin_rec_id_fkey', TableNames::REC_ADMIN, 'rec_id', TableNames::RECRUITMENT, 'id');
+            $this->addForeignKey('oprecx_rec_admin_user_id_fkey', TableNames::REC_ADMIN, 'user_id', TableNames::USER, 'id');
 
-            $this->addForeignKey('oprecx_org_elms_org_id_fkey', '{{org_elms}}', 'org_id', '{{organizations}}', 'id');
+            $this->addForeignKey('oprecx_rec_elm_rec_id_fkey', TableNames::REC_ELM, 'rec_id', TableNames::RECRUITMENT, 'id');
         }
 
     }
 
     private function tableDivision()
     {
-        $this->dropTableIfExists('{{divisions}}');
-        $this->dropTableIfExists('{{division_elms}}');
-        $this->dropTableIfExists('{{division_choices}}');
+        $this->dropTableIfExists(TableNames::DIVISION);
+        $this->dropTableIfExists(TableNames::DIVISION_ELM);
+        $this->dropTableIfExists(TableNames::DIVISION_CHOICE);
 
-        $this->createTable('{{divisions}}', array (
+        $this->createTable(TableNames::DIVISION, array (
             'div_id'        => 'pk',
-            'org_id'        => 'integer NOT NULL',
+            'rec_id'        => 'integer NOT NULL',
             'name'          => 'string NOT NULL',
             'description'   => 'text DEFAULT NULL',
             'leader'        => 'string DEFAULT NULL',
@@ -250,20 +250,20 @@ class CurrentDbScheme extends CDbMigration
             'updated'       => 'datetime DEFAULT NULL',
             'weight'        => 'integer NOT NULL DEFAULT 0',
 
-            //"FOREIGN KEY(org_id) REFERENCES {{organizations}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
+            //"FOREIGN KEY(rec_id) REFERENCES {{recruitment}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
-        $this->createIndex('oprecx_divisions_org_id', '{{divisions}}', 'org_id');
+        $this->createIndex('oprecx_divisions_rec_id', TableNames::DIVISION, 'rec_id');
 
-        $this->createTable('{{division_elms}}', array (
+        $this->createTable(TableNames::DIVISION_ELM, array (
             'div_id' => 'int',
             'elm_id' => 'int',
 
             "PRIMARY KEY (div_id,elm_id)",
             //"FOREIGN KEY(div_id) REFERENCES {{divisions}} (div_id) ON UPDATE NO ACTION ON DELETE NO ACTION",
-            //"FOREIGN KEY(elm_id) REFERENCES {{org_elms}} (elm_id) ON UPDATE NO ACTION ON DELETE NO ACTION",
+            //"FOREIGN KEY(elm_id) REFERENCES {{rec_elm}} (elm_id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
 
-        $this->createTable('{{division_choices}}', array (
+        $this->createTable(TableNames::DIVISION_CHOICE, array (
             'div_id'  => 'integer NOT NULL',
             'user_id' => 'integer NOT NULL',
             'choosed' => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
@@ -275,28 +275,28 @@ class CurrentDbScheme extends CDbMigration
         ));
 
         if ($this->foreign) {
-            $this->addForeignKey('oprecx_divisions_org_id_fkey', '{{divisions}}', 'org_id', '{{organizations}}', 'id');
+            $this->addForeignKey('oprecx_divisions_rec_id_fkey', TableNames::DIVISION, 'rec_id', TableNames::RECRUITMENT, 'id');
 
-            $this->addForeignKey('oprecx_division_elms_div_id_fkey', '{{division_elms}}', 'div_id', '{{divisions}}', 'div_id');
-            $this->addForeignKey('oprecx_division_elms_elm_id_fkey', '{{division_elms}}', 'elm_id', '{{org_elms}}', 'elm_id');
+            $this->addForeignKey('oprecx_division_elms_div_id_fkey', TableNames::DIVISION_ELM, 'div_id', TableNames::DIVISION, 'div_id');
+            $this->addForeignKey('oprecx_division_elms_elm_id_fkey', TableNames::DIVISION_ELM, 'elm_id', TableNames::REC_ELM, 'elm_id');
 
-            $this->addForeignKey('oprecx_division_choices_div_id_fkey', '{{division_choices}}', 'div_id', '{{divisions}}', 'div_id');
-            $this->addForeignKey('oprecx_division_choices_user_id_fkey', '{{division_choices}}', 'user_id', '{{users}}', 'id');
+            $this->addForeignKey('oprecx_division_choices_div_id_fkey', TableNames::DIVISION_CHOICE, 'div_id', TableNames::DIVISION, 'div_id');
+            $this->addForeignKey('oprecx_division_choices_user_id_fkey', TableNames::DIVISION_CHOICE, 'user_id', TableNames::USER, 'id');
         }
     }
 
     private function tableForms()
     {
-        $this->dropTableIfExists('{{forms}}');
-        $this->dropTableIfExists('{{form_fields}}');
-        $this->dropTableIfExists('{{form_values}}');
+        $this->dropTableIfExists(TableNames::FORM);
+        $this->dropTableIfExists(TableNames::FORM_FIELD);
+        $this->dropTableIfExists(TableNames::FORM_VALUE);
 
-        $this->createTable('{{forms}}', array (
+        $this->createTable(TableNames::FORM, array (
             'elm_id' => 'INTEGER PRIMARY KEY',
-            //"FOREIGN KEY(elm_id) REFERENCES {{org_elms}} (elm_id) ON UPDATE NO ACTION ON DELETE NO ACTION",
+            //"FOREIGN KEY(elm_id) REFERENCES {{rec_elm}} (elm_id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
 
-        $this->createTable('{{form_fields}}', array (
+        $this->createTable(TableNames::FORM_FIELD, array (
             'field_id' => 'pk',
             'form_id'  => 'integer NOT NULL',
             'name'     => 'string NOT NULL',
@@ -309,9 +309,9 @@ class CurrentDbScheme extends CDbMigration
 
             //"FOREIGN KEY(form_id) REFERENCES {{forms}} (elm_id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
-        $this->createIndex('oprecx_form_fields_form_id', '{{form_fields}}', 'form_id');
+        $this->createIndex('oprecx_form_fields_form_id', TableNames::FORM_FIELD, 'form_id');
 
-        $this->createTable('{{form_values}}', array (
+        $this->createTable(TableNames::FORM_VALUE, array (
             //'value_id' => 'pk',
             'field_id' => 'integer NOT NULL',
             'user_id'  => 'integer NOT NULL',
@@ -324,88 +324,88 @@ class CurrentDbScheme extends CDbMigration
             //"FOREIGN KEY(field_id) REFERENCES {{form_fields}} (field_id) ON UPDATE NO ACTION ON DELETE NO ACTION",
             //"FOREIGN KEY(user_id) REFERENCES {{users}} (id) ON UPDATE NO ACTION ON DELETE NO ACTION",
         ));
-        //$this->createIndex('oprecx_form_values_field_id', '{{form_values}}', 'field_id');
-        //$this->createIndex('oprecx_form_values_user_id', '{{form_values}}', 'user_id');
+        //$this->createIndex('oprecx_form_values_field_id', TableNames::FORM_VALUE, 'field_id');
+        //$this->createIndex('oprecx_form_values_user_id', TableNames::FORM_VALUE, 'user_id');
 
         if ($this->foreign) {
-            $this->addForeignKey('oprecx_forms_elm_id_fkey', '{{forms}}', 'elm_id', '{{org_elms}}', 'elm_id');
+            $this->addForeignKey('oprecx_forms_elm_id_fkey', TableNames::FORM, 'elm_id', TableNames::REC_ELM, 'elm_id');
 
-            $this->addForeignKey('oprecx_form_fields_form_id_fkey', '{{form_fields}}', 'form_id', '{{forms}}', 'elm_id');
+            $this->addForeignKey('oprecx_form_fields_form_id_fkey', TableNames::FORM_FIELD, 'form_id', TableNames::FORM, 'elm_id');
 
-            $this->addForeignKey('oprecx_form_values_field_id_fkey', '{{form_values}}', 'field_id', '{{form_fields}}', 'field_id');
-            $this->addForeignKey('oprecx_form_values_user_id_fkey', '{{form_values}}', 'user_id', '{{users}}', 'id');
+            $this->addForeignKey('oprecx_form_values_field_id_fkey', TableNames::FORM_VALUE, 'field_id', TableNames::FORM_FIELD, 'field_id');
+            $this->addForeignKey('oprecx_form_values_user_id_fkey', TableNames::FORM_VALUE, 'user_id', TableNames::USER, 'id');
         }
     }
 
     function dataDiv()
     {
-        $this->insert('{{divisions}}', array (
+        $this->insert(TableNames::DIVISION, array (
             'div_id'      => 2,
-            'org_id'      => 1,
+            'rec_id'      => 1,
             'name'        => 'Biro 1',
             'description' => 'Penjelasan Biro',
         ));
 
-        $this->insert('{{divisions}}', array (
+        $this->insert(TableNames::DIVISION, array (
             'div_id'      => 3,
-            'org_id'      => 3,
+            'rec_id'      => 3,
             'name'        => 'Departemen 1',
             'description' => 'Penjelasan Departemen',
         ));
 
-        $this->insert('{{divisions}}', array (
+        $this->insert(TableNames::DIVISION, array (
             'div_id'      => 1,
-            'org_id'      => 1,
+            'rec_id'      => 1,
             'name'        => 'Departemen 1',
             'description' => 'Penjelasan Departemen',
         ));
 
 
-        $this->insert('{{divisions}}', array (
+        $this->insert(TableNames::DIVISION, array (
             'div_id'      => 5,
-            'org_id'      => 4,
+            'rec_id'      => 4,
             'name'        => 'Departemen Pendidikan',
             'description' => '<p>Merupakan departemen yang bla-bla-bla</p>',
         ));
 
-        $this->insert('{{divisions}}', array (
+        $this->insert(TableNames::DIVISION, array (
             'div_id'      => 6,
-            'org_id'      => 4,
+            'rec_id'      => 4,
             'name'        => 'Departemen Sosmas',
             'description' => '<p>Merupakan departemen yang bla-bla-bla</p>',
         ));
 
-        $this->insert('{{divisions}}', array (
+        $this->insert(TableNames::DIVISION, array (
             'div_id'      => 7,
-            'org_id'      => 4,
+            'rec_id'      => 4,
             'name'        => 'Departemen Puskaban',
             'description' => '<p>Merupakan departemen yang bla-bla-bla</p>',
         ));
 
-        $this->insert('{{divisions}}', array (
+        $this->insert(TableNames::DIVISION, array (
             'div_id'      => 8,
-            'org_id'      => 4,
+            'rec_id'      => 4,
             'name'        => 'Departemen Orsen',
             'description' => '<p>Merupakan departemen yang bla-bla-bla</p>',
         ));
 
-        $this->insert('{{divisions}}', array (
+        $this->insert(TableNames::DIVISION, array (
             'div_id'      => 9,
-            'org_id'      => 4,
+            'rec_id'      => 4,
             'name'        => 'Biro Kominfo',
             'description' => '<p>Merupakan departemen yang bla-bla-bla</p>',
         ));
 
-        $this->insert('{{divisions}}', array (
+        $this->insert(TableNames::DIVISION, array (
             'div_id'      => 10,
-            'org_id'      => 4,
+            'rec_id'      => 4,
             'name'        => 'Biro PSDM',
             'description' => '<p>Merupakan departemen yang bla-bla-bla</p>',
         ));
 
 
 
-        $this->insert('{{division_choices}}', array (
+        $this->insert(TableNames::DIVISION_CHOICE, array (
             'div_id'  => 1,
             'user_id' => 6,
         ));
@@ -414,27 +414,27 @@ class CurrentDbScheme extends CDbMigration
 
     function dataForm()
     {
-        $this->insert('{{org_elms}}', array (
+        $this->insert(TableNames::REC_ELM, array (
             'elm_id' => 1,
-            'org_id' => 1,
+            'rec_id' => 1,
             'name'   => 'Informasi Pribadi',
         ));
 
-        $this->insert('{{division_elms}}', array (
+        $this->insert(TableNames::DIVISION_ELM, array (
             'div_id' => 1,
             'elm_id' => 1,
         ));
 
-        $this->insert('{{division_elms}}', array (
+        $this->insert(TableNames::DIVISION_ELM, array (
             'div_id' => 2,
             'elm_id' => 1,
         ));
 
-        $this->insert('{{forms}}', array (
+        $this->insert(TableNames::FORM, array (
             'elm_id' => 1,
         ));
 
-        $this->insert('{{form_fields}}', array (
+        $this->insert(TableNames::FORM_FIELD, array (
             'field_id' => 1,
             'form_id'  => 1,
             'name'     => 'Fakultas',
@@ -444,7 +444,7 @@ class CurrentDbScheme extends CDbMigration
             'options'  => serialize(array('items' => array('fk' => 'FK', 'fkg' => 'FKG', 'fmipa' => 'FMIPA', 'ft' => 'FT'))),
         ));
 
-        $this->insert('{{form_fields}}', array (
+        $this->insert(TableNames::FORM_FIELD, array (
             'field_id' => 2,
             'form_id'  => 1,
             'name'     => 'Jurusan',
@@ -454,7 +454,7 @@ class CurrentDbScheme extends CDbMigration
             'options'  => serialize(array('maxlen' => 64)),
         ));
 
-        $this->insert('{{form_fields}}', array (
+        $this->insert(TableNames::FORM_FIELD, array (
             'field_id' => 3,
             'form_id'  => 1,
             'name'     => 'Angkatan',
@@ -465,7 +465,7 @@ class CurrentDbScheme extends CDbMigration
             'options'  => '',
         ));
 
-        $this->insert('{{form_fields}}', array (
+        $this->insert(TableNames::FORM_FIELD, array (
             'field_id' => 4,
             'form_id'  => 1,
             'name'     => 'Facebook',
@@ -477,9 +477,9 @@ class CurrentDbScheme extends CDbMigration
         ));
     }
 
-    private function dataOrg()
+    private function dataRec()
     {
-        $this->insert('{{organizations}}',
+        $this->insert(TableNames::RECRUITMENT,
                 array (
             'id'             => 1,
             'name'           => 'pemiraui2013',
@@ -494,14 +494,14 @@ class CurrentDbScheme extends CDbMigration
             'reg_time_end'   => "2013-04-19 00:00:00",
         ));
 
-        $this->insert('{{organizations}}',
+        $this->insert(TableNames::RECRUITMENT,
                 array (
             'id'             => 3,
             'name'           => 'bemui2013',
             'full_name'      => 'BEM UI 2013',
             'email'          => "admin@bem.ui.ac.id",
             'description'    => 'Bada Eksekutif Mahasiswa Universitas Indonesia 2013',
-            'type'           => 'org',
+            'type'           => 'rec',
             'scope'          => 'university',
             'location'       => 'Universitas Indonesia',
             'link'           => "http://pemira.ui.ac.id/",
@@ -509,7 +509,7 @@ class CurrentDbScheme extends CDbMigration
             'reg_time_end'   => "2013-04-19 00:00:00",
         ));
 
-        $this->insert('{{organizations}}',
+        $this->insert(TableNames::RECRUITMENT,
                 array (
             'id'             => 4,
             'name'           => 'forkomauibanten13',
@@ -517,7 +517,7 @@ class CurrentDbScheme extends CDbMigration
             'email'          => 'forkomabanten@gmail.com',
             'description'    => '<p>Forum Komununikasi Mahasiswa dan Alumni Universitas Indonesia asal Banten atau 
                 sering disingkat dengan Forkoma UI Banten merupakan paguyuban daearah yang ...</p>',
-            'type'           => 'org',
+            'type'           => 'rec',
             'scope'          => 'university',
             'location'       => 'Universitas Indonesia',
             'link'           => "http://forkomauibanten.com/",
@@ -525,13 +525,13 @@ class CurrentDbScheme extends CDbMigration
             'reg_time_end'   => "2013-04-19 00:00:00",
         ));
 
-        $this->insert('{{org_admins}}', array (
-            'org_id'  => '1',
+        $this->insert(TableNames::REC_ADMIN, array (
+            'rec_id'  => '1',
             'user_id' => '6',
             'rule'    => 'super',
         ));
-        $this->insert('{{org_admins}}', array (
-            'org_id'  => '4',
+        $this->insert(TableNames::REC_ADMIN, array (
+            'rec_id'  => '4',
             'user_id' => '6',
             'rule'    => 'super',
         ));
@@ -539,14 +539,14 @@ class CurrentDbScheme extends CDbMigration
 
     function dataUser()
     {
-        $this->insert('{{users}}', array (
+        $this->insert(TableNames::USER, array (
             'id'        => 1,
             'email'     => 'admin@oprecx.com',
             'password'  => crypt('123'),
             'full_name' => 'Oprecx Admin',
         ));
 
-        $this->insert('{{users}}', array (
+        $this->insert(TableNames::USER, array (
             'id'        => 6,
             'email'     => 'frankenstein@ui.ac.id',
             'password'  => crypt('123'),
@@ -562,7 +562,7 @@ class CurrentDbScheme extends CDbMigration
         $this->execute('DROP TABLE IF EXISTS
             {{images}}, 
             {{users}}, {{user_metas}},
-            {{organizations}}, {{organization_metas}}, {{org_admins}}, {{org_elms}},
+            {{recruitment}}, {{recruitment_metas}}, {{rec_admins}}, {{rec_elms}},
             {{divisions}}, {{division_elms}}, {{division_choices}},
             {{forms}}, {{form_fields}}, {{form_values}},
             {{interview_slots}}, {{interview_values}}

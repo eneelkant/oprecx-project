@@ -23,7 +23,7 @@ class UserController extends CController {
             $nexturl = $this->actionParams['nexturl'];
         else
             $nexturl = array('/user/profile');
-        if (! Yii::app()->user->getIsGuest()) {
+        if (! O::app()->user->getIsGuest()) {
             $this->redirect($nexturl);
         }
         
@@ -62,8 +62,8 @@ class UserController extends CController {
     }
     
     public function actionLogout() {
-        Yii::app()->user->logout();
-        $this->redirect(Yii::app()->homeUrl);
+        O::app()->user->logout();
+        $this->redirect(O::app()->homeUrl);
     }
 }
 

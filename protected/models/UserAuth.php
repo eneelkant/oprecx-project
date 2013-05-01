@@ -12,7 +12,7 @@
  * @property string $last_login
  *
  * The followings are the available model relations:
- * @property Users $user
+ * @property User $user
  */
 class UserAuth extends CActiveRecord
 {

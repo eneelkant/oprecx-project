@@ -37,13 +37,13 @@ class SiteController extends Controller
         // renders the view file 'protected/views/site/index.php'
         // using the default layout 'protected/views/layouts/main.php'
         $cache_name = 'oprecx:Organizations:active10';
-        if (($orgs = Yii::app()->cache->get($cache_name)) == false) {
-            $orgs = Organizations::model()->findAll(array (
+        if (($orgs = O::app()->cache->get($cache_name)) == false) {
+            $orgs = Recruitment::model()->findAll(array (
                 'condition' => 'reg_time_begin <= CURRENT_TIMESTAMP AND reg_time_end >= CURRENT_TIMESTAMP',
                 'order'     => 'reg_time_end DESC',
                 'limit'     => 10,
             ));
-            Yii::app()->cache->set($cache_name, $orgs);
+            O::app()->cache->set($cache_name, $orgs);
         }        
         $this->render('index', array ('orgs' => $orgs));
     }
@@ -53,7 +53,7 @@ class SiteController extends Controller
      */
     public function actionError()
     {
-        if ($error = Yii::app()->errorHandler->error) {
+        if ($error = O::app()->errorHandler->error) {
             if (O::app()->request->isAjaxRequest) echo $error['message'];
             else $this->render('error', $error);
         }
@@ -61,10 +61,10 @@ class SiteController extends Controller
     
     public function actionLang($locale, $return)
     {
-        //Yii::app()->session->add('lang', $locale);
+        //O::app()->session->add('lang', $locale);
         //$cookies= new CHttpCookie('lang', $locale);
         //$cookies->expire = time() + 31104000;
-        //Yii::app()->request->cookies['lang'] = $cookies;
+        //O::app()->request->cookies['lang'] = $cookies;
         
         O::app()->changeLanguage($locale);
         $this->redirect($return);

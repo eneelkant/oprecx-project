@@ -37,7 +37,7 @@ class UserRegisterForm extends CFormModel {
         return new $form_class(array_merge(
                 array (
                     'action' => array('/user/register'),
-                    'title' => Yii::t('oprecx', 'Register Account'),
+                    'title' => O::t('oprecx', 'Register Account'),
                     'elements' => array(
                         'name' => array('type' => 'text'),
                         'email' => array('type' => 'text'),
@@ -45,7 +45,7 @@ class UserRegisterForm extends CFormModel {
                         'password2' => array('type' => 'password'),
                     ),
                     'buttons' => array(
-                        'register' => array('type' => 'submit', 'label' => Yii::t('oprecx', 'Register')),
+                        'register' => array('type' => 'submit', 'label' => O::t('oprecx', 'Register')),
                     ),
                 ), 
                 $option), $this);
@@ -65,8 +65,8 @@ class UserRegisterForm extends CFormModel {
 
     public function attributeLabels() {
         return array(
-            'name' => Yii::t('oprecx', 'Full Name'),
-            'password2' => Yii::t('oprecx', 'Retype Password'),
+            'name' => O::t('oprecx', 'Full Name'),
+            'password2' => O::t('oprecx', 'Retype Password'),
         );
     }
 
