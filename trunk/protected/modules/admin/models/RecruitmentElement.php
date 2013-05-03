@@ -13,7 +13,7 @@
  * @property string $name Description
  * @property string[] $divList Description
  */
-class RecruitmentElement extends CModel
+abstract class RecruitmentElement extends CModel
 {
     public $data;
     protected $_attributeNames = NULL;
@@ -46,6 +46,15 @@ class RecruitmentElement extends CModel
         return new $class;
     }
     
+    public function findAllByRecId($rec_id) {
+        return $this->populate($this->getSqlCommandByRecId($rec_id)->query());
+    }
+    
+    /**
+     * @return CDbCommand Description
+     */
+    abstract protected function getSqlCommandByRecId($rec_id);
+    
     /**
      * 
      * @param CDbDataReader $reader
@@ -67,10 +76,14 @@ class RecruitmentElement extends CModel
             /** @var CSimpleModel $obj */
             $obj = new $class;
             $obj->data = $row;
-            $rv[] = $obj;
+            $rv[] = $this->afterPopulateItem($obj);
         }
         
         return $rv;
+    }
+    
+    function afterPopulateItem($item) {
+        return $item;
     }
 }
 

@@ -20,7 +20,7 @@ $user = O::app()->user;
             }
             else {
 
-                echo O::t('oprecx', 'Hi, gees! please {reg}/{login}.',
+                echo O::t('oprecx', 'Hi, there! {reg}/{login}.',
                         array (
                             '{reg}'   => CHtml::link(O::t('oprecx', 'register'), array('/user/register', 'nexturl' => $_SERVER['REQUEST_URI'])),
                             '{login}' => CHtml::link(O::t('oprecx', 'login'), array('/user/login', 'nexturl' => $_SERVER['REQUEST_URI'])),

@@ -20,16 +20,17 @@
 <?php 
 
 $cur_rec_id = $this->rec ? $this->rec->id : 0;
-$cur_rec_name = $this->rec ? $this->rec->full_name : '-- Select Recruitment --';
+$cur_rec_name = $this->rec ? $this->rec->name : '-- Select Recruitment --';
 
 $my_recs = $this->getMyRecruitments();
 $rec_menus = array();
 $htmlOptions = array();
 foreach ($my_recs as $rec) {
     if ($cur_rec_id != 0) $htmlOptions['target'] = 'rec_' . $rec->id;
+    $htmlOptions['title'] = $rec->full_name;
     if ($rec->id != $cur_rec_id)
-        $rec_menus[] = array('label' => $rec->full_name, 'url' => array('setting/info', 'rec' => $rec->name),
-            'linkOptions' => $htmlOptions, 'data-rec' => 'tes');
+        $rec_menus[] = array('label' => $rec->name, 'url' => array('setting/general', 'rec' => $rec->name),
+            'linkOptions' => $htmlOptions);
 }
 if (count($rec_menus) > 0) $rec_menus[] = '---';
 
@@ -41,13 +42,13 @@ $this->widget('ext.bootstrap.widgets.TbNavbar', array(
             'class'=>'bootstrap.widgets.TbMenu',
             'items'=>array(
                 array('label'=>$cur_rec_name, 'url'=>'#', 'items'=> array_merge($rec_menus, array(
-                    array('label'=> O::t('oprecx', 'MY ORGANIZATIONS')),
+                    array('label'=> O::t('oprecx', 'MY RECRUITMENTS')),
                     array('label'=> O::t('oprecx', 'View'), 'url'=>array('/admin'), 'icon' => 'book'),
                     array('label'=> O::t('oprecx', 'Add'), 'url'=>array('/admin/wizard/index'), 'icon' => 'plus'),
                 ))),
                 array('label'=> O::t('oprecx', 'Results'), 'url'=>array('result/index'), 'icon' => 'icon-list-alt', 
                     'visible' => $cur_rec_id != 0, 'active' => $this->layout == 'result'),
-                array('label'=> O::t('oprecx', 'Settings'), 'url'=>array('setting/info'), 'icon' => 'icon-wrench', 
+                array('label'=> O::t('oprecx', 'Settings'), 'url'=>array('setting/general'), 'icon' => 'icon-wrench', 
                     'visible' => $cur_rec_id != 0, 'active' => $this->layout == 'setting'),
                 array('label'=> O::t('oprecx', 'Share Registration Link'), 'url'=>'#shareOrgLink', 'icon' => 'globe', 
                     'visible' => $cur_rec_id != 0, 'linkOptions' => array('data-toggle' => 'modal')),

@@ -6,11 +6,11 @@
  */
 
 /**
- * @property int $id Description
- * @property string $name Description
- * @property int[] $divList Description
+ * Description of InterviewSlot
+ *
+ * @author abie
  */
-class RecruitmentForm extends RecruitmentElement
+class InterviewSlot extends RecruitmentElement
 {
     protected $_attributeNames = array('id', 'name', 'divList');
     
@@ -23,15 +23,15 @@ class RecruitmentForm extends RecruitmentElement
     {
         return parent::model($class);
     }
-    
+
     protected function getSqlCommandByRecId($rec_id)
     {
         return CDbCommandEx::create()
-                ->select('f.elm_id as id, oe.name')
-                ->from(TableNames::FORM . ' f')
-                ->join(TableNames::REC_ELM . ' oe', '$oe.elm_id = $f.elm_id')
-                ->where('$oe.rec_id = :rec_id', array('rec_id' => $rec_id))
-                ->order('oe.weight, oe.created DESC');
+                ->select()
+                ->from(TableNames::INTERVIEW_SLOT . ' is')
+                ->join(TableNames::REC_ELM . ' re', '$re.elm_id = $is.elm_id')
+                ->where('$re.rec_id = :rec_id', array('rec_id' => $rec_id))
+                ->order('re.weight, re.name');
     }
     
 }

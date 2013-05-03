@@ -1,7 +1,7 @@
 <?php
 
 class AdminModule extends CWebModule {
-
+    
     private $_assetsUrl;
 
     public function init() {

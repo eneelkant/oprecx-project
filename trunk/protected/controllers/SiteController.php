@@ -36,16 +36,16 @@ class SiteController extends Controller
     {
         // renders the view file 'protected/views/site/index.php'
         // using the default layout 'protected/views/layouts/main.php'
-        $cache_name = 'oprecx:Organizations:active10';
-        if (($orgs = O::app()->cache->get($cache_name)) == false) {
-            $orgs = Recruitment::model()->findAll(array (
+        $cache_name = 'oprecx:Recruitment:active10';
+        if (($recs = O::app()->cache->get($cache_name)) == false) {
+            $recs = Recruitment::model()->findAll(array (
                 'condition' => 'reg_time_begin <= CURRENT_TIMESTAMP AND reg_time_end >= CURRENT_TIMESTAMP',
                 'order'     => 'reg_time_end DESC',
                 'limit'     => 10,
             ));
-            O::app()->cache->set($cache_name, $orgs);
+            O::app()->cache->set($cache_name, $recs);
         }        
-        $this->render('index', array ('orgs' => $orgs));
+        $this->render('index', array ('recs' => $recs));
     }
 
     /**

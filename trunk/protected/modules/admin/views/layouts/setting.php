@@ -2,8 +2,8 @@
 /* @var $this AdminController */
 
 $menu_items = array(
-    array('label'=> O::t('oprecx', 'GENERAL')),
-    array('label'=> O::t('oprecx', 'Information'), 'url'=>array('setting/info'), 'icon' => 'home'),
+    array('label'=> O::t('oprecx', 'SETTING')),
+    array('label'=> O::t('oprecx', 'General'), 'url'=>array('setting/general'), 'icon' => 'home'),
     array('label'=> O::t('oprecx', 'Divisions'), 'url'=>array('setting/division'), 'icon' => 'th-list'),
     
     array('label'=> O::t('oprecx', 'COMPONENTS')),

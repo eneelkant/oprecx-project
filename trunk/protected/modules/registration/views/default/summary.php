@@ -33,12 +33,12 @@ function renderDivisionChoices($divChoices) {
    } elseif ($divChoiceCount > 1) {
        $divNameList = array();
        for($i = 0; $i<$divChoiceCount - 1; ++$i) {
-           $divNameList[] = $divChoices[$i]->div_name;
+           $divNameList[] = '<b>' . $divChoices[$i]->div_name . '</b>';
        }
        echo O::t('oprecx', 'You have choosen {divisions} and {division}.', 
-               array('{divisions}' => implode(', ', $divNameList), '{division}' => $divChoices[$divChoiceCount - 1]->div_name));
+               array('{divisions}' => implode(', ', $divNameList), '{division}' => '<b>' . $divChoices[$divChoiceCount - 1]->div_name . '</b>'));
    } else {
-       echo O::t('oprecx', 'You have choosen {division}.', array('{division}' => $divChoices[0]->div_name));
+       echo O::t('oprecx', 'You have choosen {division}.', array('{division}' => '<b>' . $divChoices[0]->div_name . '</b>'));
    }
 }
 

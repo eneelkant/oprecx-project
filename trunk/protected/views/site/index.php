@@ -1,6 +1,6 @@
 <?php
 /* @var $this SiteController */
-/* @var $orgs Recruitment[] */
+/* @var $recs Recruitment[] */
 
 $this->pageTitle = O::app()->name;
 ?>
@@ -13,19 +13,19 @@ $this->pageTitle = O::app()->name;
     <h2><?php echo O::t('oprecx', 'Active Open Recruitment') ?></h2>
     
     <?php
-    /* @var $org Recruitment */
+    /* @var $rec Recruitment */
     //JqmTag::listview()->render(TRUE);
     //*
-    if ($orgs) {
+    if ($recs) {
         $ul = JqmTag::listview()
                 ->inset()
                 ->theme('d')
                 ->icon('false')
                 ->data('filter', true)
-                ->data('filter-placeholder', O::t('oprecx', 'Search organizations'))
+                ->data('filter-placeholder', O::t('oprecx', 'Search recruitment'))
                 ;
-        foreach ($orgs as $org) {
-            $ul->appendLvItem(HtmlTag::link($org->full_name, array('registration/default/index', 'org_name' => $org->name)));
+        foreach ($recs as $rec) {
+            $ul->appendLvItem(HtmlTag::link($rec->full_name, array('registration/default/index', 'rec_name' => $rec->name)));
         }
         $ul->render(true);
     }

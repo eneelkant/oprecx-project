@@ -34,8 +34,8 @@ class DivisionChoiceForm extends CFormModel {
     function __construct($scenario = '', $rec = null, $divisions = null) {
         $this->_rec = $rec;
         $this->_allDivisions = $divisions;
-        $this->min_choice = 1;
-        $this->max_choice = 3;
+        $this->min_choice = $rec->div_min;
+        $this->max_choice = $rec->div_max;
         
         parent::__construct($scenario);
         

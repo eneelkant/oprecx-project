@@ -31,11 +31,23 @@ class RecruitmentEx extends Recruitment
         $this->reg_time_end = trim($dates[1]);
     }
     
+    public function beforeSave()
+    {
+        $purifier = new CHtmlPurifier;
+        $purifier->options = array(
+            'HTML.Allowed' => 'p,div,a[href|target],b,i,u,strong,em,ul,ol,li,blockquote,br',
+            'HTML.Parent' => 'div',
+        );
+        
+        $this->description = $purifier->purify($this->description);
+        return parent::beforeSave();
+    }
+    
     public function attributeLabels()
     {
         return array (
             'name'           => O::t('oprecx', 'Name'),
-            'full_name'      => O::t('oprecx', 'Full Name'),
+            'full_name'      => O::t('oprecx', 'Title'),
             'email'          => O::t('oprecx', 'Email'),
             'description'    => O::t('oprecx', 'Description'),
             'type'           => O::t('oprecx', 'Type'),
@@ -43,7 +55,9 @@ class RecruitmentEx extends Recruitment
             'location'       => O::t('oprecx', 'Location'),
             'link'           => O::t('oprecx', 'Link'),
             'visibility'     => O::t('oprecx', 'Visibility'),
-            'regTime' => O::t('admin', 'Registration date range'),
+            'regTime'        => O::t('oprecx', 'Registration date range'),
+            'div_min'        => O::t('oprecx', 'Minimum Division'),
+            'div_max'        => O::t('oprecx', 'Maximum Division'),
         );
     }
     

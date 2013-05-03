@@ -21,7 +21,7 @@ class SettingController extends AdminController
         return parent::beforeAction($action);
     }
     
-    public function actionInfo()
+    public function actionGeneral()
     {
         $model = new RecruitmentEx();
         
@@ -29,16 +29,17 @@ class SettingController extends AdminController
         if (isset($_POST['RecruitmentEx'])) {
             $model->setAttributes($_POST['RecruitmentEx'], false);
             
-            
-            $model->setIsNewRecord(false);
-            if ($model->save()) {
-                $this->_rec->invalidateCache();
-                $this->_rec = FALSE;
+            if ($model->validate()) {
+                $model->setIsNewRecord(false);
+                if ($model->update()) {
+                    $this->_rec->invalidateCache();
+                    $this->_rec = FALSE;
+                }
             }
         }
         //$model = OrganizationsForm::model('OrganizationsForm')->findByPk(1);  // new OrganizationsForm($this->getOrg());
         //echo 'aaa';
-        $this->render('info', array('model' => $model));
+        $this->render('general', array('model' => $model));
     }
     
     public function actionDivision() {
