@@ -5,7 +5,7 @@
 // This is the main Web application configuration. Any writable
 // 
 
-O::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
+O::setPathOfAlias('bootstrap', defined('BOOTSTRAP_PATH') ? BOOTSTRAP_PATH : dirname(__FILE__).'/../extensions/bootstrap');
 
 // CWebApplication properties can be configured here.
 return array(
@@ -24,7 +24,7 @@ return array(
     'modules' => array(
         // uncomment the following to enable the Gii tool
         'admin' , 'registration',
-    ),
+        ), 
     // application components
     'components' => array(
         'user' => array(
@@ -49,9 +49,9 @@ return array(
                 '/about/<view:\w+>' => array('site/page', 'urlSuffix' => '.html'),
                 '/<controller:(user|site)>/<action:\w+>' => '<controller>/<action>',
                 
-                '/<rec:\w+>-admin/' => array('admin/default/index', 'caseSensitive'=>false),
-                '/<rec:\w+>-admin/<controller:\w+>' => 'admin/<controller>/index',
-                '/<rec:\w+>-admin/<controller:\w+>-<action:\w+>' => 'admin/<controller>/<action>',
+                '/<rec:\w+>/admin/' => 'admin/setting/general',
+                '/<rec:\w+>/admin/<controller:\w+>' => 'admin/<controller>/index',
+                '/<rec:\w+>/admin/<controller:\w+>/<action:\w+>' => 'admin/<controller>/<action>',
 
                 '/<module:(gii|admin)>' => '<module>/default/index',
                 '/<module:(gii|admin)>/<controller:\w+>' => '<module>/<controller>/index',

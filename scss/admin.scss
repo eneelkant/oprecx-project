@@ -6,6 +6,22 @@ body {
     min-height: 400px;
 }
 
+.navbar .brand {
+    background: url(../images/logo-admin.png) no-repeat center;
+    font-size: 0;
+    min-width: 91px;
+    opacity: .6;
+    -moz-transition: opacity .3s;
+    -webkit-transition: opacity .3s;
+    transition: opacity .3s;
+    
+    
+    &:hover {
+        opacity: 1;
+        
+    }
+}
+
 #footer {
     font-size: .8em;
     color: #888;

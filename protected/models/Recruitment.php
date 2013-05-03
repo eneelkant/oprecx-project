@@ -23,9 +23,6 @@
  *
  * The followings are the available model relations:
  * @property Division[] $divisions
- * @property Forms[] $forms
- * @property OrganizationMetas[] $organizationMetases
- * @property Images $img
  */
 class Recruitment extends CActiveRecord
 {
@@ -54,7 +51,7 @@ class Recruitment extends CActiveRecord
             $attributes = CDbCommandEx::create($this->dbConnection)
                     ->select()
                     ->from($this->tableName())
-                    ->where('$name = :org_name', array('org_name' => $name))
+                    ->where('$name = :rec_name', array('rec_name' => $name))
                     ->limit(1)
                     ->queryRow();
             
@@ -91,12 +88,15 @@ class Recruitment extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array (
-            array ('full_name, email, description, type, scope, location, reg_time_begin, reg_time_end', 'required'),
+            array ('full_name, email, description, type, scope, location, div_min, div_max, reg_time_begin, reg_time_end', 'required'),
             array ('name', 'length', 'max' => 32),
             array ('full_name, email, location, link', 'length', 'max' => 255),
-            array ('type, scope, visibility', 'length', 'max' => 16),
+            array ('div_min, div_max', 'compare', 'compareValue' => 1, 'operator' => '>='),
+            array ('div_min', 'compare', 'compareAttribute' => 'div_max', 'operator' => '<='),
+            array ('div_max', 'compare', 'compareAttribute' => 'div_min', 'operator' => '>='),
+            //array ('type, scope, visibility', 'length', 'max' => 16),
             //array ('img_id', 'length', 'max' => 10),
-            array ('updated', 'safe'),
+            //array ('updated', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array ('id, name, full_name, email, description, type, scope, location, link, reg_time_begin, reg_time_end',
