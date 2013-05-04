@@ -152,7 +152,7 @@ class UserState extends CComponent
     {
         if (! isset($this->_data['form'])) {
             $command = CDbCommandEx::create()
-                    ->select('f.elm_id AS form_id, oe.name as form_name,  (COUNT(ff2.*) - COUNT(fv.value)) = 0 AS filled')
+                    ->select('f.elm_id AS form_id, oe.name as form_name,  (COUNT(ff2.field_id) - COUNT(fv.value)) = 0 AS filled')
                     ->from(TableNames::FORM . ' f')
                     ->join(TableNames::REC_ELM . ' oe',
                             '$oe.elm_id = $f.elm_id AND $oe.rec_id = :rec_id')

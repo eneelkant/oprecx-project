@@ -1,5 +1,5 @@
 <?php
-/* @var $this CController */
+/* @var $this Controller */
 
 $page_class = explode('/', $this->route);
 $jsUrl = O::app()->request->baseUrl . '/js/';
@@ -24,9 +24,51 @@ if (! YII_DEBUG) {
     $jqmCss = O::app()->request->baseUrl . '/css/jquery.mobile-1.3.1.css';
 }
 
+if (is_array($this->metaData)) {
+    if (! isset($this->metaData['type'])) $this->metaData['type'] = 'article';
+    
+    switch ($this->metaData['type']) {
+        case 'recruitment':
+            $schemeType = 'http://schema.org/Product';
+            $ogType = 'website';
+            $twitterCard = 'product';
+            break;
+        
+        default:
+            $schemeType = 'http://schema.org/Article';
+            $ogType = 'website';
+            $twitterCard = 'summary';
+    }
+    unset($this->metaData['type']);
+    $headAttr = 'prefix="og: http://ogp.me/ns#" itemscope itemtype="' . $schemeType . '"';
+    
+    if (!isset($this->metaData['og:type'])) $this->metaData['og:type'] = $ogType;
+    if (!isset($this->metaData['twitter:card'])) $this->metaData['twitter:card'] = $twitterCard;
+    if (!isset($this->metaData['twitter:site'])) $this->metaData['twitter:site'] = '@oprecx';
+    
+    if (!isset($this->metaData['og:title'])) $this->metaData['og:title'] = $this->pageTitle;
+    if (!isset($this->metaData['twitter:title'])) $this->metaData['twitter:title'] = $this->pageTitle;
+    if (!isset($this->metaData['name'])) $this->metaData['name'] = $this->pageTitle;
+    
+    if (! isset($this->metaData['description'])) $this->metaData['description'] = 
+            O::t ('oprecx', 'Oprecx is complete solution for your recruitments. It combines registration form, interview slot selector, and serve result optimized for open recruitment process.');
+    if (!isset($this->metaData['og:description'])) $this->metaData['og:description'] = $this->metaData['description'];
+    if (!isset($this->metaData['twitter:description'])) $this->metaData['twitter:description'] = $this->metaData['description'];
+
+    
+    if (! isset($this->metaData['image'])) $this->metaData['image'] = O::app ()->request->getBaseUrl (TRUE) . '/images/oprecx.png';
+    if (!isset($this->metaData['og:image'])) $this->metaData['og:image'] = $this->metaData['image'];
+    if (!isset($this->metaData['twitter:image'])) $this->metaData['twitter:image'] = $this->metaData['image'];
+    
+    
+    if (!isset($this->metaData['og:site_name'])) $this->metaData['og:site_name'] = O::app()->name;
+    if (!isset($this->metaData['og:locale'])) $this->metaData['og:locale'] = O::app()->language;
+}
+
+
 ?>
 <!DOCTYPE html>
-<html class="ui-mobile no-js">
+<html class="ui-mobile no-js" <?php echo isset($headAttr) ? $headAttr : ''; ?>>
     <head>
         <meta charset="utf-8">
         <title><?php echo CHtml::encode($this->pageTitle); ?></title>
@@ -36,10 +78,36 @@ if (! YII_DEBUG) {
         <link rel="stylesheet"  href="<?php echo $jqmCss; ?>">
         <link rel="stylesheet" href="<?php echo O::app()->request->baseUrl; ?>/css/oprecx.css" />
         <link rel="shortcut icon" href="<?php echo O::app()->request->baseUrl; ?>/favicon.ico">
+        
+        <?php 
+        if (is_array($this->metaData)) {
+            echo '<meta name="description" itemprop="description" content="', $this->metaData['description'], '" />';
+            unset($this->metaData['description']);
+            
+            ksort($this->metaData);
+            foreach ($this->metaData as $prop => $val) {
+                $val = CHtml::encode($val);
+                
+                if (strncmp('og:', $prop, 3)) {
+                    echo '<meta property="', $prop, '" content="', $val, '" />';
+                } 
+                elseif (strncmp('twitter:', $prop, 8)) {
+                    echo '<meta name="', $prop, '" content="', $val, '" />';
+                }
+                else {
+                    echo '<meta itemprop="', $prop, '" content="', $val, '" />';
+                }
+            }
+        }
+        else {
+            echo '<meta name="robots" content="noindex" />';
+        }
+        ?>
         <script>
         var lazyLoad = <?php echo json_encode($jsFiles); ?>;
         </script>
-        <script src="<?php echo O::app()->request->baseUrl; ?>/js/load.js"></script>
+        <script src="<?php echo O::app()->request->baseUrl; ?>/js/load.js" async></script>
+        
         <?php endif; ?>
     </head>
     <body class="ui-mobile-viewport ui-overlay-c" id="body">
