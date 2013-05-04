@@ -10,13 +10,7 @@
  *
  * @author abie
  */
-class UserController extends CController {
-    
-     public function init()
-     {
-         parent::init();
-         $this->layout = 'global';
-     }
+class UserController extends Controller {
     
     public function actionLogin() {
         if(isset($this->actionParams['nexturl']))

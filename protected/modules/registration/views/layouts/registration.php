@@ -1,6 +1,13 @@
 <?php
 /* @var $this RegisterController */
 $user = O::app()->user;
+
+if ($user->isGuest) {
+    $this->metaData['type'] = 'recruitment';
+    $this->metaData['name'] = $this->metaData['og:title'] = $this->metaData['twitter:title'] = $this->rec->full_name;
+    $this->metaData['description'] = substr(strip_tags($this->rec->description), 0, 300);
+}
+
 ?>
 <?php $this->beginContent(); ?>
 

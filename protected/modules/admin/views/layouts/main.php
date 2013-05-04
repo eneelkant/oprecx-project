@@ -98,7 +98,7 @@ $url_encoded = urlencode($url);
         
         <p><?php echo O::t('oprecx', 'or just click these buttons') ?></p>
         <div>
-            <a href="http://www.facebook.com/sharer.php?<?php echo $url_encoded ?>" class="share-link facebook">Facebook</a>
+            <a href="http://www.facebook.com/sharer.php?u=<?php echo $url_encoded ?>" class="share-link facebook">Facebook</a>
             <a href="http://twitter.com/share?url=<?php echo $url_encoded ?>&via=oprecx" class="share-link twitter">Twitter</a>
             <a href="https://plus.google.com/share?url=<?php echo $url_encoded ?>" class="share-link gplus">Google Plus</a>
             

@@ -3,12 +3,6 @@
 class SiteController extends Controller
 {
     
-    public function init()
-     {
-         parent::init();
-         $this->layout = 'global';
-     }
-
     /**
      * Declares class-based actions.
      */
