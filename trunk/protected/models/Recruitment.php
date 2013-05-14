@@ -43,27 +43,39 @@ class Recruitment extends CActiveRecord
         return 'oprecx:Organizations:name=' . $name;
     }
 
+    /**
+     * 
+     * @param type $name
+     * @param type $cache
+     * @return type
+     */
     public function findByName($name, $cache = TRUE)
     {
         $cache = O::app()->getCache();
         
-        if (!$cache || ($obj = $cache->get(self::getCacheName($name))) == false) {
+        if (!$cache || ($attributes = $cache->get(self::getCacheName($name))) == false) {
             $attributes = CDbCommandEx::create($this->dbConnection)
                     ->select()
                     ->from($this->tableName())
                     ->where('$name = :rec_name', array('rec_name' => $name))
                     ->limit(1)
-                    ->queryRow();
+                    ->queryRow();            
             
-            $obj = $this->populateRecord($attributes);
-            if ($cache) $cache->set(self::getCacheName($name), $obj, 60);
+            if ($cache) $cache->set(self::getCacheName($name), $attributes, 60);
         }
-        return $obj;
+        return $obj = $this->populateRecord($attributes);;
     }
     
     public function invalidateCache($name = NULL) {
         if ($name == NULL) $name = $this->name;
         O::app()->getCache()->delete(self::getCacheName($name));
+    }
+    
+    
+    protected function afterSave()
+    {
+        parent::afterSave();
+        $this->invalidateCache();
     }
 
     public function __construct($scenario = 'insert')

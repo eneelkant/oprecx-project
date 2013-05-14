@@ -1,0 +1,97 @@
+
+$date_height : 50px;
+$time_width : 150px;
+$cell_width: 120px;
+$cell_height: 30px;
+
+#slot-table-resizable {
+    position: relative;
+    border: 1px solid #bbb;
+    border-bottom: 2px solid #aaa;
+}
+
+#slot-table-container {
+    position: relative;
+    overflow: auto;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    
+    table {
+        max-width: none;
+        min-width: none;
+        width: auto;
+        margin-left: $time_width;
+    }
+    
+    td, th {
+        min-width: $cell_width;
+        max-width: $cell_width;
+        width: $cell_width;
+    }
+    
+    th {
+        padding: 0;
+        vertical-align: central;
+        height: $date_height - 1px;
+        text-align: center;
+    }
+    
+    td {
+        padding: $date_height 0 0 0;
+    }
+    
+    .slot {
+        padding: 5px;
+        text-align: center;
+        height: $cell_height;
+        cursor: pointer;
+        background-color: #d7f7ba;
+        -moz-transition: background-color .2s;
+        -webkit-transition: background-color .2s;
+        transition: background-color .2s;
+
+        &:hover {
+            background-color: #baddf7;
+        }
+    }
+    
+    .slot.disabled {
+        color: #888;
+        background-color: #f7beba;
+        
+                &:hover {
+                    background-color: #dabaf7;
+                }
+        
+        p {display: none}
+    }
+    
+    .options-input {
+        display: none;
+    }
+}
+
+#slot-table-left {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding-top: $date_height;
+    width: $time_width;
+    border-right: 1px solid #ccc;
+    background-color: #fff;
+    div {
+        height: $cell_height;
+        padding: 5px 2px;
+        text-align: center;
+    }
+}
+
+#slot-table-header {
+    position: absolute;
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    left: $time_width;
+    height: $date_height;
+}

@@ -2,30 +2,31 @@
 
 ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="<?php echo O::app()->getLanguage() ?>">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="language" content="en" />
+    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo O::app()->charset ?>" />
+    <meta name="language" content="<?php echo O::app()->getLanguage() ?>" />
+    <meta name="robots" content="noindex" />
     <script>
-        var msg = <?php echo CJSON::encode($this->_msg) ?>;
+        var msg = <?php echo json_encode($this->_msg) ?>;
+        
     </script>
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
     <?php O::app()->getComponent('bootstrap', true); // initialize bootstrap ?>
-    <?php O::app()->getClientScript()->registerCssFile(O::app()->request->baseUrl . '/css/admin.css'); ?>
-    <?php O::app()->getClientScript()->registerScriptFile(O::app()->request->baseUrl . '/js/admin.js'); ?>
+    <?php O::app()->getClientScript()->registerCssFile(O::versionedFileUrl('/css/admin', '.css')); ?>
+    <?php O::app()->getClientScript()->registerScriptFile(O::versionedFileUrl('/js/admin', '.js')); ?>
 </head>
 
 <body>
 
 <?php 
 
-$cur_rec_id = $this->rec ? $this->rec->id : 0;
-$cur_rec_name = $this->rec ? $this->rec->name : '-- Select Recruitment --';
+$cur_rec_id = $this->getRec() ? $this->rec->id : 0;
+$cur_rec_name = $cur_rec_id ? $this->rec->name : O::t('oprecx', '-- Select Recruitment --');
 
-$my_recs = $this->getMyRecruitments();
 $rec_menus = array();
 $htmlOptions = array();
-foreach ($my_recs as $rec) {
+foreach ($this->getMyRecruitments() as $rec) {
     if ($cur_rec_id != 0) $htmlOptions['target'] = 'rec_' . $rec->id;
     $htmlOptions['title'] = $rec->full_name;
     if ($rec->id != $cur_rec_id)
@@ -90,10 +91,10 @@ $url_encoded = urlencode($url);
         <h3>Share Link</h3>
     </div>
     <div class="modal-body">
-        <p><?php echo O::t('oprecx', 'Copy this url,') ?></p>
+        <p><?php echo O::t('oprecx', 'Copy this url, and share it') ?></p>
         <div class="row-fluid share-org-input">
             <input class="span12" type="text" readonly="readonly" id="share-link-url" value="<?php echo $url  ?>">
-                <a href="<?php echo $url ?>" target="_blank">Go</a>
+            <?php echo CHtml::link(O::t('oprecx', 'Goto link'), $url, array('target' => '_blank')); ?>    
         </div>
         
         <p><?php echo O::t('oprecx', 'or just click these buttons') ?></p>
@@ -101,7 +102,6 @@ $url_encoded = urlencode($url);
             <a href="http://www.facebook.com/sharer.php?u=<?php echo $url_encoded ?>" class="share-link facebook">Facebook</a>
             <a href="http://twitter.com/share?url=<?php echo $url_encoded ?>&via=oprecx" class="share-link twitter">Twitter</a>
             <a href="https://plus.google.com/share?url=<?php echo $url_encoded ?>" class="share-link gplus">Google Plus</a>
-            
         </div>
     </div>
     <div class="modal-footer">

@@ -15,11 +15,13 @@ class FormController extends AdminController
     public  $layout = 'setting';
     
     public function actionIndex(){
+        $this->checkAccess('form.view');
         $forms = RecruitmentForm::model()->findAllByRecId($this->rec->id);
         $this->render('index', array('forms' => $forms));
     }
     
     public function actionEdit($fid) {
+        $this->checkAccess('form.edit');
         $this->render('edit');
     }
 }

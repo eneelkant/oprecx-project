@@ -1,0 +1,17 @@
+/* TEAM */
+	Developer: Abi Hafshin Alfarouq
+	Contact: abiehafshin [at] gmail.com
+	Twitter: @abiehafshin
+	From: Pandeglang, Banten, Indonesia
+
+/* THANKS */
+    
+
+/* SITE */
+	Last update: 2013/04/04
+	Language: English / Indonesian
+	Doctype: HTML5
+    Components: Yii, Yiibooster, jQuery, jquery-mobile
+    Standards: HTML5, CSS3
+    Softwares: Netbeans, Inkscape
+    Server: Nginx, PHP5-FPM, PostgreSQL

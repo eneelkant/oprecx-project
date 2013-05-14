@@ -50,7 +50,7 @@ class DefaultController extends RegisterController
         }
         elseif (isset($this->actionParams['just_login'])) {
             $div_count = O::app()->db->createCommand()
-                    ->select('COUNT(dc.*)')
+                    ->select('COUNT(dc.div_id)')
                     ->from(TableNames::DIVISION_CHOICE . ' dc')
                     ->join(TableNames::DIVISION . ' d', 'd.div_id = dc.div_id AND d.rec_id = :rec_id')
                     ->where('dc.user_id = :user_id')

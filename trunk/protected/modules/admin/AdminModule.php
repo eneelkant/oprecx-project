@@ -21,8 +21,8 @@ class AdminModule extends CWebModule {
 
         $this->layout = 'main';
         
-        O::app()->clientScript->scriptMap['jquery.js'] = '/js/jquery-1.9.1.min.js';
-        O::app()->clientScript->scriptMap['jquery-ui.js'] = '/js/ui/jquery-ui.js';
+        O::app()->clientScript->scriptMap['jquery.js'] = '/js/jquery-1.9.1.js';
+        //O::app()->clientScript->scriptMap['jquery-ui.js'] = '/js/jquery-ui.js';
     }
 
     /**

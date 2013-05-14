@@ -42,7 +42,8 @@ class SortForm extends CWidget
     public function run()
     {
         $clientScript = O::app()->clientScript;
-        $clientScript->registerScriptFile(O::app()->request->baseUrl . '/js/ui/jquery-ui' . (!YII_DEBUG ? '.min' : '') . '.js');
+        $clientScript->registerCoreScript('jquery.ui');
+        //$clientScript->registerScriptFile(O::app()->request->baseUrl . '/js/jquery-ui' . (!YII_DEBUG ? '.min' : '') . '.js');
         $clientScript->registerScriptFile(O::app()->request->baseUrl . '/js/jquery.form' . (!YII_DEBUG ? '.min' : '') . '.js');
         
         $this->formOptions['id'] = $this->formId;

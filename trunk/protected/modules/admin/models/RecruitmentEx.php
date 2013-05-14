@@ -33,13 +33,9 @@ class RecruitmentEx extends Recruitment
     
     public function beforeSave()
     {
-        $purifier = new CHtmlPurifier;
-        $purifier->options = array(
-            'HTML.Allowed' => 'p,div,a[href|target],b,i,u,strong,em,ul,ol,li,blockquote,br',
-            'HTML.Parent' => 'div',
-        );
+        $simplifier = new HTMLSimplifier;
         
-        $this->description = $purifier->purify($this->description);
+        $this->description = $simplifier->simplyfy($this->description);
         return parent::beforeSave();
     }
     
