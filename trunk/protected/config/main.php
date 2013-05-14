@@ -72,7 +72,7 @@ return array(
             'charset' => defined('DB_CHARSET') ? DB_CHARSET : 'utf8',
             'tablePrefix' => defined('DB_TABLE_PREFIX') ? DB_TABLE_PREFIX : 'oprecx_',
             'schemaCachingDuration' => 3600 * 24,
-            'pdoClass' => 'OprecxPDO',
+            
             //'queryCachingDuration' => 100,
         ),
         // */
