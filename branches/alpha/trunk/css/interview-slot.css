@@ -1,0 +1,68 @@
+#slot-table-resizable {
+  position: relative;
+  border: 1px solid #bbb;
+  border-bottom: 2px solid #aaa; }
+
+#slot-table-container {
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 100%; }
+  #slot-table-container table {
+    max-width: none;
+    min-width: none;
+    width: auto;
+    margin-left: 150px; }
+  #slot-table-container td, #slot-table-container th {
+    min-width: 120px;
+    max-width: 120px;
+    width: 120px; }
+  #slot-table-container th {
+    padding: 0;
+    vertical-align: central;
+    height: 49px;
+    text-align: center; }
+  #slot-table-container td {
+    padding: 50px 0 0 0; }
+  #slot-table-container .slot {
+    padding: 5px;
+    text-align: center;
+    height: 30px;
+    cursor: pointer;
+    background-color: #d7f7ba;
+    -moz-transition: background-color .2s;
+    -webkit-transition: background-color .2s;
+    transition: background-color .2s; }
+    #slot-table-container .slot:hover {
+      background-color: #baddf7; }
+  #slot-table-container .slot.disabled {
+    color: #888;
+    background-color: #f7beba; }
+    #slot-table-container .slot.disabled:hover {
+      background-color: #dabaf7; }
+    #slot-table-container .slot.disabled p {
+      display: none; }
+  #slot-table-container .options-input {
+    display: none; }
+
+#slot-table-left {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 50px;
+  width: 150px;
+  border-right: 1px solid #ccc;
+  background-color: #fff; }
+  #slot-table-left div {
+    height: 30px;
+    padding: 5px 2px;
+    text-align: center; }
+
+#slot-table-header {
+  position: absolute;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+  left: 150px;
+  height: 50px; }

@@ -1,0 +1,138 @@
+body {
+    font-family: "Open Sans", "Ubuntu", Calbiri, sans-serif;
+}
+
+#page {
+    margin-top: 50px;
+    min-height: 400px;
+}
+
+.navbar .brand {
+    background: url(../images/logo-admin.png) no-repeat center;
+    font-size: 0;
+    min-width: 91px;
+    opacity: .6;
+    -moz-transition: opacity .3s;
+    -webkit-transition: opacity .3s;
+    transition: opacity .3s;
+    
+    
+    &:hover {
+        opacity: 1;
+        
+    }
+}
+
+#footer {
+    font-size: .8em;
+    color: #888;
+    margin: 20px 10px 0 10px;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+    text-align: right;
+}
+
+#shareOrgLink {
+    .share-org-input {
+        position: relative;   
+        input {
+            cursor: text;
+            background-color: #eee;
+        }
+        
+        
+        a {
+            opacity: .3;
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            transition: opacity .3s;
+            text-align: right;
+        }
+    }
+    
+    .share-org-input:hover a {
+        opacity: 1;
+    }
+    
+    .share-link {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        margin-right: 5px;
+        background: #888 url("../images/share-button.png") no-repeat;
+        transition: all .3s;
+        font-size: 0;
+        border-radius: 3px;
+        
+        &:hover, &:active {
+            box-shadow: 1px 1px 2px rgba(0, 0, 0, .5);
+        }
+        
+        &.facebook {
+            background-position: 0 50%;
+            &:hover, &:active {
+                background-color: #3b5998;
+            }
+        }
+        
+        &.twitter {
+            background-position: -40px 50%;
+            &:hover, &:active {
+                background-color: #16c5ff;
+            }
+        }
+        
+        &.gplus {
+            background-position: -80px 50%;
+            &:hover, &:active {
+                background-color: #dd4b38;
+            }
+        }
+    }
+}
+
+.component-list {
+    list-style: none;
+    
+    li {
+        padding-bottom: 5px;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 10px;
+        
+        .description {
+            margin-left: 20px;
+        }
+        
+        .actions {
+            float: right;
+        }
+        .actions a, .handler {
+            -moz-transition: opacity .3s;
+            -webkit-transition: opacity .3s;
+            transition: opacity .3s;
+            opacity: .2;
+            
+            &:hover, &:active {
+                opacity: 1 !important;
+            }
+        }
+        
+        .handler {
+            margin-right: 5px;
+            margin-top: 5px;
+            cursor: move;
+        }
+    }
+    
+    li:hover .actions a, li:hover .handler {
+        opacity: .6;
+    }
+    
+    
+}
+.sortable .handler {
+    cursor: move;
+}
+
+@import "_dropdowncheckbox.scss";

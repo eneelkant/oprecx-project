@@ -1,0 +1,150 @@
+//@import "_jqm-struct.scss"
+
+.ui-btn-up-a,.ui-btn-hover-a,.ui-btn-down-a,.ui-bar-a,.ui-body-a,.ui-btn-up-a,.ui-btn-hover-a,.ui-btn-down-a,
+.ui-body-a input,.ui-body-a select,.ui-body-a textarea,.ui-body-a,
+.ui-btn-up-c,.ui-btn-hover-c,.ui-btn-down-c,.ui-bar-c,.ui-body-c,.ui-btn-up-c,.ui-btn-hover-c,.ui-btn-down-c,
+.ui-body-c input,.ui-body-c select,.ui-body-c textarea,.ui-body-c,
+body 
+{
+    font-family: "Open Sans", sans-serif;
+}
+
+.ui-corner-all, .ui-btn-corner-all {
+	-moz-border-radius: 				0.2em /*{global-radii-blocks}*/;
+	-webkit-border-radius: 				0.2em /*{global-radii-blocks}*/;
+	border-radius: 						0.2em /*{global-radii-blocks}*/;
+}
+
+#main-load, #main-load div {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+#main-load div {
+    background: #000 url(images/ajax-loader.gif) no-repeat center center;
+    opacity: .5;
+}
+body.loading {
+    overflow: hidden;
+}
+
+//.oprecx {
+@media all and (min-width: 50em) {
+    .wrapper {
+        width: 50em;
+        margin: 0 auto;
+    }
+}
+
+@media all and (max-width: 50em) {
+    .wrapper {
+        padding: 0 1em;
+        min-width: 12em;
+    }
+}
+
+.clear {
+    clear: both;
+}
+
+.sep {
+    border-style: none;
+    border-bottom: 1px solid #bbb;
+    margin: .5em;
+}
+
+.head {
+    background: #fff;
+    border-top: 3px solid #ffbb38;
+    border-bottom: 1px solid #e0e0e0;
+    color: #777;
+    text-shadow: 0 1px 0 #fff;
+    -webkit-box-shadow: 0 0 5px rgba(0,0,0,.15);
+    -moz-box-shadow: 0 0 5px rgba(0,0,0,.15);
+    box-shadow: 0 0 5px rgba(0,0,0,.15);
+    
+    h1 {
+        margin: 0;
+        font-size: 1.7em;
+        overflow: hidden;
+    }
+    
+    @media all and (min-width: 40em) {
+        h1 {
+            width: 70%;
+            float: left;
+            margin-top: 5px;
+        }
+        
+        .user-name {
+            float: right;
+            width: 30%;
+            text-align: right;
+            margin: 2em 0 0 0;
+        }
+    }
+    
+    
+    @media all and (max-width: 40em) {
+        .oprecx-logo {
+            text-align: center;
+        }
+        
+        .user-name {
+            display: none;
+        }
+    }
+
+}
+
+.footer {
+    background: none;
+	border: none;
+	color: #777;
+    border-top: 1px solid #aaa;
+    margin-top: 2em;
+	text-shadow: 0 1px 0 #fff;
+    
+        p {
+            font-size: .8em;
+            font-weight: normal;
+        }
+}
+
+
+fieldset legend {
+    font-size: 1.2em;
+    margin-bottom: .5em;
+}
+form {
+        .row {
+            margin-bottom: .8em;
+        }
+        span.required {
+            font-size: .8em;
+            color: #c05020;
+        }
+        
+    .ui-input-text, .ui-select {
+        margin: 0;
+    }
+        
+    .errorMessage {
+        color: tomato;
+        font-style: italic;
+        font-size: .9em;
+        margin-bottom: .5em;
+    }
+    
+    .hint {
+        font-size: .8em;
+        color: #777;
+    }
+}
+
+@import "_user.scss";
+
+@import "_registration.scss";
+//}

@@ -1,0 +1,23 @@
+#page-user-login, #page-user-register {
+@media all and (max-width: 40em){
+        .ui-block-a, .ui-block-b {
+            width: 99.99%;
+        }
+        
+        .ui-block-a {
+            border-bottom: 1px solid #aaa;
+            padding-bottom: .5em;
+            margin-bottom: .5em;
+        }
+    }
+    @media all and (min-width: 40em){
+        
+        .ui-block-a {
+            border-right: 2pt solid #ccc;
+        }
+        
+        form {
+            padding: 10px;
+        }
+    }        
+}
