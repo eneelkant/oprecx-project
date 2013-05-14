@@ -12,21 +12,16 @@
  */
 class SettingController extends AdminController
 {
-    protected function beforeAction($action)
-    {
-        if ($this->getRec() == NULL) {
-            throw new CHttpException('404');
-        }
-        $this->layout = 'setting';
-        return parent::beforeAction($action);
-    }
+    public $layout = 'setting';
     
     public function actionGeneral()
     {
-        $model = new RecruitmentEx();
+        $this->checkAccess('info.view');
         
+        $model = new RecruitmentEx();        
         $model->attributes = $this->rec->attributes;
         if (isset($_POST['RecruitmentEx'])) {
+            $this->checkAccess('info.edit');
             $model->setAttributes($_POST['RecruitmentEx'], false);
             
             if ($model->validate()) {
@@ -43,11 +38,14 @@ class SettingController extends AdminController
     }
     
     public function actionDivision() {
-        $this->render('division');
+        $this->checkAccess('division.view');
+        $this->render('division', array('divisions' => $this->getDivList()));
     }
     
     public function actionSaveDivisionList() {
         if (isset($_POST['DivisionList']) && isset($_POST['DivisionList']['items'])) {
+            $this->checkAccess('division.sort');
+            
             $items = $_POST['DivisionList']['items'];
             //sleep(3);
             // TODO check before save
@@ -98,6 +96,8 @@ class SettingController extends AdminController
             $db = O::app()->getDb();
                 
             if ($_POST['Division']['div_id'] == 0) {
+                $this->checkAccess('division.add');
+                
                 $row = CDbCommandEx::create($db)
                         ->select('MAX(t1.div_id) as i, MAX(t2.weight) as m, COUNT(t2.weight) c ')
                         ->from(TableNames::DIVISION . ' t1')
@@ -115,8 +115,9 @@ class SettingController extends AdminController
 
             }
             else {
+                $this->checkAccess('division.edit');
+                
                 $div_id = $_POST['Division']['div_id'];
-
                 $db->createCommand()->update(TableNames::DIVISION, array(
                     'name' => $_POST['Division']['name'],
                     'description' => $_POST['Division']['description'],
@@ -140,6 +141,10 @@ class SettingController extends AdminController
         else {
             throw new CHttpException(403);
         }
+    }
+    
+    public function actionUser(){
+        
     }
 }
 

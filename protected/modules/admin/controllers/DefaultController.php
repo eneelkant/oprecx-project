@@ -1,11 +1,9 @@
 <?php
 
 class DefaultController extends AdminController {
-     public function init()
-     {
-         parent::init();
-         $this->layout = 'standard';
-     }
+    public $layout = 'standard';
+    protected $_mustHaveRec = false;
+
 
     public function actionIndex() {
         

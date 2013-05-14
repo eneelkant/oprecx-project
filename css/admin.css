@@ -26,6 +26,9 @@ body {
 
 #shareOrgLink .share-org-input {
   position: relative; }
+  #shareOrgLink .share-org-input input {
+    cursor: text;
+    background-color: #eee; }
   #shareOrgLink .share-org-input a {
     opacity: .3;
     position: absolute;

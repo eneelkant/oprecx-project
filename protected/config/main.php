@@ -49,13 +49,13 @@ return array(
                 '/about/<view:\w+>' => array('site/page', 'urlSuffix' => '.html'),
                 '/<controller:(user|site)>/<action:\w+>' => '<controller>/<action>',
                 
-                '/<rec:\w+>/admin/' => 'admin/setting/general',
-                '/<rec:\w+>/admin/<controller:\w+>' => 'admin/<controller>/index',
-                '/<rec:\w+>/admin/<controller:\w+>/<action:\w+>' => 'admin/<controller>/<action>',
+                '/admin/<rec:\w+>' => 'admin/setting/general',
+                '/admin/<rec:\w+>/<controller:\w+>' => 'admin/<controller>/index',
+                '/admin/<rec:\w+>/<controller:\w+>/<action:\w+>' => 'admin/<controller>/<action>',
 
                 '/<module:(gii|admin)>' => '<module>/default/index',
-                '/<module:(gii|admin)>/<controller:\w+>' => '<module>/<controller>/index',
-                '/<module:(gii|admin)>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+                '/<module:(gii)>/<controller:\w+>' => '<module>/<controller>/index',
+                '/<module:(gii)>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
                 
                 '/<rec_name:\w+>/' => array('registration/default/index', 'caseSensitive'=>false),
                 '/<rec_name:\w+>/<action:\w+>' => 'registration/default/<action>',
@@ -72,6 +72,7 @@ return array(
             'charset' => defined('DB_CHARSET') ? DB_CHARSET : 'utf8',
             'tablePrefix' => defined('DB_TABLE_PREFIX') ? DB_TABLE_PREFIX : 'oprecx_',
             'schemaCachingDuration' => 3600 * 24,
+            'pdoClass' => 'OprecxPDO',
             //'queryCachingDuration' => 100,
         ),
         // */
@@ -99,7 +100,6 @@ return array(
         //*
         'messages' => array(
             'class' =>  'CPhpMessageSource',
-            //'onMissingTranslation' => YII_DEBUG ? array('CPhpMessageTranslator', 'appendMessage') : NULL,
             //'cachingDuration' => 3600 * 24,
             'language' => 'en', // dont change it
         ),

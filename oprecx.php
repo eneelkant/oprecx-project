@@ -31,6 +31,16 @@ class O extends YiiBase
         return parent::app();
     }
 
+    
+    public static function versionedFileUrl($file_name, $ext){
+        $time = filemtime(O::app()->getBasePath() . '/..' . $file_name . $ext);
+        if (! YII_DEBUG){
+            return O::app()->getRequest()->getBaseUrl() . $file_name . '-' . $time . $ext;
+        }
+        else {
+            return O::app()->getRequest()->getBaseUrl() . $file_name. $ext . '?m=' . $time;
+        }
+    }
 }
 
 /**

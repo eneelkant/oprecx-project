@@ -1,5 +1,6 @@
 <?php
 /* @var $this AdminController */
+/* @var $divisions Division[] */
 //O::app()->bootstrap->registerButton();
 ?>
 <?php
@@ -8,7 +9,7 @@
         'addButtonText' => O::t('oprecx', 'Add Division'),
         'formId' => 'division-list',
         'listId' => 'division-list-list',
-        'listItemData' => $this->getDivList(),
+        'listItemData' => $divisions,
         'listItemView' => '_division_item',
         'action' => array('saveDivisionList'),
     ))

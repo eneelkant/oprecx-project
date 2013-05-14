@@ -22,7 +22,7 @@ foreach ($menu_items as &$menu_item) {
 ?>
 <?php $this->beginContent(); ?>
 <div class="row-fluid">
-    <div class="span3"><div class="well well-small">
+    <div class="span3"><div class="well well-small" style="padding-left: 0; padding-right: 0">
     <?php $this->widget('bootstrap.widgets.TbMenu', array(
         'type'=> 'list',
         'items'=> $menu_items,

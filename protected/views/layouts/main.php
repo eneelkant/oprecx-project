@@ -7,7 +7,7 @@ if (! YII_DEBUG) {
     $jsFiles = array(
         array('//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js', 
             array(
-                $jsUrl . 'oprecx.js?m=' . filemtime(O::app()->basePath . '/../js/oprecx.js'),
+                O::versionedFileUrl('/js/oprecx', '.js'),
                 '//cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.3.1/jquery.mobile.min.js', 
             )
         ),
@@ -15,9 +15,10 @@ if (! YII_DEBUG) {
     $jqmCss = '//cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.3.1/jquery.mobile.min.css';
 } else {
     $jsFiles = array(
-        array($jsUrl . 'jquery-1.9.0.js', 
-            array($jsUrl . 'oprecx.js?m=' . filemtime(O::app()->basePath . '/../js/oprecx.js'),
-                $jsUrl . 'jquery.mobile-1.3.0.js',                 
+        array($jsUrl . 'jquery-1.9.1.js', 
+            array(
+                O::versionedFileUrl('/js/oprecx', '.js'),
+                $jsUrl . 'jquery.mobile-1.3.1.js',                 
             )
         ),
     );
@@ -76,8 +77,9 @@ if (is_array($this->metaData)) {
         <?php if (!O::app()->request->isAjaxRequest) : ?>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet"  href="<?php echo $jqmCss; ?>">
-        <link rel="stylesheet" href="<?php echo O::app()->request->baseUrl; ?>/css/oprecx.css" />
+        <link rel="stylesheet" href="<?php echo O::versionedFileUrl('/css/oprecx', '.css') ?>" />
         <link rel="shortcut icon" href="<?php echo O::app()->request->baseUrl; ?>/favicon.ico">
+        <link type="text/plain" rel="author" href="<?php echo O::app()->request->getBaseUrl(TRUE); ?>/humans.txt" />
         
         <?php 
         if (is_array($this->metaData)) {

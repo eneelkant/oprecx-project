@@ -18,8 +18,12 @@ class AdminController extends CController
     protected $_rec = FALSE;
     protected $_divList = FALSE;
     protected $_msg = array();
-    
+    protected $_rule = FALSE;
+    protected $_mustHaveRec = TRUE;
+
+
     public $helpView = NULL;
+    
 
 
     public function createUrl($route, $params = array (), $ampersand = '&')
@@ -30,6 +34,24 @@ class AdminController extends CController
         return parent::createUrl($route, $params, $ampersand);
     }
     
+    protected function checkAccess($action, $throwError = true) {
+        if (!$this->_rule) $this->_rule = new AdminRule($this->rec->id, O::app ()->getUser()->getId ());
+        if (! $this->_rule->canI($action)) {
+            if ($throwError)
+                throw new CHttpException(403, O::t('You have no permission to access this action'));
+            else return false;
+        }
+        return true;
+    }
+    
+    public function init()
+    {
+        if ($this->_mustHaveRec && !isset($this->actionParams['rec'])) {
+            throw new CHttpException(403);
+        }
+        parent::init();
+    }
+    
     /**
      * 
      * @return Recruitment
@@ -37,10 +59,16 @@ class AdminController extends CController
     public function &getRec() {
         if ($this->_rec === FALSE) {
             if (isset($this->actionParams['rec'])){
-                $this->_rec = Recruitment::model()->findByName($this->actionParams['rec']);
+                if (($this->_rec = Recruitment::model()->findByName($this->actionParams['rec'])) == NULL) {
+                    throw new CHttpException(404, 
+                            O::t('oprecx', 'Recruitment "{rec}" can not be found.', 
+                                    array('{rec}' => $this->actionParams['rec']))
+                    );
+                }
             }
-            else 
+            else {
                 $this->_rec = NULL;
+            }
         }
         return $this->_rec;
     }
@@ -66,11 +94,11 @@ class AdminController extends CController
      * 
      * @return Recruitment[]
      */
-    public function getMyRecruitments() {        
+    public function getMyRecruitments($limit = FALSE) {        
         return Recruitment::model()->populateRecords(
                 CDbCommandEx::create()
                     ->select('o.id, o.name, o.full_name')
-                    ->from(TableNames::RECRUITMENT . ' o')
+                    ->from(TableNames::RECRUITMENT_as('o'))
                     ->join(TableNames::REC_ADMIN . ' oa', 'oa.rec_id = $o.id')
                     ->where('$oa.user_id = :user_id', array('user_id' => O::app()->user->id))
                     ->order('o.updated DESC')
