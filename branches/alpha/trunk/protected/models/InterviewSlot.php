@@ -17,16 +17,16 @@
  * @property int $max_user_per_slot Description
  * @property array $options Description
  * 
+ * @property string $choiceOptions Description
  * @property array $table Description
  */
 class InterviewSlot extends RecruitmentElement
 {
     public $specificAttr = array('description', 'duration', 'start_date', 'end_date', 'time_range', 'max_user_per_slot', 'options');
     protected $_tableName = TableNames::INTERVIEW_SLOT;
-    private $_table, $_dateList, $_timeList;
+    private $_table, $_dateList, $_timeList, $_status;
 
     
-
     /**
      * 
      * @param string $class
@@ -42,7 +42,12 @@ class InterviewSlot extends RecruitmentElement
     {
         $item =& parent::afterPopulateItem()->data;
         if (isset($item['time_range'])) $item['time_range'] = unserialize ($item['time_range']);
-        if (isset($item['options'])) $item['options'] = unserialize ($item['options']);
+        if (isset($item['options'])) {
+            $item['options'] = unserialize ($item['options']);
+        }
+        if (! isset($item['options']) || ! is_array($item['options'])) {
+            $item['options'] = array();
+        }
         return $this;
     }
     
@@ -84,11 +89,32 @@ class InterviewSlot extends RecruitmentElement
         return $this->_dateList = $dateList;
     }
     
-    public function getTableOptions() {
-        
+    public function getChoiceOptions() {
+        if (isset($this->data['options']) && isset($this->data['options']['choiceOptions'])) {
+            return $this->data['options']['choiceOptions'];
+        }
+        return FALSE;
     }
 
 
+    function getStatus()
+    {
+        if ($this->_status) return $this->_status;
+        
+        $reader = CDbCommandEx::create()
+                ->select('t1.time, COUNT(t1.user_id) as selected')
+                ->from(TableNames::INTERVIEW_USER_SLOT . ' t1')
+                //->leftJoin(TableNames::INTERVIEW_USER_SLOT . ' t2', '$t2.slot_id = $t1.slot_id AND $t2.time = $t1.time AND $t2.user_id = :user_id')
+                ->where('$t1.slot_id = :slot_id')
+                ->group('t1.time')
+                ->query(array('slot_id' => $this->id));
+        $status = array();
+        foreach ($reader as $row) {
+            $status[$row['time']] = $row;
+        }
+        return $this->_status = $status;
+    }
+    
     public function getTable() {
         if ($this->_table) return $this->_table;
         return $this->_table = self::parseSlotTable();
@@ -207,7 +233,7 @@ class InterviewSlot extends RecruitmentElement
     
     private static function formatTimeInt($t) {
         $scn = $t % 60;
-        $t = (int)($t / 60);
+        //$t = (int)($t / 60);
         $mnt = $t % 60;
         $hr = (int)($t / 60);
         return self::formatTime((int)($t / 3600), (int)($t / 60) % 60, $t % 60);

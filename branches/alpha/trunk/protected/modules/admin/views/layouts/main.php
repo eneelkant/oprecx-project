@@ -2,7 +2,7 @@
 
 ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="<?php echo O::app()->getLanguage() ?>">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo O::app()->getLanguage() ?>" lang="<?php echo O::app()->getLanguage() ?>">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=<?php echo O::app()->charset ?>" />
     <meta name="language" content="<?php echo O::app()->getLanguage() ?>" />
@@ -77,7 +77,7 @@ $this->widget('ext.bootstrap.widgets.TbNavbar', array(
 </div><!-- page -->
 
 <div id="footer">
-    Thank you for recruiting with us. <i>oprecx</i>
+    Thank you for recruiting with us. <?php echo CHtml::link('oprecx', O::app()->homeUrl) ?>
 </div><!-- footer -->
 
 <?php if ($this->getRec() != NULL) : ?>
