@@ -69,9 +69,10 @@ if (is_array($this->metaData)) {
 
 ?>
 <!DOCTYPE html>
-<html class="ui-mobile no-js" <?php echo isset($headAttr) ? $headAttr : ''; ?>>
+<html class="ui-mobile no-js" <?php echo isset($headAttr) ? $headAttr : ''; ?> lang="<?php echo O::app()->getLanguage() ?>">
     <head>
         <meta charset="utf-8">
+        <meta name="language" content="<?php echo O::app()->getLanguage() ?>" />
         <title><?php echo CHtml::encode($this->pageTitle); ?></title>
         
         <?php if (!O::app()->request->isAjaxRequest) : ?>
@@ -123,7 +124,7 @@ if (is_array($this->metaData)) {
             <div data-role="footer" class="footer wrapper">
                 <p>
                     Copyright 2013 <a href="<?php echo O::app()->request->baseUrl; ?>/">The Oprecx Team</a> |
-                    <?php echo CHtml::link(O::t('oprecx', 'About'), array('/site/about')); ?> |
+                    <?php echo CHtml::link(O::t('oprecx', 'About'), array('/site/page', 'view' => 'oprecx')); ?> |
                     <?php echo CHtml::link(O::t('oprecx', 'Admin'), array('/admin'), array('rel' => 'external')); ?>
                 </p>
                 <p><?php 

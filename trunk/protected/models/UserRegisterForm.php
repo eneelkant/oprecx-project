@@ -59,7 +59,7 @@ class UserRegisterForm extends CFormModel {
             array('password', 'compare', 'compareAttribute' => 'password2'),
             array('email', 'email'),
             array('password', 'length', 'min' => 4, 'max' => 16),
-            array('email', 'unique', 'className' => 'Users', 'attributeName' => 'email'),
+            array('email', 'unique', 'className' => 'User', 'attributeName' => 'email'),
         );
     }
 

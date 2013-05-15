@@ -6,6 +6,8 @@ if ($user->isGuest) {
     $this->metaData['type'] = 'recruitment';
     $this->metaData['name'] = $this->metaData['og:title'] = $this->metaData['twitter:title'] = $this->rec->full_name;
     $this->metaData['description'] = substr(strip_tags($this->rec->description), 0, 300);
+} else {
+    $this->metaData = null;
 }
 
 ?>
@@ -14,9 +16,10 @@ if ($user->isGuest) {
 <div data-role="header" class="head registration">
     <div class="wrapper">
         <h1 class="org-name">
-            <a href="#main-panel" data-role="button" data-inline="true" data-iconpos="notext" data-icon="arrow-r" 
-               class="ui-icon-alt" data-theme="c" data-mini="true" id="panel-show-button">Menu</a>
-            <a href="#main-panel"><?php echo CHtml::encode($this->rec->full_name); ?></a>
+            <!-- a href="#main-panel" data-role="button" data-inline="true" data-iconpos="notext" data-icon="arrow-r" 
+               class="ui-icon-alt" data-theme="c" data-mini="true" id="panel-show-button">Menu</a -->
+            
+            <?php echo CHtml::link($this->rec->full_name, $this->getURL('index')); ?>
         </h1>
         <div class="user-name">
             <?php
@@ -45,6 +48,7 @@ if ($user->isGuest) {
 <?php echo $content; ?>
 </div><!-- /content -->
 
+<?php /* ?>
 <div data-role="panel" id="main-panel" data-position="left" data-display="overlay" data-theme="a" class="ui-panel ui-panel-closed">
     <ul data-role="listview" data-inset="false">
         <li><?php echo CHtml::link(O::t('oprecx',
@@ -81,5 +85,5 @@ if ($user->isGuest) {
         </li>
     </ul>
 </div><!-- /panel -->
-
+<?php // */ ?>
 <?php $this->endContent(); ?>

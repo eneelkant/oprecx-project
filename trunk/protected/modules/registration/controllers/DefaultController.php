@@ -24,9 +24,10 @@ class DefaultController extends RegisterController
         }
     }
     
-    private function afterSave($next_action) {
+    private function afterSave($next_action, $param = array()) {
         if ($this->isWizard) {
-            $this->redirect($this->getURL($next_action, array('wiz' => 1)));
+            $param['wiz'] = 1;
+            $this->redirect($this->getURL($next_action, $param));
             return true;
         } elseif (isset($this->actionParams['edit']) && $this->actionParams['edit']) {
             $this->redirect($this->getURL('index'));
@@ -134,16 +135,57 @@ class DefaultController extends RegisterController
     public function actionInterview()
     {
         $this->cekLogin('interview');
-        $model = new InterviewSlotForm('', $this->rec->id, O::app()->user->id);
         if ($this->isWizard) $this->backAction = 'form';
         
-        if (isset($_POST['InterviewSlotForm'])) {
-            $model->setAttributes($_POST['InterviewSlotForm']);
-            if ($model->validate() && $model->save()) {
-                if ($this->afterSave('finish')) return;
-            }
+        $slotlist = CDbCommandEx::create()
+                    ->selectDistinct('is.elm_id, re.weight')
+                    ->from(TableNames::INTERVIEW_SLOT . ' is')
+                    ->join(TableNames::REC_ELM_as('re'), '$re.elm_id = $is.elm_id') 
+                    ->join(TableNames::DIVISION_ELM . ' de', '$de.elm_id = $is.elm_id')
+                    ->join(TableNames::DIVISION_CHOICE . ' dc', '$dc.div_id = $de.div_id')
+                    ->join(TableNames::DIVISION . ' d', '$d.div_id = $de.div_id')
+                    ->where('$dc.user_id = :user_id AND $d.rec_id = :rec_id', 
+                            array('user_id' => $this->user->id, 'rec_id' => $this->rec->id))
+                    ->order('re.weight')
+                    ->queryColumn();
+        
+        if (isset($this->actionParams['slotid'])) $slotid = $this->actionParams['slotid'];
+        elseif (count($slotlist) > 0) {
+            $slotid = $slotlist[0];
+        } else {
+            $slotid = NULL;
         }
-        $this->render('interview', array('model' => $model));
+        
+        if ($slotid) {
+            if (($slot_index = array_search($slotid, $slotlist)) === FALSE) {
+                throw new CHttpException(403);
+            }
+            
+            $model = new InterviewSlotForm('', $this->rec->id, $this->user->id, $slotid);
+
+            if (isset($_POST['InterviewSlotForm'])) {
+                $model->setAttributes($_POST['InterviewSlotForm']);
+                if ($model->validate() && $model->save()) {
+                    $slot_index++;
+                    if ($slot_index < count($slotlist)) {
+                        if ($this->afterSave('interview', array('slotid' => $slotlist[$slot_index]))) return;
+                    } else {
+                        if ($this->afterSave('finish')) return;
+                    }
+                    
+                }
+            }
+            
+            $this->render('interview', array('model' => $model));
+        }
+        
+        else {
+            echo 'No Slot available';
+        }
     }
 
+    
+    public function actionFinish() {
+        $this->render('finish');
+    }
 }
