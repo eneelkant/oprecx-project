@@ -10,12 +10,15 @@
  *
  * @author abie
  * @property Recruitment $rec Current rec elements
+ * @property CWebUser $user Description
+ * @property UserState $userState Description
  */
 abstract class RegisterController extends Controller {
     
-    private $_rec;
+    private $_rec, $_userState;
     public $page_class;
     public $isWizard = false;
+    
     
     public function getURL($actions, $args = array(), $relative = true) {
         $theArg = array($actions, 'rec_name' => $this->actionParams['rec_name']);
@@ -24,9 +27,18 @@ abstract class RegisterController extends Controller {
         $url = CHtml::normalizeUrl(array_merge($theArg, $args));
         return $relative ? $url : O::app()->getRequest()->getHostInfo() . $url;
     }
-
+    
+    /**
+     * 
+     * @return Recruitment
+     */
     public function getRec() {
+        //if ($this->_rec) return $this->_rec;
         return $this->_rec;
+    }
+    
+    public function getUser() {
+        return O::app()->getUser();
     }
 
     public function init (){
@@ -45,6 +57,12 @@ abstract class RegisterController extends Controller {
         
         //var_dump($this->actionParams);
         
+    }
+    
+    public function getUserState() {
+        if ($this->_userState) return $this->_userState;
+        
+        return $this->_userState = UserState::load($this->getUser()->getId(), $this->rec->id);
     }
 }
 

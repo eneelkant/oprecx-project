@@ -22,12 +22,16 @@ foreach ($menu_items as &$menu_item) {
 ?>
 <?php $this->beginContent(); ?>
 <div class="row-fluid">
-    <div class="span3"><div class="well well-small" style="padding-left: 0; padding-right: 0">
-    <?php $this->widget('bootstrap.widgets.TbMenu', array(
-        'type'=> 'list',
-        'items'=> $menu_items,
-    )); ?>
-    </div></div>
+    <div class="span3">
+        <div class="well well-small" style="padding-left: 0; padding-right: 0">
+        <?php $this->widget('bootstrap.widgets.TbMenu', array(
+            'type'=> 'list',
+            'items'=> $menu_items,
+        )); ?>
+        </div>
+        
+        <div class="admin-help"><h5>Help</h5></div>
+    </div>
     <div class="span9">
         <?php echo $content; ?>
     </div>

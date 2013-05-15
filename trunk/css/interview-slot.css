@@ -1,12 +1,15 @@
 #slot-table-resizable {
   position: relative;
   border: 1px solid #bbb;
-  border-bottom: 2px solid #aaa; }
+  border-bottom: 2px solid #aaa;
+  max-width: 100%; }
 
 #slot-table-container {
-  position: relative;
+  position: absolute;
+  left: 0;
+  top: 0;
   overflow: auto;
-  width: 100%;
+  max-width: 100%;
   margin: 0;
   padding: 0;
   height: 100%; }
@@ -34,9 +37,16 @@
     background-color: #d7f7ba;
     -moz-transition: background-color .2s;
     -webkit-transition: background-color .2s;
-    transition: background-color .2s; }
+    transition: background-color .2s;
+    border-left: 1px solid #fff;
+    border-bottom: 1px solid #fff; }
     #slot-table-container .slot:hover {
       background-color: #baddf7; }
+    #slot-table-container .slot input {
+      padding: 1px 2px;
+      font-size: 8pt;
+      line-height: 8pt;
+      height: 20px; }
   #slot-table-container .slot.disabled {
     color: #888;
     background-color: #f7beba; }
@@ -58,7 +68,8 @@
   #slot-table-left div {
     height: 30px;
     padding: 5px 2px;
-    text-align: center; }
+    text-align: center;
+    border-bottom: 1px solid #ccc; }
 
 #slot-table-header {
   position: absolute;

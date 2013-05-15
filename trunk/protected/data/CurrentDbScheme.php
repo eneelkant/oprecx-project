@@ -6,7 +6,7 @@ class CurrentDbScheme extends CDbMigration
 
     public function up()
     {
-        $this->foreign = false;
+        $this->foreign = true;
 
         $tmp = explode(':', $this->getDbConnection()->connectionString, 2);
         $this->driver = strtolower($tmp[0]);
@@ -41,7 +41,12 @@ class CurrentDbScheme extends CDbMigration
         $this->tableWawancara();
         $this->dataWawancara();
 
-
+        $this->getDbConnection()->getSchema()->resetSequence(TableNames::USER, 100);
+        $this->getDbConnection()->getSchema()->resetSequence(TableNames::RECRUITMENT, 100);
+        $this->getDbConnection()->getSchema()->resetSequence(TableNames::REC_ELM, 100);
+        $this->getDbConnection()->getSchema()->resetSequence(TableNames::DIVISION, 100);
+        $this->getDbConnection()->getSchema()->resetSequence(TableNames::FORM_FIELD, 100);
+        
     }
 
     private function tableWawancara() {
@@ -49,7 +54,7 @@ class CurrentDbScheme extends CDbMigration
         $this->dropTableIfExists(TableNames::INTERVIEW_USER_SLOT);
 
         $this->createTable(TableNames::INTERVIEW_SLOT, array(
-            'elm_id' => 'pk',
+            'elm_id' => 'integer PRIMARY KEY',
             'description' => 'text DEFAULT NULL',
             'duration' => 'integer NOT NULL DEFAULT 1800',
             'start_date' => 'date NOT NULL',
@@ -151,6 +156,8 @@ class CurrentDbScheme extends CDbMigration
             $this->addForeignKey('oprecx_users_img_id_fkey', TableNames::USER, 'img_id', TableNames::IMAGE, 'img_id');
             $this->addForeignKey('oprecx_user_metas_user_id_fkey', TableNames::USER_META, 'user_id', TableNames::USER, 'id');
         }
+        
+        //$this->getDbConnection()->getSchema()->resetSequence(TableNames::USER, 100);
     }
 
     private function tableRec()
@@ -227,6 +234,8 @@ class CurrentDbScheme extends CDbMigration
 
             $this->addForeignKey('oprecx_rec_elm_rec_id_fkey', TableNames::REC_ELM, 'rec_id', TableNames::RECRUITMENT, 'id');
         }
+        
+        // $this->getDbConnection()->getSchema()->resetSequence(TableNames::USER, 100);
 
     }
 

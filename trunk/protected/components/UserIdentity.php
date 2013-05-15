@@ -65,7 +65,9 @@ class UserIdentity extends CUserIdentity {
         if ($user->save(false)) {
             $this->_id = $user->getPrimaryKey();
             $this->authenticated = true;
+            $this->setState('fullname', $user->full_name);
             O::app()->user->login($this);
+            
             return true;
         }
         return false;

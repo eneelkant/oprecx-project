@@ -8,12 +8,15 @@ $cell_height: 30px;
     position: relative;
     border: 1px solid #bbb;
     border-bottom: 2px solid #aaa;
+    max-width: 100%;
 }
 
 #slot-table-container {
-    position: relative;
+    position: absolute;
+    left: 0;
+    top: 0;
     overflow: auto;
-    width: 100%;
+    max-width: 100%;
     margin: 0;
     padding: 0;
     height: 100%;
@@ -51,9 +54,18 @@ $cell_height: 30px;
         -moz-transition: background-color .2s;
         -webkit-transition: background-color .2s;
         transition: background-color .2s;
+        border-left: 1px solid #fff;
+        border-bottom: 1px solid #fff;
 
         &:hover {
             background-color: #baddf7;
+        }
+        
+        input {
+            padding: 1px 2px;
+            font-size: 8pt;
+            line-height: 8pt;
+            height: 20px;
         }
     }
     
@@ -85,6 +97,7 @@ $cell_height: 30px;
         height: $cell_height;
         padding: 5px 2px;
         text-align: center;
+        border-bottom: 1px solid #ccc;
     }
 }
 

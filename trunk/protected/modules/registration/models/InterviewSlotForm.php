@@ -7,22 +7,30 @@
 
 /**
  * Description of InterviewSlotForm
- *
+ * 
+ * @property InterviewSlot $slot Description
  * @author abie
  */
 class InterviewSlotForm extends CFormModel
 {
 
-    private $_recId, $_userId, $_tables;
+    private $_recId, $_userId, $_slotId, $_tables, $_slot;
     public $time;
     
-    public function __construct($scenario = '', $rec_id = null, $user_id = null)
+    public function __construct($scenario = '', $rec_id = null, $user_id = null, $slotid = null)
     {
         parent::__construct($scenario);
         $this->_recId = $rec_id;
         $this->_userId = $user_id;
+        $this->_slotId = $slotid;
     }
     
+    public function getSlot() {
+        if ($this->_slot) return $this->_slot;
+        else return $this->_slot = InterviewSlot::model ()->findById ($this->_slotId);
+    }
+
+
     public function getTables(){
         if (! isset($this->_tables)) {
             $reader = CDbCommandEx::create()
