@@ -61,7 +61,7 @@ class Recruitment extends CActiveRecord
                     ->limit(1)
                     ->queryRow();            
             
-            if ($cache) $cache->set(self::getCacheName($name), $attributes, 60);
+            if ($cache) $cache->set(self::getCacheName($name), $attributes, 3600);
         }
         return $obj = $this->populateRecord($attributes);;
     }
