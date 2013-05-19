@@ -53,7 +53,7 @@ abstract class TableNames
     
     const IMAGE = 'image';
     
-    
+    const TOKEN = 'token';
     
     
     

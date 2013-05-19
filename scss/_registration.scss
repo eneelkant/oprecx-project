@@ -112,6 +112,15 @@
 ///
 
 #page-registration-default-interview {
+    .current-time {
+        border: .1em solid #aaa;
+        padding: .2em 1em;
+        text-align: center;
+        background-color: #fff;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+    
     .time {
         display: block;
         width: 90px;

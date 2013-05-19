@@ -35,7 +35,8 @@ class SortForm extends CWidget
     var $backUrl = NULL;
     
     // button
-    var $addButtonText;    
+    var $addButtonText; 
+    var $addButtonLink = '#';
     var $saveButtonText;
     
     

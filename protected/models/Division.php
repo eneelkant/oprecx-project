@@ -39,6 +39,7 @@ class Division extends CActiveRecord
         {
                 return TableNames::DIVISION;
         }
+        
 
         /**
          * @return array validation rules for model attributes.
@@ -60,6 +61,12 @@ class Division extends CActiveRecord
                 );
         }
         
+        
+        public function __toString()
+        {
+            return $this->name;
+        }
+        
         /**
          * 
          * @param int $recId
@@ -75,6 +82,7 @@ class Division extends CActiveRecord
             $criteria->select = '*';
             $criteria->compare('rec_id', $recId);
             $criteria->order = 'weight, name';            
+            $criteria->index = 'div_id';
             return $this->query($criteria, TRUE);
         }
         

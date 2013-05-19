@@ -19,6 +19,24 @@ function generateInterviewTables($model) {
     $slotStatus = $slot->getStatus();
     $slotOptions = $slot->options;
     
+    $datetime = new DateTime;
+    if (isset($slotOptions['choiceOptions'])) {
+        $n = $slotOptions['choiceOptions']['n'];
+        
+        switch ($slotOptions['choiceOptions']['unit']) {
+            case 'd':
+            case 'D':
+                $datetime->add(new DateInterval('P' . $n . strtoupper($slotOptions['choiceOptions']['unit'])));
+                $datetime->setTime(0, 0, 0);
+                break;
+            
+            default:
+                $datetime->add(new DateInterval('PT' . $n . strtoupper($slotOptions['choiceOptions']['unit'])));
+        }
+        
+    }
+    $enableFrom = $datetime->getTimestamp();
+    
     $currentChoice = CDbCommandEx::create()
                     ->select('time')
                     ->from(TableNames::INTERVIEW_USER_SLOT)
@@ -45,12 +63,16 @@ function generateInterviewTables($model) {
             } else {
                 $max_user = $slot->max_user_per_slot;
             }
-            $label_class = 'time-label '; 
-            if ($checked) $label_class .= 'time-label-available time-label-selected';
-            elseif ($user_count >= $max_user) $label_class .= 'time-label-full';
-            elseif ($user_count > 0) $label_class .= 'time-label-available time-label-halffull';
-            else $label_class .= 'time-label-available';
-            
+            $label_class = 'time-label ';
+            if ($enableFrom == 0 || strtotime($value) > $enableFrom) {
+                if ($checked) $label_class .= 'time-label-available time-label-selected';
+                elseif ($user_count >= $max_user) $label_class .= 'time-label-full';
+                elseif ($user_count > 0) $label_class .= 'time-label-available time-label-halffull';
+                else $label_class .= 'time-label-available';
+            }
+            else {
+                $label_class .= 'time-label-full';
+            }
             echo '<span class="time">', 
                         CHtml::radioButton($radioName, $checked, array(
                             'id' => $radio_id,
@@ -58,7 +80,7 @@ function generateInterviewTables($model) {
                             'data-role' => 'none',
                             'disabled' => ($user_count >= $max_user),
                         )), 
-                        CHtml::label($time[0] . '-' . $time[1], $radio_id, array(
+                        CHtml::label(substr($time[0], 0, 5) . '-' . substr($time[1], 0, 5), $radio_id, array(
                             'data-slotid' => $slot->id,
                             'data-time' => $date_str,
                             'class' => $label_class,
@@ -70,61 +92,6 @@ function generateInterviewTables($model) {
     echo '</div></fieldset>', PHP_EOL;
 }
 
-function generateInterviewTables2($model) {
-    foreach ($model->getTables() as $id => $table) {
-        $radioName = get_class($model) . "[time][{$id}]";
-        echo '<fieldset>', $table['name'], '<div class="slots">';
-        $radio_id_prefix = "InterviewSlotForm_time_{$id}_";
-        $i = 0;
-
-        foreach ($table['slots'] as $slot_date) {
-            //$radio_id_prefix = "InterviewSlotForm_time_{$id}_{$date[0]}{$date[1]}{$date[2]}_";
-            list($year, $month, $day, $slot_list) = $slot_date;
-            
-            $date = sprintf('%04d-%02d-%02d', $year, $month, $day); // "{$date[0]}-{$date[1]}-{$date[2]}";
-            $date_str = O::app()->getLocale()->getDateFormatter()->formatDateTime(
-                    mktime(1, 0, 0, $month, $day, $year), 'full', NULL);
-            echo '<div class="date"><h3>', $date_str, '</h3><div data-role="controlgroup" data-type="horizontal">', PHP_EOL;
-            
-            foreach ($slot_list as $slot) {
-                list($time, $checked, $user_count, $max_user) = $slot;
-
-                $label_class = 'time-label ';                
-                if ($checked) $label_class .= 'time-label-available time-label-selected';
-                elseif ($user_count >= $max_user) $label_class .= 'time-label-full';
-                elseif ($user_count > 0) $label_class .= 'time-label-available time-label-halffull';
-                else $label_class .= 'time-label-available';
-                
-                $radio_id = $radio_id_prefix . $i++;
-
-                echo '<span class="time">', 
-                        CHtml::radioButton($radioName, $checked, array(
-                            'id' => $radio_id,
-                            'value' => ($date . ' ' . int_to_time($time, true)),
-                            'data-role' => 'none',
-                            'disabled' => ($user_count >= $max_user),
-                        )), 
-                        CHtml::label(int_to_time($time) . '-' . int_to_time($time + $table['duration']), $radio_id, array(
-                            'data-slotid' => $id,
-                            'data-time' => $date_str,
-                            'class' => $label_class,
-                        )),
-                        '</span>', PHP_EOL;
-
-            }
-            echo '</div></div>';
-        }
-        echo '</div></fieldset>', PHP_EOL;
-        //echo CHtml::activeRadioButtonList($model, 'time[' . $id . ']', $slots);
-    }
-}
-function int_to_time($t, $second = false) {
-    $s = $t % 60;
-    $t = (int)($t / 60);
-    $m = $t % 60;
-    $h = (int)($t / 60);
-    return sprintf('%02d:%02d' . ($second ? ':%02d' : ''), $h, $m, $s);
-}
 ?>
 <?php $this->beginWidget('CActiveForm', array(
     'id' => 'interview-slot-form',
@@ -133,6 +100,10 @@ function int_to_time($t, $second = false) {
         'validateOnSubmit' => false,
     ),
 )); ?>
+<p class="current-time">
+    <?php echo O::t('oprecx', 'Current time: {time}', 
+            array('{time}' => O::app()->dateFormatter->formatDateTime(time()))); ?>
+</p>
 <?php generateInterviewTables($model) ?>
 <?php
 $this->renderPartial('submit');

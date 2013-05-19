@@ -7,6 +7,10 @@ body {
     min-height: 400px;
 }
 
+*[class*="icon-"] {
+    text-decoration: none;
+}
+
 .navbar .brand {
     background: url(../images/logo-admin.png) no-repeat center;
     font-size: 0;

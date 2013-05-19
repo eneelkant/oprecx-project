@@ -56,28 +56,32 @@ class AdminController extends CController
      * 
      * @return Recruitment
      */
-    public function &getRec() {
-        if ($this->_rec === FALSE) {
-            if (isset($this->actionParams['rec'])){
-                if (($this->_rec = Recruitment::model()->findByName($this->actionParams['rec'])) == NULL) {
-                    throw new CHttpException(404, 
-                            O::t('oprecx', 'Recruitment "{rec}" can not be found.', 
-                                    array('{rec}' => $this->actionParams['rec']))
-                    );
-                }
-            }
-            else {
-                $this->_rec = NULL;
+    public function getRec() {
+        if ($this->_rec) return $this->_rec;
+        
+        if (isset($this->actionParams['rec'])){
+            /* @var $rec Recruitment */
+            if (($rec = Recruitment::model()->findByName($this->actionParams['rec'])) == NULL) {
+                throw new CHttpException(404, 
+                        O::t('oprecx', 'Recruitment "{rec}" can not be found.', 
+                                array('{rec}' => $this->actionParams['rec']))
+                );
+            } else {
+                O::app()->setTimeZone($rec->timezone);
             }
         }
-        return $this->_rec;
+        else {
+            $rec = NULL;
+        }
+        
+        return $this->_rec = $rec;
     }
     
     /**
      * 
      * @return Division[]
      */
-    public function &getDivList() {
+    public function getDivList() {
         if ($this->_divList === FALSE) {
             if (($rec = $this->getRec()) != NULL) {
                 $this->_divList = Division::model()->findAllByRecId($rec->id);
@@ -89,7 +93,7 @@ class AdminController extends CController
         return $this->_divList;
     }
     
-    
+
     /**
      * 
      * @return Recruitment[]

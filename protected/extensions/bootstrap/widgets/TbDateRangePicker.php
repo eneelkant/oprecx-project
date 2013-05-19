@@ -57,25 +57,24 @@ class TbDateRangePicker extends CInputWidget
 	 */
 	public function run()
 	{
-		if ($this->selector)
+		if ($this->selector) {
 			Yii::app()->bootstrap->registerDateRangePlugin($this->selector, $this->options, $this->callback);
-		else
-		{
+		} else {
 			list($name, $id) = $this->resolveNameID();
 
-			if ($this->hasModel())
-			{
-				if ($this->form)
+			if ($this->hasModel()) {
+				if ($this->form) {
 					echo $this->form->textField($this->model, $this->attribute, $this->htmlOptions);
-				else
+				} else {
 					echo CHtml::activeTextField($this->model, $this->attribute, $this->htmlOptions);
+				}
 
-			} 
-			else
+			} else {
 				echo CHtml::textField($name, $this->value, $this->htmlOptions);
+			}
 
 			$this->setLocaleSettings();
-			Yii::app()->bootstrap->registerDateRangePlugin('#' . $id, $this->options, $this->callback);	
+			Yii::app()->bootstrap->registerDateRangePlugin('#' . $id, $this->options, $this->callback);
 		}
 
 	}
@@ -86,7 +85,7 @@ class TbDateRangePicker extends CInputWidget
 	 * If user did not provided the names of weekdays and months in $this->options['locale']
 	 *  (which he should not care about anyway)
 	 *  then we populate this names from Yii's locales database.
-	 * 
+	 *
 	 *  This method works with the local properties directly, beware.
 	 */
 	private function setLocaleSettings()
@@ -100,8 +99,9 @@ class TbDateRangePicker extends CInputWidget
 	 */
 	private function setDaysOfWeekNames()
 	{
-		if (empty($this->options['locale']['daysOfWeek']))
+		if (empty($this->options['locale']['daysOfWeek'])) {
 			$this->options['locale']['daysOfWeek'] = Yii::app()->locale->getWeekDayNames('narrow', true);
+		}
 	}
 
 	/**
@@ -109,8 +109,11 @@ class TbDateRangePicker extends CInputWidget
 	 */
 	private function setMonthNames()
 	{
-		if (empty($this->options['locale']['monthNames']))
-			$this->options['locale']['monthNames'] = array_values(Yii::app()->locale->getMonthNames('wide', true));
+		if (empty($this->options['locale']['monthNames'])) {
+			$this->options['locale']['monthNames'] = array_values(
+				Yii::app()->locale->getMonthNames('wide', true)
+			);
+		}
 	}
 
 	/**

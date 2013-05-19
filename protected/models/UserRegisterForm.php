@@ -37,6 +37,7 @@ class UserRegisterForm extends CFormModel {
         return new $form_class(array_merge(
                 array (
                     'action' => array('/user/register'),
+                    'id' => 'user-register-form',
                     'title' => O::t('oprecx', 'Register Account'),
                     'elements' => array(
                         'name' => array('type' => 'text'),

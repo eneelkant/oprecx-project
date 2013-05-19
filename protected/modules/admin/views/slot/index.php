@@ -8,6 +8,8 @@ $this->widget('SortForm', array(
     'id' => 'interview-slot-list-form',
     'listItemView' => '_slot_item',
     'action' => array('sort'),
+    'addButtonLink' => $this->createUrl('new'),
+    
 ));
 ?>
 

@@ -16,8 +16,8 @@ $userState = UserState::load(O::app()->user->id, $this->rec->id);
 </div><!-- #form-summary -->
 
 <div id="intslot-summary">
-    <h3><?php echo CHtml::link(O::t('oprecx', 'Interview Slot'), $this->getURL('interview', array('edit' => 1))); ?></h3>
-    <?php renderInterviewSlotStatus($userState->getSelectedInterviewSlot()); ?>
+    <h3><?php echo O::t('oprecx', 'Interview Slot'); // CHtml::link(O::t('oprecx', 'Interview Slot'), $this->getURL('interview', array('edit' => 1))); ?></h3>
+    <?php renderInterviewSlotStatus($userState->getSelectedInterviewSlot(), $this); ?>
 </div><!-- #intslot-summary -->
 
 <?php
@@ -60,8 +60,9 @@ function renderFormStatus($formsStatus) {
 /**
  * 
  * @param UserStateInterviewSlots[] $slotStatus
+ * @param RegisterController $controller Description
  */
-function renderInterviewSlotStatus($slotStatus) {
+function renderInterviewSlotStatus($slotStatus, $controller) {
    $formatter = O::app()->getLocale()->getDateFormatter();
    $ul = HtmlTag::tag('ul');
    foreach ($slotStatus as $status) {
@@ -76,7 +77,9 @@ function renderInterviewSlotStatus($slotStatus) {
        } else {
            $time = O::t('oprecx', 'You have not choosen a slot');
        }
-       $ul->appendLi('<strong>' . $status->slot_name . '</strong>: ' . $time);
+       $ul->appendLi('<strong>' . 
+               CHtml::link($status->slot_name, $controller->getURL('interview', array('edit' => 1, 'slotid' => $status->slot_id))) . 
+               '</strong>: ' . $time);
    }
    $ul->render(true);
 }

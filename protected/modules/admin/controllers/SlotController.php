@@ -26,6 +26,32 @@ class SlotController extends AdminController
         $this->render('index', array('slots' => InterviewSlot::model()->findAllByRecId($this->rec->id)));
     }
     
+    public function actionNew() {
+        $model = new NewSlotForm();
+        
+        if (isset($_POST['NewSlotForm'])) {
+            $model->setAttributes($_POST['NewSlotForm']);
+            
+            if ($model->validate() && $model->submit($this->rec->id)) {
+                $this->redirect(array('edit', 'id' => $model->getId()));
+            }
+            
+        } else {
+            $model->name = O::t('oprecx', 'Interview Slot');
+            $model->timeRanges = array(
+                '08:00:00', '12:00:00',
+                '13:00:00', '15:00:00',
+                '15:00:00', '18:00:00',
+            );
+            $model->dateRange = date('Y-m-d', time()) . ' - ' . date('Y-m-d', time() + 432000); // 432000 = 5 * 24 * 60 * 60
+            $model->defaultMax = 1;
+            $model->duration = 3600;
+            $model->divList = array_keys($this->divList);
+        }
+        $this->render('new', array('model' => $model));
+    }
+
+
     public function actionEdit($id)
     {
         $this->render('edit', array('slot' => InterviewSlot::model()->findById($id)));
@@ -56,7 +82,33 @@ class SlotController extends AdminController
                 echo json_encode(array('status' => 'ERROR', 'error' => '403'));
             }
         }
-        
+    }
+    
+    public function actionSort() {
+        if (isset($_POST['SlotList']) && isset($_POST['SlotList']['items'])) {
+            $this->checkAccess('slot.sort');
+            try {
+                InterviewSlot::model()->sortOrDelete($this->rec->id, $_POST['SlotList']['items']);
+                $error = NULL;
+            } catch (CException $e) {
+                $error = $e->getMessage();
+            }
+            
+            if (O::app()->getRequest()->isAjaxRequest) {
+                echo CJSON::encode(array(
+                   'status' => ($error == NULL ? 'OK' : 'ERROR'),
+                   //'data' => $items,
+                   'error' => $error,
+                ));
+            } else {
+                $url = array('index');
+                if ($error) $url['error'] = $error;
+                $this->redirect($url);
+            }
+        }
+        else {
+            throw new CHttpException(403);
+        }
     }
 }
 

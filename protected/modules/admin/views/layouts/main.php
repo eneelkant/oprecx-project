@@ -14,7 +14,7 @@
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
     <?php O::app()->getComponent('bootstrap', true); // initialize bootstrap ?>
     <?php O::app()->getClientScript()->registerCssFile(O::versionedFileUrl('/css/admin', '.css')); ?>
-    <?php O::app()->getClientScript()->registerScriptFile(O::versionedFileUrl('/js/admin', '.js')); ?>
+    <?php O::app()->getClientScript()->registerScriptFile(O::versionedFileUrl('/js/admin', '.js'), CClientScript::POS_END); ?>
 </head>
 
 <body>
@@ -47,9 +47,9 @@ $this->widget('ext.bootstrap.widgets.TbNavbar', array(
                     array('label'=> O::t('oprecx', 'View'), 'url'=>array('/admin'), 'icon' => 'book'),
                     array('label'=> O::t('oprecx', 'Add'), 'url'=>array('/admin/wizard/index'), 'icon' => 'plus'),
                 ))),
-                array('label'=> O::t('oprecx', 'Results'), 'url'=>array('result/index'), 'icon' => 'icon-list-alt', 
+                array('label'=> O::t('oprecx', 'Results'), 'url'=>array('result/index'), 'icon' => 'bar-chart', 
                     'visible' => $cur_rec_id != 0, 'active' => $this->layout == 'result'),
-                array('label'=> O::t('oprecx', 'Settings'), 'url'=>array('setting/general'), 'icon' => 'icon-wrench', 
+                array('label'=> O::t('oprecx', 'Settings'), 'url'=>array('setting/general'), 'icon' => 'cogs', 
                     'visible' => $cur_rec_id != 0, 'active' => $this->layout == 'setting'),
                 array('label'=> O::t('oprecx', 'Share Registration Link'), 'url'=>'#shareOrgLink', 'icon' => 'globe', 
                     'visible' => $cur_rec_id != 0, 'linkOptions' => array('data-toggle' => 'modal')),

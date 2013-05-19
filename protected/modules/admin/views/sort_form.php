@@ -22,7 +22,7 @@ $this->listOptions['class'] .= ' component-list';
         ?>
 </fieldset>
 <div class="form-actions">
-    <a href="#" class="btn-item-add"><i class="icon-plus"></i> <?php echo $this->addButtonText ?></a>
+    <a href="<?php echo $this->addButtonLink ?>" class="btn-item-add"><i class="icon-plus"></i> <?php echo $this->addButtonText ?></a>
     <?php $this->widget('bootstrap.widgets.TbButton',
             array ('buttonType' => 'submit', 'type' => 'primary', 'label' => $this->saveButtonText, 
                 'icon' => 'icon-ok icon-white', 

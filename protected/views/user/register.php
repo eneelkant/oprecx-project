@@ -1,9 +1,7 @@
 <?php
 /* @var $this UserController */
 /* @var $form CForm */
-
-$form->buttons['register']->attributes['data-theme'] = 'b';
 ?>
-<div class="jqm-home-welcome">
-    <?php echo $form->render(); ?>
-</div>
+<h1>Create Oprecx Account</h1>
+
+<?php  $this->renderPartial('_register_form', array('form' => $form)) ?>

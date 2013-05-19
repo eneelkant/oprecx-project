@@ -74,12 +74,12 @@ class DivisionChoiceForm extends CFormModel {
     public function save($userId) {
         
         $db = O::app()->getDb();
+        $db->createCommand()->delete(TableNames::DIVISION_CHOICE, 
+                array('AND', 'user_id=:user_id', array('IN', 'div_id', array_keys($this->_allDivisionsName))),
+                array('user_id' => $userId));
+        
         $transaction = $db->beginTransaction();
         try {
-            $db->createCommand()->delete(TableNames::DIVISION_CHOICE, 
-                    array('AND', 'user_id=:user_id', array('IN', 'div_id', array_keys($this->_allDivisionsName))),
-                    array('user_id' => $userId));
-            
             foreach ($this->choices as $weight => $div_id) {
                 $db->createCommand()->insert(TableNames::DIVISION_CHOICE, array(
                     'user_id' => $userId,
