@@ -115,6 +115,15 @@ class InterviewSlot extends RecruitmentElement
         return $this->_status = $status;
     }
     
+    public function getDateRange(){
+        return $this->start_date . ' - ' . $this->end_date;
+    }
+    
+    public function setDateRange($dateRange) {
+        list($this->start_date, $this->end_date) = explode(' - ', $dateRange);
+    }
+    
+    
     public function getTable() {
         if ($this->_table) return $this->_table;
         return $this->_table = self::parseSlotTable();

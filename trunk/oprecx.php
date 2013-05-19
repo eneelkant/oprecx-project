@@ -56,6 +56,14 @@ class OprecxWebApplication extends CWebApplication
     {
         setcookie('lang', $new_lang, time() + 3600 * 24 * 356, $this->getHomeUrl());
     }
+    
+    /**
+     * Get bootstrap component
+     * @return Bootstrap
+     */
+    public function getBootstrap() {
+        return $this->getComponent('bootstrap');
+    }
 
     private function initLanguage()
     {
@@ -96,6 +104,8 @@ class OprecxWebApplication extends CWebApplication
                 'jquery-ui.min.js'   => '//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
                 'bootstrap.min.js'   => '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js',
                 'bootstrap.min.css'  => '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css',
+                'bootstrap-combined.no-icons.min.css' => '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.0/css/bootstrap.no-icons.min.css',
+                'font-awesome.min.css' => '//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.1.0/css/font-awesome.min.css',
                 'bootstrap-responsive.min.css' => '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css',
                 'jquery.form.min.js' => '//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.24/jquery.form.min.js',
                 'jquery.form.js' => '//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.24/jquery.form.min.js',

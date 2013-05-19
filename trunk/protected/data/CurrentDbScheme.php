@@ -6,7 +6,7 @@ class CurrentDbScheme extends CDbMigration
 
     public function up()
     {
-        $this->foreign = true;
+        $this->foreign = false;
 
         $tmp = explode(':', $this->getDbConnection()->connectionString, 2);
         $this->driver = strtolower($tmp[0]);
@@ -40,15 +40,34 @@ class CurrentDbScheme extends CDbMigration
 
         $this->tableWawancara();
         $this->dataWawancara();
+        
+        $this->tableToken();
 
-        $this->getDbConnection()->getSchema()->resetSequence(TableNames::USER, 100);
-        $this->getDbConnection()->getSchema()->resetSequence(TableNames::RECRUITMENT, 100);
-        $this->getDbConnection()->getSchema()->resetSequence(TableNames::REC_ELM, 100);
-        $this->getDbConnection()->getSchema()->resetSequence(TableNames::DIVISION, 100);
-        $this->getDbConnection()->getSchema()->resetSequence(TableNames::FORM_FIELD, 100);
+        $this->resetSequence(TableNames::USER, 'id', 100);
+        $this->resetSequence(TableNames::RECRUITMENT, 'id', 100);
+        $this->resetSequence(TableNames::REC_ELM, 'elm_id', 100);
+        $this->resetSequence(TableNames::DIVISION, 'div_id', 100);
+        $this->resetSequence(TableNames::FORM_FIELD, 'field_id', 100);
+        
         
     }
+    
+    private function resetSequence($table, $field, $val) {
+        $this->execute("SELECT setval('{$table}_{$field}_seq', $val, true);");
+    }
 
+    private function tableToken() {
+        $this->dropTableIfExists(TableNames::TOKEN);
+        
+        $this->createTable(TableNames::TOKEN, array(
+            'name' => 'string NOT NULL PRIMARY KEY',
+            'token' => 'text NOT NULL',
+            'data' => 'text DEFAULT NULL',
+            'expires' => 'datetime NOT NULL',
+            'created' => 'timestamp DEFAULT CURRENT_TIMESTAMP',
+        ));
+    }
+    
     private function tableWawancara() {
         $this->dropTableIfExists(TableNames::INTERVIEW_SLOT);
         $this->dropTableIfExists(TableNames::INTERVIEW_USER_SLOT);
@@ -135,6 +154,7 @@ class CurrentDbScheme extends CDbMigration
             'created'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
             'last_login' => 'datetime DEFAULT NULL',
             'updated'    => 'datetime DEFAULT NULL',
+            'status'     => 'string DEFAULT NULL', // "activated" => user have validated their email, blocked, ""
 
             //"FOREIGN KEY(img_id) REFERENCES {{images}} (img_id) ON DELETE SET NULL",
         ));
@@ -173,6 +193,7 @@ class CurrentDbScheme extends CDbMigration
             'full_name'      => 'string NOT NULL',
             'email'          => 'string NOT NULL',
             'created'        => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
+            'timezone'       => 'string NOT NULL DEFAULT \'Asia/Jakarta\'',
             'updated'        => 'datetime DEFAULT NULL',
             'description'    => 'text NOT NULL',
             'type'           => 'string NOT NULL',

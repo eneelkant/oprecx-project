@@ -38,6 +38,9 @@ return array(
             'responsiveCss' => true,
             'enableBootboxJS' => false,
             'enableNotifierJS' => false,
+            'fontAwesomeCss' => true,
+            'yiiCss' => false,
+            //'enableCdn' => true,
         ),
         
         // uncomment the following to enable URLs in path-format

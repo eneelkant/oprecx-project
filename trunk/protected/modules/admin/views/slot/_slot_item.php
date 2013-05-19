@@ -9,11 +9,11 @@
         </span>
         
         <span class="actions">
-            <a href="#editElementDialog" class="icon-pencil action-edit" data-toggle="modal" data-eid="<?php echo $re_id; ?>"></a>
-            <a class="icon-trash action-delete" href="#deleteElementDialog" data-toggle="modal" data-eid="<?php echo $re_id; ?>"></a>
+            <a href="#editElementDialog" class="icon-pencil action-edit" data-toggle="modal" data-target="<?php echo $re_id; ?>"></a>
+            <a class="icon-trash action-delete" data-target-id="slot-item-<?php echo $re_id; ?>"></a>
         </span>
        
     </h4>
     
-    <?php echo CHtml::hiddenField('OrgFormList[items][]', $re_id, array ('id' => FALSE)); ?>
+    <?php echo CHtml::hiddenField('SlotList[items][]', $re_id, array ('id' => FALSE)); ?>
 </li>

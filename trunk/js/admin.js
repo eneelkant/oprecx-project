@@ -47,7 +47,8 @@ jQuery(function($){
    }
    
    window.onbeforeunload = function() {
-       return (modifiedFormCount > 0) ? modifiedMessage : null;
+       if (modifiedFormCount > 0)
+           return modifiedMessage;
    };
    $('.oprecx-sort-form').each(function(i, elm){
        var $elm = $(elm);
@@ -72,10 +73,10 @@ jQuery(function($){
                     setModified(i, false);
                     
                 }
-            })
+            });
 
             return false;
-       })
+       });
        
        $list.attr('data-sort-id', i);
        $list.sortable({
@@ -85,5 +86,13 @@ jQuery(function($){
             }
         });
         
+        $elm.on('click', '.action-delete', function(e){
+            if (confirm('Are you sure?')) {
+                $target = $('#' + e.currentTarget.getAttribute('data-target-id'));
+                $target.remove();
+                elm.setModified(true);
+            }
+            return false;
+        });
    });
 });

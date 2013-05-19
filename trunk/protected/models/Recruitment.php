@@ -1,10 +1,10 @@
 <?php
 
 /**
- * This is the model class for table "{{organizations}}".
+ * This is the model class for table "recruitment".
  *
- * The followings are the available columns in table '{{organizations}}':
- * @property string $id
+ * The followings are the available columns in table 'recruitment':
+ * @property string $id the primary key of this recruitment
  * @property string $name
  * @property string $full_name
  * @property string $email
@@ -20,6 +20,7 @@
  * @property string $reg_time_begin
  * @property string $reg_time_end
  * @property string $visibility
+ * @property string $timezone Description
  *
  * The followings are the available model relations:
  * @property Division[] $divisions
@@ -37,6 +38,7 @@ class Recruitment extends CActiveRecord
     public static function model($className = __CLASS__)
     {
         return parent::model($className);
+        
     }
     
     private static function getCacheName($name) {

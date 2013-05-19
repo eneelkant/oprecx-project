@@ -15,7 +15,10 @@
  */
 abstract class RegisterController extends Controller {
     
-    private $_rec, $_userState;
+    /** @var Recruitment */
+    private $_rec;
+    
+    private $_userState;
     public $page_class;
     public $isWizard = false;
     
@@ -49,6 +52,12 @@ abstract class RegisterController extends Controller {
                 throw new CHttpException(404,O::t('oprecx','Recruitment {rec} Not Found.', array('{rec}' => $params['rec_name'])));
             }
             
+            try {
+                $timezone = $this->_rec->timezone;
+                O::app()->setTimeZone($timezone);
+            } catch (Exception $e) {
+                O::log('Setting timezone failed');
+            }
         } else {
             throw new CHttpException(404,O::t('oprecx','Page Not Found "{action}".'));
         }

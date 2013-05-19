@@ -36,6 +36,7 @@ class UserLoginForm extends CFormModel
                 array (
                     'title'    => O::t('oprecx', 'Login'),
                     'action'   => array ('/user/login'),
+                    'id' => 'user-login-form',
                     'elements' => array (
                         'email'    => array ('type' => 'email'),
                         'password' => array ('type' => 'password'),

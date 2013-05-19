@@ -7,7 +7,7 @@ $menu_items = array(
     array('label'=> O::t('oprecx', 'Divisions'), 'url'=>array('setting/division'), 'icon' => 'th-list'),
     
     array('label'=> O::t('oprecx', 'COMPONENTS')),
-    array('label'=> O::t('oprecx', 'Forms'), 'icon'=>'file', 'url'=>array('form/index')),
+    array('label'=> O::t('oprecx', 'Forms'), 'icon'=>'file-alt', 'url'=>array('form/index')),
     array('label'=> O::t('oprecx', 'Interview Slots'), 'icon'=>'calendar', 'url'=>array('slot/index')),
     array('label'=> O::t('oprecx', 'Tasks'), 'icon'=>'tasks', 'url'=>array('task/index')),
 );
